@@ -1,103 +1,96 @@
+import Script from "next/script";
 import Image from "next/image";
+import Testimonials from './screen/Testimonials';
+// app/page.tsx
+import LandingForm from './screen/LandingForm';
+import Steps from './screen/Steps.jsx';
+import ScrollingStats from './screen/ScrollingStats.jsx';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+<a
+        href="https://wa.me/918824083829"
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {/* Avatar with badge wrapper */}
+        <div className="relative">
+          {/* Your Photo */}
+          <div className="w-9 h-9 rounded-full overflow-hidden border-1 border-white shadow">
+            <img
+              src="/icons/akash.png"
+              alt="Support"
+              className="object-cover w-full h-full"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </div>
+
+          {/* WhatsApp Badge Icon - placed OUTSIDE avatar */}
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center bg-white justify-center shadow-md">
+            <img
+              src="/icons/whatsapp.png"
+              alt="WhatsApp"
+              className="w-4 h-4"
+            />
+          </div>
+        </div>
+
+        {/* Text & Subtext */}
+        <div className="flex flex-col leading-tight">
+          <span className="text-sm font-semibold group-hover:translate-x-1 transition-transform">
+            Chat with Us
+          </span>
+          <span className="text-[11px] opacity-80 -mt-0.5">
+            Drop a message — we reply fast!
+          </span>
+        </div>
+      </a>
+
+
+
+
+      <main className="min-h-screen bg-black text-white flex flex-col md:flex-row items-center justify-between p-20">
+        <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 p-10">
+          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
+            You Shoot, <br /> We Edit. Deal?
+          </h1>
+          <p className="text-lg text-zinc-400 max-w-md">
+            Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
+            Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
+          </p>
+        </div>
+        <div className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center">
+          <Script
+            src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
+            strategy="afterInteractive"
+          />
+          <LandingForm />
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+      {/* 🌟 Steps Section */}
+      <section className="bg-black text-white px-20 py-16">
+
+        <Steps />
+
+      </section>
+
+      {/* 🌟 Steps Section */}
+      <section className="bg-black text-white px-20 py-16">
+
+        <ScrollingStats />
+
+      </section>
+
+
+      {/* 🌟 Testimonial Section */}
+      <section className="bg-black text-white px-20 py-16">
+
+        <Testimonials />
+
+      </section>
+    </>
   );
 }
