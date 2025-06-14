@@ -139,29 +139,27 @@ export default function LandingForm() {
     }, [showPayPal]);
 
     return (
-        <Card className="p-6 shadow-xl w-full max-w-2xl">
-            <CardContent className="space-y-4">
-                <h2 className="text-2xl font-bold">Start Your Edit</h2>
+        <Card className="px-2.5 py-4 md:p-4 shadow-xl w-full max-w-[640px]">
+            <CardContent className="space-y-4 text-sm">
+                <h2 className="text-xl font-bold">Submit Your Video for Editing</h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col md:flex-row gap-5">
+                    {/* Left - 60% */}
+                    <div className="w-full md:w-[60%]">
+                        <fieldset className="flex flex-col gap-3 border border-neutral-800 rounded-lg px-3 py-4 sm:p-5">
+                            <legend className="text-sm font-semibold px-2 text-neutral-300">
+                                Edit this footage
+                            </legend>
 
-
-                    {/* Edit3 */}
-                    <fieldset className="flex flex-col gap-2 border border-neutral-800 rounded-xl p-6">
-                        <legend className="text-md font-semibold px-2 text-neutral-300">Edit this footage</legend>
-
-                        <div className="space-y-1">
                             <Input
+                                className="text-sm"
                                 type="url"
                                 value={formData.rawFootage}
                                 onChange={(e) => handleChange("rawFootage", e.target.value)}
                                 placeholder="Raw Footage URL/Link*"
                             />
-                        </div>
 
-
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <div className="space-y-1">
+                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <Select onValueChange={(val) => handleChange("videosCount", val)} defaultValue="1">
                                     <SelectTrigger><SelectValue /></SelectTrigger>
                                     <SelectContent>
@@ -172,38 +170,27 @@ export default function LandingForm() {
                                         <SelectItem value="5">5 videos</SelectItem>
                                     </SelectContent>
                                 </Select>
-                            </div>
-                            <div className="space-y-1">
-                                <Select onValueChange={(val) => handleChange("language", val)}
-                                    defaultValue="en">
-                                    <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
+
+                                <Select onValueChange={(val) => handleChange("language", val)} defaultValue="en">
+                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select" /></SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="en">English&nbsp;&nbsp;</SelectItem>
-                                        <SelectItem value="hi">Hindi&nbsp;&nbsp;&nbsp;&nbsp;</SelectItem>
+                                        <SelectItem value="en">English</SelectItem>
+                                        <SelectItem value="hi">Hindi</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
-                        </div>
-                        <div className="grid gap-6 md:grid-cols-2">
-                            {/* Duration Category Dropdown */}
-                            <div className="space-y-1">
+
+                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <Select onValueChange={(val) => handleChange("videoType", val)} defaultValue="short">
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select Format" />
-                                    </SelectTrigger>
+                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select Format" /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="short">Shorts / Reels</SelectItem>
                                         <SelectItem value="long">Long Video</SelectItem>
                                     </SelectContent>
                                 </Select>
-                            </div>
 
-                            {/* Duration Dropdown */}
-                            <div className="space-y-1">
                                 <Select onValueChange={(val) => handleChange("videoDuration", val)} defaultValue="1">
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Select Duration" />
-                                    </SelectTrigger>
+                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select Duration" /></SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="1">30 sec</SelectItem>
                                         <SelectItem value="2">60 sec</SelectItem>
@@ -214,21 +201,17 @@ export default function LandingForm() {
                                     </SelectContent>
                                 </Select>
                             </div>
-                        </div>
 
-
-
-                        <div className="space-y-1 pt-6">
                             <Input
+                                className="text-sm"
                                 type="url"
                                 value={formData.inspirationVideo}
                                 onChange={(e) => handleChange("inspirationVideo", e.target.value)}
                                 placeholder="Inspiration Video URL/Link"
                             />
-                        </div>
-                        {/* Notes Section */}
-                        <div className="space-y-1">
+
                             <Textarea
+                                className="resize-none text-sm"
                                 value={formData.notes}
                                 onChange={(e) => {
                                     if (e.target.value.length <= 4000) {
@@ -236,144 +219,112 @@ export default function LandingForm() {
                                     }
                                 }}
                                 placeholder="Creative Notes - Describe the vibe or direction you want"
-                                rows={5} // Fixes the height to approximately 5 lines
-                                maxLength={4000} // Prevents input beyond 500 characters
-                                className="resize-none" // Optional: disables resizing
+                                rows={4}
+                                maxLength={4000}
                             />
-                            <div className="text-sm text-muted-foreground text-right">
+                            <div className="text-xs text-muted-foreground text-right">
                                 {formData.notes.length}/4000
                             </div>
-                        </div>
+                        </fieldset>
+                    </div>
 
+                    {/* Right - 40% */}
+                    <div className="w-full md:w-[40%] flex flex-col space-y-3">
+                        {/* Customer Details */}
+                        <fieldset className="flex flex-col gap-3 border border-neutral-800 rounded-lg px-3 py-4 sm:p-5">
+                            <legend className="text-sm font-semibold px-2 text-neutral-300">Customer Details</legend>
 
-                    </fieldset>
-
-
-                    {/* Left Column: Edit1 + Edit2 */}
-                    <div className="flex flex-col space-y-4">
-                        {/* Edit1 */}
-                        <fieldset className="flex flex-col gap-2 border border-neutral-800 rounded-xl p-6">
-                            <legend className="text-md font-semibold px-2 text-neutral-300">Customer Details</legend>
-
-                            <div className="space-y-1">
-                                <Input
-                                    type="text"
-                                    value={formData.name}
-                                    onChange={(e) => handleChange("name", e.target.value)}
-                                    placeholder="Your Name"
-                                />
-                            </div>
-
-                            <div className="space-y-1">
-                                <Input
-                                    type="email"
-                                    value={formData.email}
-                                    onChange={(e) => handleChange("email", e.target.value)}
-                                    placeholder="you@example.com"
-                                />
-                            </div>
-
-                            <div className="space-y-1">
-                                <Select onValueChange={(val) => handleChange("country", val)}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select your country" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="US">United States</SelectItem>
-                                        <SelectItem value="EU">Europe</SelectItem>
-                                        <SelectItem value="AS">Asia</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            <Input
+                                className="text-sm"
+                                type="text"
+                                value={formData.name}
+                                onChange={(e) => handleChange("name", e.target.value)}
+                                placeholder="Your Name"
+                            />
+                            <Input
+                                className="text-sm"
+                                type="email"
+                                value={formData.email}
+                                onChange={(e) => handleChange("email", e.target.value)}
+                                placeholder="you@example.com"
+                            />
+                            <Select onValueChange={(val) => handleChange("country", val)}>
+                                <SelectTrigger className="text-sm"><SelectValue placeholder="Select your country" /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="US">United States</SelectItem>
+                                    <SelectItem value="EU">Europe</SelectItem>
+                                    <SelectItem value="AS">Asia</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </fieldset>
 
-                        {/* Right Column: Edit2 */}
-                        <fieldset className="flex flex-col gap-2 border border-neutral-800 rounded-xl p-6">
-                            <legend className="text-md font-semibold px-2 text-neutral-300">Editing & Delivery</legend>
+                        {/* Editing & Delivery */}
+                        <fieldset className="flex flex-col gap-3 border border-neutral-800 rounded-lg px-3 py-4 sm:p-5">
+                            <legend className="text-sm font-semibold px-2 text-neutral-300">Editing & Delivery</legend>
 
-                            <div className="space-y-1">
-                                <Select onValueChange={(val) => handleChange("editingTier", val)} defaultValue="standard">
-                                    <SelectTrigger>
-                                        <SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="standard">Standard</SelectItem>
-                                        <SelectItem value="studio">Studio</SelectItem>
-                                        <SelectItem value="pro">Studio Pro</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            <Select onValueChange={(val) => handleChange("editingTier", val)} defaultValue="standard">
+                                <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="standard">Standard</SelectItem>
+                                    <SelectItem value="studio">Studio</SelectItem>
+                                    <SelectItem value="pro">Studio Pro</SelectItem>
+                                </SelectContent>
+                            </Select>
 
-                            <div className="space-y-1">
-                                <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
-                                    <SelectTrigger><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="standard">Standard (5 days delivery)</SelectItem>
-                                        <SelectItem value="express">Express (2 days delivery)</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
+                            <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
+                                <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="standard">Standard (5 days)</SelectItem>
+                                    <SelectItem value="express">Express (2 days)</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </fieldset>
-
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl  border-neutral-800">
-                        {/* <div className="text-xl font-semibold text-muted-foreground">
-                            Amount: ${price}
-                        </div> */}
-                        <div className="text-2xl font-bold text-white flex items-baseline gap-1">
-                            <span className="text-base font-medium text-zinc-400">Amount:</span>
-                            <span className="text-emerald-500">${price}</span>
-                            {/* <span className="text-cyan-400">${price}</span> */}
+                {/* Price + Submit */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                    {/* Left - 60% */}
+                    <div className="w-full sm:w-[60%]">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-lg border border-neutral-800">
+                            <div className="text-xl font-bold text-white flex items-baseline gap-1">
+                                <span className="text-sm font-medium text-zinc-400">Amount:</span>
+                                <span className="text-emerald-500">${price}</span>
+                            </div>
+
+                            <Button className="w-full sm:w-auto text-sm px-4 py-2" onClick={handleSubmit}>
+                                Continue
+                            </Button>
                         </div>
-
-                        <Button className="w-full md:w-auto" onClick={handleSubmit}>
-                            Continue
-                        </Button>
-
                     </div>
+
+                    {/* Right - 40% */}
                     {showPayPal && (
-                        <div ref={paypalRef} className="mt-4 w-full" />
+                        <div ref={paypalRef} className="w-full sm:w-[40%]" />
                     )}
                 </div>
-                {/* Add trust badges below */}
-                <div className="mt-4">
-                    <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-600 bg-white px-4 py-3 border-t border-zinc-200">
+
+
+                {/* Trust Badges */}
+                <div className="mt-5">
+                    <div className="flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-600 bg-white px-3 py-2 border-t border-zinc-200">
                         <div className="flex items-center gap-1">
-                            <img
-                                src="/icons/credit-card.png"
-                                alt=""
-                                aria-hidden="true"
-                                className="h-4 w-4 sm:h-5 sm:w-5 opacity-70"
-                            />
+                            <img src="/icons/credit-card.png" alt="" className="h-4 w-4 opacity-70" />
                             <span>Secure Checkout</span>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img
-                                src="/icons/ssl.png"
-                                alt=""
-                                aria-hidden="true"
-                                className="h-4 w-4 sm:h-5 sm:w-5 opacity-70"
-                            />
+                            <img src="/icons/ssl.png" alt="" className="h-4 w-4 opacity-70" />
                             <span>SSL Secured</span>
                         </div>
                         <div className="flex items-center gap-1">
-                            <img
-                                src="/icons/paypal.png"
-                                alt=""
-                                aria-hidden="true"
-                                className="h-4 w-4 sm:h-5 sm:w-5 opacity-70"
-                            />
+                            <img src="/icons/paypal.png" alt="" className="h-4 w-4 opacity-70" />
                             <span>Powered by PayPal</span>
                         </div>
                     </div>
                 </div>
-
-
-
             </CardContent>
+        </Card>
 
-        </Card >
+
     );
 }

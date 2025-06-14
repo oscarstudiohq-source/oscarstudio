@@ -49,27 +49,32 @@ export default function Home() {
       </a>
 
 
+      <main className="bg-black text-white py-16">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-6 sm:px-10 md:px-20">
 
+          {/* Left (Text) - 45% on desktop */}
+          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug">
+              You Shoot,<br /> We Edit. Deal?
+            </h1>
+            <p className="text-base sm:text-lg text-zinc-300">
+              Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
+              Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
+            </p>
+          </div>
 
-      <main className="min-h-screen bg-black text-white flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 md:px-20 py-12 md:py-20">
-        <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 px-2 sm:px-6 md:px-10">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-            You Shoot, <br /> We Edit. Deal?
-          </h1>
-          <p className="text-base sm:text-lg text-zinc-400 max-w-md">
-            Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
-            Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
-          </p>
-        </div>
-        <div className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center">
-          <Script
-            src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
-            strategy="afterInteractive"
-          />
-          11
-          <LandingForm />
+          {/* Right (Form) - 55% on desktop */}
+          <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
+            <Script
+              src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
+              strategy="afterInteractive"
+            />
+            <LandingForm />
+          </div>
+
         </div>
       </main>
+
 
       {/* 🌟 Steps Section */}
       <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
