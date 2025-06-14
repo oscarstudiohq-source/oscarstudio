@@ -162,48 +162,58 @@ export default function LandingForm() {
                                 placeholder="Raw Footage URL/Link*"
                             />
 
-                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                <Select onValueChange={(val) => handleChange("videosCount", val)} defaultValue="1">
-                                    <SelectTrigger><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1">1 video</SelectItem>
-                                        <SelectItem value="2">2 videos</SelectItem>
-                                        <SelectItem value="3">3 videos</SelectItem>
-                                        <SelectItem value="4">4 videos</SelectItem>
-                                        <SelectItem value="5">5 videos</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="w-full">
+                                    <Select onValueChange={(val) => handleChange("videosCount", val)} defaultValue="1">
+                                        <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1">1 video</SelectItem>
+                                            <SelectItem value="2">2 videos</SelectItem>
+                                            <SelectItem value="3">3 videos</SelectItem>
+                                            <SelectItem value="4">4 videos</SelectItem>
+                                            <SelectItem value="5">5 videos</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
 
-                                <Select onValueChange={(val) => handleChange("language", val)} defaultValue="en">
-                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select" /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="en">English</SelectItem>
-                                        <SelectItem value="hi">Hindi</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                <div className="w-full">
+                                    <Select onValueChange={(val) => handleChange("language", val)} defaultValue="en">
+                                        <SelectTrigger className="w-full text-sm"><SelectValue placeholder="Select" /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="en">English</SelectItem>
+                                            <SelectItem value="hi">Hindi</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
 
-                            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                <Select onValueChange={(val) => handleChange("videoType", val)} defaultValue="short">
-                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select Format" /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="short">Shorts / Reels</SelectItem>
-                                        <SelectItem value="long">Long Video</SelectItem>
-                                    </SelectContent>
-                                </Select>
 
-                                <Select onValueChange={(val) => handleChange("videoDuration", val)} defaultValue="1">
-                                    <SelectTrigger className="text-sm"><SelectValue placeholder="Select Duration" /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="1">30 sec</SelectItem>
-                                        <SelectItem value="2">60 sec</SelectItem>
-                                        <SelectItem value="5">3–5 min</SelectItem>
-                                        <SelectItem value="10">5–10 min</SelectItem>
-                                        <SelectItem value="15">10–15 min</SelectItem>
-                                        <SelectItem value="30">15–30 min</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div className="w-full">
+                                    <Select onValueChange={(val) => handleChange("videoType", val)} defaultValue="short">
+                                        <SelectTrigger className="text-sm w-full"><SelectValue placeholder="Select Format" /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="short">Shorts / Reels</SelectItem>
+                                            <SelectItem value="long">Long Video</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="w-full">
+                                    <Select onValueChange={(val) => handleChange("videoDuration", val)} defaultValue="1">
+                                        <SelectTrigger className="text-sm w-full"><SelectValue placeholder="Select Duration" /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1">30 sec</SelectItem>
+                                            <SelectItem value="2">60 sec</SelectItem>
+                                            <SelectItem value="5">3–5 min</SelectItem>
+                                            <SelectItem value="10">5–10 min</SelectItem>
+                                            <SelectItem value="15">10–15 min</SelectItem>
+                                            <SelectItem value="30">15–30 min</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
+
 
                             <Input
                                 className="text-sm"
@@ -221,7 +231,7 @@ export default function LandingForm() {
                                         handleChange("notes", e.target.value);
                                     }
                                 }}
-                                placeholder="Creative Notes - Describe the vibe or direction you want"
+                                placeholder="Editing Instructions (Optional)"
                                 rows={4}
                                 maxLength={4000}
                             />
@@ -238,21 +248,25 @@ export default function LandingForm() {
                             <legend className="text-sm font-semibold px-2 text-neutral-300">Customer Details</legend>
 
                             <Input
-                                className="text-sm"
+                                className="w-full text-sm"
                                 type="text"
                                 value={formData.name}
                                 onChange={(e) => handleChange("name", e.target.value)}
                                 placeholder="Your Name"
                             />
+
                             <Input
-                                className="text-sm"
+                                className="w-full text-sm"
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => handleChange("email", e.target.value)}
                                 placeholder="you@example.com"
                             />
+
                             <Select onValueChange={(val) => handleChange("country", val)}>
-                                <SelectTrigger className="text-sm"><SelectValue placeholder="Select your country" /></SelectTrigger>
+                                <SelectTrigger className="w-full text-sm">
+                                    <SelectValue placeholder="Select your country" />
+                                </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="US">United States</SelectItem>
                                     <SelectItem value="EU">Europe</SelectItem>
@@ -261,27 +275,33 @@ export default function LandingForm() {
                             </Select>
                         </fieldset>
 
+
                         {/* Editing & Delivery */}
                         <fieldset className="flex flex-col gap-3 border border-neutral-800 rounded-lg px-3 py-4 sm:p-5">
                             <legend className="text-sm font-semibold px-2 text-neutral-300">Editing & Delivery</legend>
 
-                            <Select onValueChange={(val) => handleChange("editingTier", val)} defaultValue="standard">
-                                <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="standard">Standard</SelectItem>
-                                    <SelectItem value="studio">Studio</SelectItem>
-                                    <SelectItem value="pro">Studio Pro</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <div className="w-full">
+                                <Select onValueChange={(val) => handleChange("editingTier", val)} defaultValue="standard">
+                                    <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="standard">Standard</SelectItem>
+                                        <SelectItem value="studio">Studio</SelectItem>
+                                        <SelectItem value="pro">Studio Pro</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                            <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
-                                <SelectTrigger className="text-sm"><SelectValue /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="standard">Standard (5 days)</SelectItem>
-                                    <SelectItem value="express">Express (2 days)</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <div className="w-full">
+                                <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
+                                    <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="standard">Standard (5 days)</SelectItem>
+                                        <SelectItem value="express">Express (2 days)</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </fieldset>
+
                     </div>
                 </div>
 

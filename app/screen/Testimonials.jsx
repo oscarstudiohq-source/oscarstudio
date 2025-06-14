@@ -205,13 +205,12 @@ export default function Testimonials() {
 
                 <div
                     ref={scrollRef}
-                    className="flex overflow-x-auto space-x-8 px-6 no-scrollbar"
+                    className="flex overflow-x-auto space-x-4 px-4 md:px-6 no-scrollbar snap-x snap-mandatory"
                 >
-
                     {testimonials.map((testimonial, index) => (
                         <div
                             key={index}
-                            className="min-w-[300px] max-w-xs bg-zinc-800 text-white p-6 rounded-2xl shadow-lg shrink-0 flex flex-col justify-between"
+                            className="w-[85vw] sm:w-[300px] max-w-xs bg-zinc-800 text-white p-4 rounded-2xl shadow-lg shrink-0 snap-start flex flex-col justify-between"
                         >
                             {/* Testimonial Text */}
                             <p className="text-sm text-zinc-300 mb-4">"{testimonial.text}"</p>
@@ -261,6 +260,7 @@ export default function Testimonials() {
                         </div>
                     ))}
                 </div>
+
             </section>
         </>
     );
