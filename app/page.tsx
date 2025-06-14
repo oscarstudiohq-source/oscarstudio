@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
 
-<a
+      <a
         href="https://wa.me/918824083829"
         className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group"
         target="_blank"
@@ -51,12 +51,12 @@ export default function Home() {
 
 
 
-      <main className="min-h-screen bg-black text-white flex flex-col md:flex-row items-center justify-between p-20">
-        <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 p-10">
-          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
+      <main className="min-h-screen bg-black text-white flex flex-col md:flex-row items-center justify-between px-6 sm:px-10 md:px-20 py-12 md:py-20">
+        <div className="w-full md:w-1/2 flex flex-col justify-center space-y-6 px-2 sm:px-6 md:px-10">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
             You Shoot, <br /> We Edit. Deal?
           </h1>
-          <p className="text-lg text-zinc-400 max-w-md">
+          <p className="text-base sm:text-lg text-zinc-400 max-w-md">
             Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
             Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
           </p>
@@ -71,25 +71,18 @@ export default function Home() {
       </main>
 
       {/* 🌟 Steps Section */}
-      <section className="bg-black text-white px-20 py-16">
-
+      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
         <Steps />
-
       </section>
 
       {/* 🌟 Steps Section */}
-      <section className="bg-black text-white px-20 py-16">
-
+      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
         <ScrollingStats />
-
       </section>
 
-
       {/* 🌟 Testimonial Section */}
-      <section className="bg-black text-white px-20 py-16">
-
+      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
         <Testimonials />
-
       </section>
     </>
   );
