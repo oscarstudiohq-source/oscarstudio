@@ -139,11 +139,14 @@ export default function LandingForm() {
     }, [showPayPal]);
 
     return (
-        <Card className="px-2.5 py-4 md:p-4 shadow-xl w-full max-w-[640px]">
-            <CardContent className="space-y-4 text-sm">
+        <Card className="px-2 sm:px-4 py-4 md:p-5 shadow-xl w-full max-w-[640px]">
+            <CardContent className="space-y-4 text-sm px-0 mx-1 sm:px-4 sm:mx-4">
+
+
                 <h2 className="text-xl font-bold">Submit Your Video for Editing</h2>
 
                 <div className="flex flex-col md:flex-row gap-5">
+
                     {/* Left - 60% */}
                     <div className="w-full md:w-[60%]">
                         <fieldset className="flex flex-col gap-3 border border-neutral-800 rounded-lg px-3 py-4 sm:p-5">
@@ -283,7 +286,7 @@ export default function LandingForm() {
                 </div>
 
                 {/* Price + Submit */}
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col md:flex-row gap-5">
                     {/* Left - 60% */}
                     <div className="w-full sm:w-[60%]">
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-lg border border-neutral-800">
@@ -303,6 +306,7 @@ export default function LandingForm() {
                         <div ref={paypalRef} className="w-full sm:w-[40%]" />
                     )}
                 </div>
+
 
 
                 {/* Trust Badges */}
