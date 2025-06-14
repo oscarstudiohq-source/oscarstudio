@@ -50,7 +50,7 @@ export default function Home() {
 
 
       <main className="bg-black text-white py-16">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-6 sm:px-10 md:px-20">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-2 sm:px-10 md:px-20">
 
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6">
@@ -77,17 +77,17 @@ export default function Home() {
 
 
       {/* 🌟 Steps Section */}
-      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
         <Steps />
       </section>
 
-      {/* 🌟 Steps Section */}
-      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
+      {/* 🌟 Steps Section */}  
+      <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
         <ScrollingStats />
       </section>
 
       {/* 🌟 Testimonial Section */}
-      <section className="bg-black text-white px-6 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
         <Testimonials />
       </section>
     </>
