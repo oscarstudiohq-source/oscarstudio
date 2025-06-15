@@ -49,7 +49,8 @@ export default function Home() {
       </a>
 
 
-      <main className="bg-black text-white py-16">
+     <main className="bg-[#000] text-white py-16">
+
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20">
 
           {/* Left (Text) - 45% on desktop */}
@@ -65,6 +66,7 @@ export default function Home() {
 
           {/* Right (Form) - 55% on desktop */}
           <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
+          
             <Script
               src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
               strategy="afterInteractive"
