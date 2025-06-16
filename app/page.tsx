@@ -5,6 +5,7 @@ import Testimonials from './screen/Testimonials';
 import LandingForm from './screen/LandingForm';
 import Steps from './screen/Steps.jsx';
 import ScrollingStats from './screen/ScrollingStats.jsx';
+import EditingTier from './screen/EditingTier';
 
 export default function Home() {
   return (
@@ -77,6 +78,10 @@ export default function Home() {
         </div>
       </main>
 
+      {/* 🌟 Editing tier Section */}
+      <section className="bg-black text-white px-4 sm:px-10 md:px-20 py-12 sm:py-16">
+        <EditingTier />
+      </section>
 
       {/* 🌟 Steps Section */}
       <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">

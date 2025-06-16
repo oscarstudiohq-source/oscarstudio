@@ -10,10 +10,22 @@ const testimonials = [
         image: "/clients/chris.png"
     },
     {
+        name: "Brandon L.", 
+        text: "I almost hired someone on Fiverr, but saw this service had 20% off and a premium thumbnail included. Went with Studio Pro — no extra fees, and way more polished.",
+        rating: 5,
+        image: "/clients/brandon.png"
+    },
+    {
         name: "Emily R.",
         text: "I sent in some shaky clips from my iPhone and got back a super polished promo reel. Already recommended to my startup friends!",
         rating: 5,
         image: "/clients/emily.png"
+    },
+    {
+        name: "Ryan C.",  // Male
+        text: "I wasn’t expecting the thumbnail to be free — and definitely not one that looked this good. It usually costs $45! Combine that with the discount, and it's unbeatable.",
+        rating: 5,
+        image: "/clients/ryan.png"
     },
     {
         name: "James B.",
@@ -26,6 +38,12 @@ const testimonials = [
         text: "Honestly? Didn’t expect my vlog to look *this* good. These guys seriously know YouTube — smooth edits, great music timing. Loved it.",
         rating: 5,
         image: "/clients/jack.png"
+    },
+    {
+        name: "Tyler M.",  // Male
+        text: "The first time I paid full price — no regrets, because the quality is great. But now with 20% off *and* a free $29 thumbnail? I'm coming back for every upload.",
+        rating: 5,
+        image: "/clients/tyler.png"
     },
     {
         name: "Ibrahim Z.",
@@ -56,6 +74,12 @@ const testimonials = [
         text: "Used them for my channel’s main video — edits were sharp, pacing was tight, and I didn’t even need revisions. Perfect for YouTube uploads.",
         rating: 4.5,
         image: "/clients/daniel.png"
+    },
+    {
+        name: "Luke A.",  // Male
+        text: "Editing quality was sharp, but what really sold me was the free thumbnail. It looked like something you'd pay for on its own. With the 20% off, it’s a steal.",
+        rating: 5,
+        image: "/clients/luke.png"
     },
     {
         name: "Luca F.",

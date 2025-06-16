@@ -14,33 +14,34 @@ import {
     TooltipContent,
     TooltipProvider
 } from "@/components/ui/tooltip";
-
+import { Film, Sparkles, Crown } from "lucide-react"; // modern icons
+import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30s": { standard: 17.99, studio: 24.99, pro: 29.99 },
-        "1min": { standard: 24.99, studio: 34.99, pro: 44.99 },
-        "1-3min": { standard: 34.99, studio: 49.99, pro: 64.99 },
-        "3-5min": { standard: 44.99, studio: 59.99, pro: 79 },
-        "5-10min": { standard: 64.99, studio: 89.99, pro: 119 },
-        "10-15min": { standard: 84.99, studio: 114.99, pro: 149 },
-        "15-30min": { standard: 109, studio: 149, pro: 195 },
+        "30 sec": { studio: 34.99, studioPro: 44.99, studioMax: 54.99 },
+        "60 sec": { studio: 49.99, studioPro: 64.99, studioMax: 79.99 },
+        "90 sec": { studio: 59.99, studioPro: 79.99, studioMax: 99.99 },
     },
     long: {
-        "30s": { standard: 19.99, studio: 27.99, pro: 34.99 },
-        "1min": { standard: 27.99, studio: 37.99, pro: 49.99 },
-        "1-3min": { standard: 37.99, studio: 54.99, pro: 74.99 },
-        "3-5min": { standard: 49.99, studio: 69.99, pro: 94.99 },
-        "5-10min": { standard: 74.99, studio: 99.99, pro: 134.99 },
-        "10-15min": { standard: 94.99, studio: 129.99, pro: 174.99 },
-        "15-30min": { standard: 124.99, studio: 169.99, pro: 219 },
-    }
+        "3 min": { studio: 89.99, studioPro: 116.99, studioMax: 143.99 },
+        "5 min": { studio: 129.99, studioPro: 168.99, studioMax: 207.99 },
+        "7 min": { studio: 169.99, studioPro: 220.99, studioMax: 271.99 },
+        "10 min": { studio: 199.99, studioPro: 259.99, studioMax: 319.99 },
+        "15 min": { studio: 239.99, studioPro: 311.99, studioMax: 383.99 },
+        "20 min": { studio: 279.99, studioPro: 363.99, studioMax: 447.99 },
+    },
 };
+
+
 
 export default function LandingForm() {
     const paypalRef = useRef(null);
-    const [price, setPrice] = useState(0);
     const [showPayPal, setShowPayPal] = useState(false);
+
+    const [price, setPrice] = useState({ original: 0, discounted: 0 });
+    const [isCouponApplied, setIsCouponApplied] = useState(false);
+    const [discountRate, setDiscountRate] = useState(20);
 
     const [formData, setFormData] = useState({
         name: "",
@@ -52,7 +53,7 @@ export default function LandingForm() {
         videoType: "short", // "short" or "long"
         videoDuration: "1", // like "1", "2", "5"
         deliverySpeed: "standard",
-        editingTier: "", // "standard", "studio", "pro"
+        editingTier: "", // "studio", "studioPro", "studioMax"
         aspectRatio: "",
         language: "",
         notes: "",
@@ -75,75 +76,89 @@ export default function LandingForm() {
         return true;
     };
 
-    const handleSubmit = () => {
-        try {
-            const totalPrice = calculatePrice();
-
-            if (!totalPrice || isNaN(totalPrice)) {
-                alert("There was an issue calculating the price. Please check your selections.");
-                return;
-            }
-
-            setShowPayPal(false); // Reset first
-            setPrice(totalPrice);
-            setTimeout(() => setShowPayPal(true), 50); // Slight delay ensures re-render
-
-            console.log("Submitted Data:", formData);
-            console.log("Total Price:", totalPrice);
-        } catch (e) {
-            console.log(e);
-        }
+    const durationKeyMap = {
+        "0": "30 sec",
+        "1": "60 sec",
+        "2": "90 sec",
+        "3": "3 min",
+        "5": "5 min",
+        "7": "7 min",
+        "10": "10 min",
+        "15": "15 min",
+        "20": "20 min",
     };
+    const shortKeys = ["0", "1", "2"];
+    const longKeys = ["3", "5", "7", "10", "15", "20"];
 
-
+    // Price calculation
     const calculatePrice = () => {
         setShowPayPal(false);
 
         const { videoType, videoDuration, editingTier, videosCount } = formData;
-
-        const durationKeyMap = {
-            "1": "30s",
-            "2": "1min",
-            "3": "1-3min",
-            "5": "3-5min",
-            "10": "5-10min",
-            "15": "10-15min",
-            "30": "15-30min",
-        };
-
         const durationKey = durationKeyMap[videoDuration];
 
         if (!videoType || !durationKey || !editingTier) {
             console.warn("Missing data in form:", formData);
-            return 0;
+            return { original: 0, discounted: 0 };
         }
 
         const tierPriceMap = basePrices[videoType]?.[durationKey];
-
         if (!tierPriceMap) {
             console.warn("No price found for", videoType, durationKey);
-            return 0;
+            return { original: 0, discounted: 0 };
         }
 
         const unitPrice = parseFloat(tierPriceMap[editingTier]) || 0;
         const count = parseInt(videosCount, 10) || 0;
 
-        const total = unitPrice * count;
+        const original = unitPrice * count;
+        const discounted = isCouponApplied
+            ? original * ((100 - discountRate) / 100)
+            : original;
 
-        console.log(`unitPrice: ${unitPrice}, count: ${count}, total: ${total}`);
-        return total;
+        return {
+            original,    // number
+            discounted,  // number
+        };
     };
 
 
+
+    // Update price whenever form data or coupon changes
     useEffect(() => {
-        setPrice(calculatePrice());
+        const calculated = calculatePrice();
+        setPrice(calculated); // ✅ Set full object, not just number
     }, [
         formData.videoType,
         formData.videoDuration,
         formData.editingTier,
         formData.videosCount,
+        isCouponApplied,
+        discountRate,
     ]);
 
+    // Submit handler
+    const handleSubmit = () => {
+        try {
+            const { original, discounted } = calculatePrice();
+            const finalPrice = parseFloat(discounted);
+
+            if (!finalPrice || isNaN(finalPrice)) {
+                alert("There was an issue calculating the price. Please check your selections.");
+                return;
+            }
+
+            setShowPayPal(false);
+            setPrice({ original, discounted }); // Store both for UI reference
+            setTimeout(() => setShowPayPal(true), 50);
+
+            console.log("Submitted Data:", formData);
+            console.log("Original Price:", original);
+            console.log("Discounted Price:", discounted);
+        } catch (e) {
+            console.error("Error during submit:", e);
+        }
+    };
 
 
     useEffect(() => {
@@ -158,7 +173,7 @@ export default function LandingForm() {
                     purchase_units: [
                         {
                             amount: {
-                                value: price.toFixed(2), // always format to 2 decimal places
+                                value: price.discounted.toFixed(2), // format number properly
                             },
                         },
                     ],
@@ -175,11 +190,32 @@ export default function LandingForm() {
         }).render(paypalRef.current);
     }, [showPayPal, price]); // <-- include showPayPal here
 
+    const formatPrice = (amount) => {
+        return Number(amount).toFixed(2);
+    };
+
+    const formatPriceWithSmallDecimals = (amount) => {
+        const [main, decimal] = Number(amount).toFixed(2).split(".");
+        return (
+            <span className="text-emerald-400 font-bold text-lg">
+                ${main}
+                <span className="text-sm font-bold align-top ml-0.5">.{decimal}</span>
+            </span>
+        );
+    };
+
+    const formatINR = (amount) => {
+        return new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+            maximumFractionDigits: 0,
+        }).format(amount);
+    };
 
     return (
         <Card className="px-1 sm:px-2 py-4 shadow-xl w-full max-w-[640px]">
             <CardContent className="space-y-4 text-sm px-2 sm:px-2 md:px-5">
-      
+
                 <h2 className="text-xl font-bold">Submit Your Video for Editing</h2>
 
                 <div className="flex flex-col md:flex-row gap-5">
@@ -227,8 +263,19 @@ export default function LandingForm() {
                                     </Select>
                                 </div>
                                 <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("videoType", val)} defaultValue="short">
-                                        <SelectTrigger className="text-sm w-full"><SelectValue placeholder="Select Format" /></SelectTrigger>
+                                    <Select
+                                        onValueChange={(val) => {
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                videoType: val,
+                                                videoDuration: val === "short" ? "0" : "3", // default duration based on type
+                                            }));
+                                        }}
+                                        value={formData.videoType}
+                                    >
+                                        <SelectTrigger className="text-sm w-full">
+                                            <SelectValue placeholder="Select Format" />
+                                        </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="short">Shorts / Reels</SelectItem>
                                             <SelectItem value="long">Long Video</SelectItem>
@@ -257,17 +304,23 @@ export default function LandingForm() {
                                         </Tooltip>
                                     </TooltipProvider> */}
                                 </div>
+                                {/* Video Duration Dropdown */}
                                 <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("videoDuration", val)} defaultValue="1">
-                                        <SelectTrigger className="text-sm w-full"><SelectValue placeholder="Select Duration" /></SelectTrigger>
+                                    <Select
+                                        onValueChange={(val) =>
+                                            setFormData((prev) => ({ ...prev, videoDuration: val }))
+                                        }
+                                        value={formData.videoDuration}
+                                    >
+                                        <SelectTrigger className="text-sm w-full">
+                                            <SelectValue placeholder="Select Duration" />
+                                        </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="1">30 sec</SelectItem>
-                                            <SelectItem value="2">1 min</SelectItem>
-                                            <SelectItem value="3">1–3 min</SelectItem>
-                                            <SelectItem value="5">3–5 min</SelectItem>
-                                            <SelectItem value="10">5–10 min</SelectItem>
-                                            <SelectItem value="15">10–15 min</SelectItem>
-                                            <SelectItem value="30">15–30 min</SelectItem>
+                                            {(formData.videoType === "short" ? shortKeys : longKeys).map((key) => (
+                                                <SelectItem key={key} value={key}>
+                                                    {durationKeyMap[key]}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 </div>
@@ -299,20 +352,6 @@ export default function LandingForm() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                
-                                {/* Editing Tier - Full Width */}
-                                <div className="w-full  ">
-                                    <Select onValueChange={(val) => handleChange("editingTier", val)} defaultValue="">
-                                        <SelectTrigger className="w-full text-sm">
-                                            <SelectValue placeholder="Select Editing Tier" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="standard">Standard</SelectItem>
-                                            <SelectItem value="studio">Studio</SelectItem>
-                                            <SelectItem value="pro">Studio Pro</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
 
                                 {/* Delivery Speed - Full Width */}
                                 <div className="w-full">
@@ -324,6 +363,77 @@ export default function LandingForm() {
                                         </SelectContent>
                                     </Select>
                                 </div>
+
+                                {/* Editing Tier - Full Width */}
+                                <Select
+                                    onValueChange={(val) => handleChange("editingTier", val)}
+                                    value={formData.editingTier}
+                                >
+                                    <SelectTrigger className="w-full text-sm">
+                                        <div className="flex items-center gap-2">
+                                            {formData.editingTier === "studio" && (
+                                                <>
+                                                    <Film className="w-4 h-4 text-blue-600" />
+                                                    <span className="text-blue-700 font-medium">Studio</span>
+                                                </>
+                                            )}
+                                            {formData.editingTier === "studioPro" && (
+                                                <>
+                                                    <Sparkles className="w-4 h-4 text-yellow-500" />
+                                                    <span className="text-yellow-600 font-medium">Studio Pro</span>
+                                                </>
+                                            )}
+                                            {formData.editingTier === "studioMax" && (
+                                                <>
+                                                    <Crown className="w-4 h-4 text-emerald-500" />
+                                                    <span className="text-emerald-600 font-medium">Studio Max</span>
+                                                </>
+                                            )}
+                                            {!formData.editingTier && (
+                                                <SelectValue placeholder="Select Editing Tier" />
+                                            )}
+                                        </div>
+                                    </SelectTrigger>
+
+                                    <SelectContent className="bg-white shadow-md rounded-md p-2">
+                                        <SelectItem value="studio">
+                                            <div className="flex items-start gap-3">
+                                                <Film className="w-4 h-4 mt-0.5 text-blue-600" />
+                                                <div>
+                                                    <span className="text-sm font-medium text-blue-700">Studio</span>
+                                                    <p className="text-xs text-blue-500">Standard quality editing</p>
+                                                    <p className="text-sm text-blue-500 font-semibold">+ Free $29 Basic Thumbnail</p>
+                                                </div>
+                                            </div>
+                                        </SelectItem>
+
+                                        <SelectItem value="studioPro">
+                                            <div className="flex items-start gap-3">
+                                                <Sparkles className="w-4 h-4 mt-0.5 text-yellow-500" />
+                                                <div>
+                                                    <span className="text-sm font-medium text-yellow-600">Studio Pro</span>
+                                                    <p className="text-xs text-yellow-500">Premium transitions & effects</p>
+                                                    <p className="text-sm text-yellow-500 font-semibold">+ Free $45 Custom-Branded Thumbnail</p>
+                                                </div>
+                                            </div>
+                                        </SelectItem>
+
+                                        <SelectItem value="studioMax">
+                                            <div className="flex items-start gap-3">
+                                                <Crown className="w-4 h-4 mt-0.5 text-emerald-500" />
+                                                <div>
+                                                    <span className="text-sm font-medium text-emerald-600">Studio Max</span>
+                                                    <p className="text-xs text-emerald-500">Elite production + speed</p>
+                                                    <p className="text-sm text-emerald-500 font-semibold">+ Free $59 Optimized Thumbnail</p>
+                                                </div>
+                                            </div>
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+
+
+
+
 
 
                             </div>
@@ -419,10 +529,47 @@ export default function LandingForm() {
                     {/* Left - 60% */}
                     <div className="w-full md:w-[60%]">
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 rounded-lg border border-neutral-800">
-                            <div className="text-xl font-bold text-white flex items-baseline gap-1">
+                            <div className="text-xl font-bold text-white flex flex-col sm:flex-row items-start sm:items-baseline gap-1 sm:gap-3">
                                 <span className="text-sm font-medium text-zinc-400">Amount:</span>
-                                <span className="text-emerald-500">${price}</span>
+
+                                {isCouponApplied ? (
+                                    <>
+                                        {/* USD Price with discount */}
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="line-through text-zinc-400 text-base">
+                                                ${formatPrice(price.original)}
+                                            </span>
+                                            <span className="text-emerald-400">
+                                                {formatPriceWithSmallDecimals(price.discounted)}
+                                            </span>
+                                        </div>
+
+                                        {/* INR Price with discount (unchanged) */}
+                                        <div className="flex items-baseline gap-1">
+                                            <span className="line-through text-zinc-400 text-sm">
+                                                {formatINR(price.original * 83)}
+                                            </span>
+                                            <span className="text-emerald-400 text-sm font-semibold">
+                                                {formatINR(price.discounted * 83)}
+                                            </span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* USD Price without discount */}
+                                        <span className="text-emerald-500 text-lg font-semibold">
+                                            {formatPriceWithSmallDecimals(price.original)}
+                                        </span>
+
+                                        {/* INR Price without discount (unchanged) */}
+                                        <span className="text-emerald-500 text-sm font-semibold">
+                                            {formatINR(price.original * 83)}
+                                        </span>
+                                    </>
+                                )}
+                               
                             </div>
+                           
 
                             <Button
                                 onClick={handleSubmit}
@@ -430,9 +577,90 @@ export default function LandingForm() {
                             >
                                 Continue
                             </Button>
-
                         </div>
+
+                        {formData.editingTier && thumbnailDescriptions[formData.editingTier] && (
+                            <p
+                                className={`text-sm font-semibold mt-1 ${thumbnailDescriptions[formData.editingTier].color}`}
+                            >
+                                + Free {thumbnailDescriptions[formData.editingTier].value}{" "}
+                                {thumbnailDescriptions[formData.editingTier].title}
+                            </p>
+                        )}
+                                
+                        {/* ✅ Info line inside border */}
+                        <div className="flex flex-col items-start gap-2 mt-2">
+                            <span className="text-xs text-zinc-400">
+                                All prices include thumbnail design, platform fees, and taxes.
+                            </span>
+
+                            <button
+                                onClick={() => {
+                                    if (!isCouponApplied) setIsCouponApplied(true);
+                                }}
+                                disabled={isCouponApplied}
+                                aria-disabled={isCouponApplied}
+                                aria-label={
+                                    isCouponApplied
+                                        ? `Coupon already applied: ${discountRate}% off`
+                                        : `Apply ${discountRate}% coupon`
+                                }
+                                className={`inline-flex items-center justify-center px-5 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200
+      ${isCouponApplied
+                                        ? "bg-zinc-600 text-white cursor-not-allowed"
+                                        : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg"}
+    `}
+                            >
+                                {isCouponApplied ? (
+                                    <>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-4 w-4 mr-2 text-white/70"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Coupon Applied ({discountRate}% OFF)
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-4 w-4 mr-2 text-white"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Apply {discountRate}% Off Coupon
+                                    </>
+                                )}
+                            </button>
+                        </div>
+
+
+                        {/* Discount Messaging */}
+                        {!isCouponApplied ? (
+                            <p className="text-sm text-emerald-400 mt-2">
+                                🎁 Special Offer: Get {discountRate}% OFF – Ending Soon!
+                            </p>
+                        ) : (
+                            <p className="text-sm text-emerald-400 mt-2">
+                                🎉 {discountRate}% discount applied! Enjoy your savings.
+                            </p>
+                        )}
+
+                        {/* {isCouponApplied && (
+                            <p className="text-sm text-emerald-400 mt-2">
+                                🎉 {discountRate}% discount applied!
+                            </p>
+                        )} */}
+
                     </div>
+
 
                     {/* Right - Reserve 40% space, even if hidden */}
                     <div className="w-full sm:w-[40%] min-h-[56px]">

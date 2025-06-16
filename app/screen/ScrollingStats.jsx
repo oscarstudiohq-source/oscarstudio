@@ -56,7 +56,7 @@ const AnimatedStats = () => {
             </div> */}
         <section
             ref={containerRef}
-            className="bg-gradient-to-r from-zinc-900 to-black text-white py-16 px-6 md:px-20"
+            className="bg-gradient-to-r from-zinc-900 to-black text-white py-10 px-6 md:px-20"
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold">Trusted by Creators Worldwide</h2>
