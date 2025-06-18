@@ -121,7 +121,9 @@
   }
 }
 
-
+html {
+  scroll-behavior: smooth;
+}
 
 
 /* Add this to your global CSS file */

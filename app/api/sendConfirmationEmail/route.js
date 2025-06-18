@@ -29,11 +29,16 @@ export async function POST(req) {
     });
   }
 
+  const SUPPORT_EMAIL = 'support@tuesdaytrim.com';
+  const FROM_EMAIL = 'TuesdayTrim <support@tuesdaytrim.com>';
+  const BCC_EMAILS = ['akashbajaj777@gmail.com'];
+  
   try {
     const response = await resend.emails.send({
-      from: 'Your Studio <onboarding@resend.dev>', // You can customize this
+      // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
+      from: FROM_EMAIL,
       to: [data.email],
-      bcc: ['akashbajaj777@gmail.com'], // ✅ You’ll be notified for every order
+      bcc: BCC_EMAILS,
       subject: '✅ Your Order has been Received!',
       html: `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
@@ -82,7 +87,7 @@ export async function POST(req) {
       </div>
 
       <div style="background-color: #f1f5f9; text-align: center; padding: 16px; font-size: 13px; color: #64748b;">
-        Need help? Contact us at <a href="mailto:support@yourstudio.com" style="color: #0d9488;">support@yourstudio.com</a>
+      Need help? Contact us at <a href="mailto:${SUPPORT_EMAIL}" style="color: #0d9488;">${SUPPORT_EMAIL}</a>
       </div>
     </div>
   </div>

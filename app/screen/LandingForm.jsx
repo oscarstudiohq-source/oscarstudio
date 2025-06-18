@@ -258,7 +258,10 @@ export default function LandingForm() {
                                     // title="Link to your raw footage (YouTube, Drive, Dropbox, etc.)"
                                     />
                                 </TooltipTrigger>
-                                <TooltipContent side="top" className="text-xs max-w-xs">
+                                <TooltipContent
+                                    side="top"
+                                    className="text-xs max-w-xs bg-[#001c64] text-[#fff] rounded px-3 py-2 shadow"
+                                >
                                     Paste a link to your raw footage (Google Drive, Dropbox, YouTube, etc.)<br />
                                     We’ll download the file and use it to edit your video.
                                 </TooltipContent>
@@ -554,7 +557,10 @@ export default function LandingForm() {
                                         // title="Inspiration video link (YouTube/Instagram, Optional)"
                                         />
                                     </TooltipTrigger>
-                                    <TooltipContent side="top" className="text-xs max-w-xs">
+                                    <TooltipContent
+                                        side="top"
+                                        className="text-xs max-w-xs bg-[#001c64] text-[#fff] rounded px-3 py-2 shadow"
+                                    >
                                         Paste a reference video link (YouTube or Instagram, optional)<br />
                                         This helps us understand the style or format you’re aiming for.
                                     </TooltipContent>

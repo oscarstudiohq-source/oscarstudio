@@ -11,25 +11,47 @@ export default function Footer() {
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Quick Links</h4>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/" className="hover:underline text-gray-100">Home</a></li>
-                        <li><a href="/pricing" className="hover:underline text-gray-100">Pricing</a></li>
-                        <li><a href="/contact" className="hover:underline text-gray-100">Contact</a></li>
-                        <li><a href="/order" className="hover:underline text-gray-100">Order Now</a></li>
+                        <li><a href="#home" className="hover:underline text-gray-100">Home</a></li>
+                        <li><a href="#footer" className="hover:underline text-gray-100">Contact</a></li>
+                        <li><a href="#home" className="hover:underline text-gray-100">Order Now</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Legal</h4>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/terms" className="hover:underline text-gray-100">Terms of Service</a></li>
-                        <li><a href="/privacy" className="hover:underline text-gray-100">Privacy Policy</a></li>
+                        <li><a href="#terms" className="hover:underline text-gray-100">Terms of Service</a></li>
+                        <li><a href="#privacy" className="hover:underline text-gray-100">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div>
+                    <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Contact</h4>
+                    <ul className="space-y-2 text-sm">
+                        <li>
+                            Email: <a
+                                href="mailto:support@tuesdaytrim.com"
+                                className="hover:underline text-gray-100"
+                            >
+                                support@tuesdaytrim.com
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://wa.me/918824083829"
+                                className="hover:underline text-gray-100"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Chat on WhatsApp
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                {/* <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Follow Us</h4>
                     <div className="flex space-x-4">
-                        {/* Add your social icons here if needed */}
+                       
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="border-t border-gray-700 mt-10 pt-6 text-sm text-gray-400 text-center">
                 © {new Date().getFullYear()} TuesdayTrim. All rights reserved.
@@ -37,4 +59,3 @@ export default function Footer() {
         </footer>
     );
 }
-  
