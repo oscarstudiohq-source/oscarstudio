@@ -217,16 +217,18 @@ export default function Testimonials() {
 
     return (
         <>
-            
-            <div className="flex flex-col items-center mb-8">
-                <div className="h-1 bg-gray-500 rounded-full w-20 sm:w-28 md:w-32 lg:w-48"></div>
+            <div className="flex flex-col items-center mb-2">
+                <div className="h-1 bg-gray-300 rounded-full w-20 sm:w-28 md:w-32 lg:w-48"></div>
             </div>
-            <section className="bg-black-900 py-10 mt-16">
 
-                <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-20">
-                    Why Creators Trust Us
-                </h2>
-
+            <section className="bg-white py-10 mt-16">
+               
+                <div className="max-w-6xl mx-auto text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                        Creators Trust Us
+                    </h2>
+                    <p className="text-black mt-2">Hear what creators say about their experience with us.</p>
+                </div>
                 <div
                     ref={scrollRef}
                     className="flex overflow-x-auto space-x-4 px-4 md:px-6 no-scrollbar snap-x snap-mandatory"
@@ -234,22 +236,20 @@ export default function Testimonials() {
                     {testimonials.map((testimonial, index) => (
                         <div
                             key={index}
-                            className="w-[85vw] sm:w-[300px] max-w-xs bg-zinc-800 text-white p-4 rounded-2xl shadow-lg shrink-0 snap-start flex flex-col justify-between"
+                            className="w-[85vw] sm:w-[300px] max-w-xs bg-gray-50 text-gray-800 p-4 rounded-2xl border border-gray-200 shrink-0 snap-start flex flex-col justify-between"
                         >
                             {/* Testimonial Text */}
-                            <p className="text-sm text-zinc-300 mb-4">"{testimonial.text}"</p>
+                            <p className="text-sm text-gray-600 mb-4">"{testimonial.text}"</p>
 
                             {/* User Info Section */}
                             <div className="flex items-center space-x-4 mt-auto">
                                 <img
                                     src={testimonial.image}
                                     alt={testimonial.name}
-                                    className="w-10 h-10 rounded-full object-cover border border-zinc-700"
+                                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
                                 />
                                 <div>
-                                    <p className="text-sm font-semibold text-zinc-100">
-                                        {testimonial.name}
-                                    </p>
+                                    <p className="text-sm font-semibold text-gray-800">{testimonial.name}</p>
                                     <div className="flex items-center gap-0.5 mt-1">
                                         {[1, 2, 3, 4, 5].map((star) => {
                                             const filled = testimonial.rating >= star;
@@ -284,8 +284,8 @@ export default function Testimonials() {
                         </div>
                     ))}
                 </div>
-
             </section>
         </>
+      
     );
 }

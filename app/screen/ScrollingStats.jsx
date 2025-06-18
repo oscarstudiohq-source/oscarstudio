@@ -50,41 +50,40 @@ const AnimatedStats = () => {
     };
 
     return (
-        <>
-            {/* <div className="flex flex-col items-center mb-8">
-                <div className="h-1 bg-gray-500 rounded-full w-20 sm:w-28 md:w-32 lg:w-48"></div>
-            </div> */}
+       
         <section
             ref={containerRef}
-            className="bg-gradient-to-r from-zinc-900 to-black text-white py-10 px-6 md:px-20"
+            className="bg-[#f3f3f6] text-gray-900 py-10 px-6 md:px-20"
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold">Trusted by Creators Worldwide</h2>
-                <p className="text-zinc-400 mt-2">We let our numbers speak.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                    Trusted by Creators Worldwide
+                </h2>
+                <p className="text-black mt-2">We let our numbers speak.</p>
             </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-4 md:gap-8 max-w-5xl mx-auto">
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-4 md:gap-8 max-w-5xl mx-auto">
                 {stats.map((stat, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-center justify-center bg-zinc-800 rounded-xl p-6 shadow-md"
+                        className="flex flex-col items-center justify-center bg-white rounded-xl p-6 border border-gray-200"
                     >
-                        {/* <div className="mx-auto mb-4 w-14 h-14 flex items-center justify-center rounded-full bg-zinc-700 border border-zinc-700 overflow-hidden"> */}
-                            <img
-                                src={stat.icon || stat.image}
-                                alt={stat.label}
+                        <img
+                            src={stat.icon || stat.image}
+                            alt={stat.label}
                             className="w-12 h-12 object-contain rounded-full"
-                            />
-                        {/* </div> */}
-                        <h3 className="text-3xl font-bold text-white pt-4">
+                        />
+                        <h3 className="text-3xl font-bold text-gray-900 pt-4">
                             {animatedValues[index]}
                             {stat.suffix || ""}
                         </h3>
-                        <p className="text-sm text-zinc-300 mt-1">{stat.label}</p>
+                        <p className="text-sm text-gray-600 mt-1">{stat.label}</p>
                     </div>
                 ))}
             </div>
         </section>
-        </>
+    
+
     );
 };
 

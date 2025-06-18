@@ -6,12 +6,12 @@ const tiers = [
         name: "studio",
         color: "text-blue-400",
         border: "border-zinc-700",
-        suitableFor: "New YouTubers & beginner content creators",
+        suitableFor: "Ideal for beginner YouTubers and emerging creators on Shorts, TikTok, and Reels seeking clean, basic editing at an affordable rate.",
         features: [
             "Basic editing (cut, trim, transitions)",
             "Royalty-free music",
             "Color correction",
-            "Thumbnail Design (Basic)",
+            "Thumbnail Design (Standard)",
             "1 Revision",
             {
                 title: "Delivery",
@@ -23,7 +23,7 @@ const tiers = [
         name: "studioPro",
         color: "text-yellow-500",
         border: "border-yellow-500",
-        suitableFor: "Growing creators, vloggers, and professionals",
+        suitableFor: "Experienced YouTubers, vloggers, and content creators on Shorts, TikTok, Reels, and Podcasts seeking polished, professional editing", 
         features: [
             "All Studio features",
             "Motion graphics & animations",
@@ -59,8 +59,9 @@ const tiers = [
 
 export const thumbnailDescriptions = {
     "studio": {
-        title: "Basic Thumbnail",
+        title: "Standard Thumbnail",
         value: "$29",
+        valueShort: "$15",
         color:"text-blue-600",
         points: [
             "Clean and clear visuals that get the message across.",
@@ -72,6 +73,7 @@ export const thumbnailDescriptions = {
     "studioPro": {
         title: "Custom-Branded Thumbnail",
         value: "$45",
+        valueShort: "$25",
         color: "text-yellow-500",
         points: [
             "Visually engaging thumbnails tailored to your brand tone.",
@@ -83,6 +85,7 @@ export const thumbnailDescriptions = {
     "studioMax": {
         title: "Optimized Thumbnail",
         value: "$59",
+        valueShort: "$35",
         color: "text-emerald-500",
         points: [
             "High-converting visuals using proven psychology and layout principles.",
@@ -96,8 +99,9 @@ export const thumbnailDescriptions = {
 
 const TierCard = ({ tier }) => (
     <div
-        className={`rounded-xl p-6 bg-zinc-900 border ${tier.border} shadow-md hover:shadow-lg transition duration-300`}
+        className="rounded-xl p-6 bg-white transition duration-300"
     >
+  
         {/* Header */}
         <div className="flex items-center gap-2 mb-1">
             <h3 className={`text-lg font-semibold ${tier.color}`}>{tier.name}</h3>
@@ -110,11 +114,11 @@ const TierCard = ({ tier }) => (
 
         {/* Suitable For */}
         {tier.suitableFor && (
-            <p className="text-xs text-zinc-400 mb-4 italic">{tier.suitableFor}</p>
+            <p className="text-xs text-gray-500 mb-4 italic">{tier.suitableFor}</p>
         )}
 
         {/* Feature List */}
-        <ul className="space-y-2 text-sm text-zinc-300">
+        <ul className="space-y-2 text-sm text-gray-700">
             {tier.features.map((feature, idx) => {
                 if (typeof feature === "string") {
                     return (
@@ -132,7 +136,7 @@ const TierCard = ({ tier }) => (
                             <CheckCircle size={16} className="text-emerald-500 mt-0.5" />
                             <span className="font-medium">{feature.title}:</span>
                         </div>
-                        <ul className="pl-6 space-y-1 text-zinc-400 text-xs">
+                        <ul className="pl-6 space-y-1 text-gray-500 text-xs">
                             {feature.subitems.map((subitem, subIdx) => (
                                 <li key={subIdx}>• {subitem}</li>
                             ))}
@@ -143,25 +147,27 @@ const TierCard = ({ tier }) => (
         </ul>
 
         {/* Thumbnail Description Block */}
-        <div className="mt-6 bg-zinc-800 rounded-lg p-4 border border-zinc-700">
-            
+        <div className="mt-6 bg-gray-100 rounded-lg p-4 border border-gray-200">
             <div className="mb-4">
                 <p className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">
                     Special Offer
                 </p>
-                <p className="text-white text-base font-semibold">
-                    <span className="text-emerald-400 font-bold">Plan includes a{" "} Free Thumbnail</span> worth{" "}
-                    <span className="text-2xl font-extrabold text-white tracking-tight">
+                <p className="text-gray-800 text-base font-semibold">
+                    <span className="text-emerald-500 font-bold">Plan includes a Free Thumbnail</span> worth{" "}
+                    <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
                         {thumbnailDescriptions[tier.name].value}
+                    </span>
+                    <br />
+                    <span className="text-sm text-gray-600">
+                        For <strong>Short Videos</strong>: {thumbnailDescriptions[tier.name].valueShort}
                     </span>
                 </p>
             </div>
 
-
-            <h4 className="text-sm font-semibold text-white mb-1">
+            <h4 className="text-sm font-semibold text-gray-900 mb-1">
                 {thumbnailDescriptions[tier.name].title}
             </h4>
-            <ul className="list-disc list-inside space-y-1 text-zinc-400 text-xs">
+            <ul className="list-disc list-inside space-y-1 text-gray-600 text-xs">
                 {thumbnailDescriptions[tier.name].points.map((point, index) => (
                     <li key={index}>{point}</li>
                 ))}
@@ -169,13 +175,16 @@ const TierCard = ({ tier }) => (
         </div>
     </div>
 );
-  
+
 const TierComparisonSection = () => {
     return (
-        <section className="bg-gradient-to-r from-zinc-900 to-black text-white py-16 px-6 md:px-20">
+        <section
+            className="text-gray-900 py-16 px-4 sm:px-10 md:px-20"
+            style={{ backgroundColor: "#f3f3f6" }}
+        >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold">Compare Our Editing Tiers</h2>
-                <p className="text-zinc-400 mt-2">Choose the plan that best fits your needs.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">Compare Our Editing Tiers</h2>
+                <p className="text-black mt-2">Choose the plan that best fits your needs.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
                 {tiers.map((tier, index) => (
@@ -185,5 +194,7 @@ const TierComparisonSection = () => {
         </section>
     );
 };
+
+
 
 export default TierComparisonSection;

@@ -7,21 +7,22 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import { submitOrder } from '@/lib/submitOrder'; // adjust path as needed
+import OrderConfirmationModal from "@/components/OrderConfirmationModal"; // adjust path if needed
 import {
     Tooltip,
     TooltipTrigger,
     TooltipContent,
     TooltipProvider
 } from "@/components/ui/tooltip";
-import { Film, Sparkles, Crown } from "lucide-react"; // modern icons
+import { Film, Sparkles, Crown, Clock, Video, Smartphone, Monitor } from "lucide-react"; // modern icons
 import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30 sec": { studio: 34.99, studioPro: 44.99, studioMax: 54.99 },
-        "60 sec": { studio: 49.99, studioPro: 64.99, studioMax: 79.99 },
-        "90 sec": { studio: 59.99, studioPro: 79.99, studioMax: 99.99 },
+        "30 sec": { studio: 44.99, studioPro: 59.99, studioMax: 74.99 },
+        "60 sec": { studio: 64.99, studioPro: 84.99, studioMax: 104.99 },
+        "90 sec": { studio: 79.99, studioPro: 104.99, studioMax: 129.99 },
     },
     long: {
         "3 min": { studio: 89.99, studioPro: 116.99, studioMax: 143.99 },
@@ -48,14 +49,15 @@ export default function LandingForm() {
         email: "",
         rawFootage: "",
         inspirationVideo: "",
-        country: "",
+        country: "US",
+        social: "youtube",
         videosCount: "1",
         videoType: "short", // "short" or "long"
         videoDuration: "1", // like "1", "2", "5"
         deliverySpeed: "standard",
         editingTier: "", // "studio", "studioPro", "studioMax"
         aspectRatio: "",
-        language: "",
+        language: "en",
         notes: "",
     });
 
@@ -122,8 +124,6 @@ export default function LandingForm() {
         };
     };
 
-
-
     // Update price whenever form data or coupon changes
     useEffect(() => {
         const calculated = calculatePrice();
@@ -159,7 +159,6 @@ export default function LandingForm() {
             console.error("Error during submit:", e);
         }
     };
-
 
     useEffect(() => {
         if (!showPayPal || !paypalRef.current || !window.paypal) return;
@@ -212,11 +211,32 @@ export default function LandingForm() {
         }).format(amount);
     };
 
+    const getEffectiveThumbnailValue = () => {
+        const tier = formData.editingTier;
+        const desc = thumbnailDescriptions[tier];
+
+        if (!tier || !desc) return 0;
+
+        const baseValue = Number(desc.value.replace('$', ''));
+
+        if (formData.videoType === 'short') {
+            if (tier === 'studio') return 15;
+            if (tier === 'studioPro') return 25;
+            if (tier === 'studioMax') return 35;
+        }
+
+        return baseValue;
+    };
+
+    const totalThumbValue = formData.editingTier
+        ? (getEffectiveThumbnailValue() * Number(formData.videosCount)).toFixed(2)
+        : "0.00";
+
     return (
         <Card className="px-1 sm:px-2 py-4 shadow-xl w-full max-w-[640px]">
             <CardContent className="space-y-4 text-sm px-2 sm:px-2 md:px-5">
-
-                <h2 className="text-xl font-bold">Submit Your Video for Editing</h2>
+ 
+                <h2 className="text-xl font-bold text-[#001c64]">Submit Your Video for Editing</h2>
 
                 <div className="flex flex-col md:flex-row gap-5">
 
@@ -252,23 +272,69 @@ export default function LandingForm() {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("social", val)} defaultValue="yt">
+                                    <Select onValueChange={(val) => handleChange("social", val)} defaultValue="youtube">
                                         <SelectTrigger className="w-full text-sm"><SelectValue placeholder="Select" /></SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="yt">YouTube</SelectItem>
-                                            <SelectItem value="tt">TikTok</SelectItem>
-                                            <SelectItem value="ig">Instagram</SelectItem>
-                                            <SelectItem value="ot">Other</SelectItem>
+                                            <SelectItem value="youtube">YouTube</SelectItem>
+                                            <SelectItem value="tiktok">TikTok</SelectItem>
+                                            <SelectItem value="instagram">Instagram</SelectItem>
+                                            <SelectItem value="other">Other</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="w-full">
                                     <Select
                                         onValueChange={(val) => {
+                                            let updatedVideoType = formData.videoType;
+
+                                            // Auto-set video type only for known packs
+                                            if (val === "4" || val === "8") {
+                                                updatedVideoType = "long";
+                                            } else if (val === "7" || val === "15") {
+                                                updatedVideoType = "short";
+                                            }
+
+                                            // Update form data
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                videosCount: val,
+                                                videoType: updatedVideoType,
+                                                videoDuration: updatedVideoType === "short" ? "1" : "5", // optional: adjust default duration
+                                            }));
+                                        }}
+                                        value={formData.videosCount}
+                                    >
+                                        <SelectTrigger className="w-full text-sm">
+                                            <SelectValue />
+                                        </SelectTrigger>
+
+                                        <SelectContent className="bg-white shadow-md rounded-md p-2">
+                                            {/* One-Time Orders */}
+                                            <div className="px-2 py-1 text-xs text-gray-400 tracking-wide">Single/Custom Orders</div>
+                                            <SelectItem value="1">1 Video</SelectItem>
+                                            <SelectItem value="2">2 Videos</SelectItem>
+                                            <SelectItem value="3">3 Videos</SelectItem>
+
+                                            {/* Long Videos Pack */}
+                                            <div className="px-2 py-1 text-xs text-yellow-500 tracking-wide">Long Video Packs</div>
+                                            <SelectItem value="4">4 Long Videos</SelectItem>
+                                            <SelectItem value="8">8 Long Videos</SelectItem>
+
+                                            {/* Shorts & Reels Pack */}
+                                            <div className="px-2 py-1 text-xs text-emerald-500 tracking-wide">Shorts & Reels Packs</div>
+                                            <SelectItem value="7">7 Shorts</SelectItem>
+                                            <SelectItem value="15">15 Shorts</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+
+                                <div className="w-full">
+                                    <Select
+                                        onValueChange={(val) => {
                                             setFormData((prev) => ({
                                                 ...prev,
                                                 videoType: val,
-                                                videoDuration: val === "short" ? "0" : "3", // default duration based on type
+                                                videoDuration: val === "short" ? "1" : "5", // default duration based on type
                                             }));
                                         }}
                                         value={formData.videoType}
@@ -282,28 +348,7 @@ export default function LandingForm() {
                                         </SelectContent>
                                     </Select>
                                 </div>
-                                <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("videosCount", val)} defaultValue="1">
-                                        <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1">1 video</SelectItem>
-                                            <SelectItem value="2">2 videos</SelectItem>
-                                            <SelectItem value="3">3 videos</SelectItem>
-                                            <SelectItem value="4">4 videos</SelectItem>
-                                            <SelectItem value="5">5 videos</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    {/* <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
-                                                <span className="text-neutral-400 cursor-help">🛈</span>
-                                            </TooltipTrigger>
-                                            <TooltipContent side="top" align="center">
-                                                <p>Choose how many videos you'd like us to edit in this order.</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider> */}
-                                </div>
+
                                 {/* Video Duration Dropdown */}
                                 <div className="w-full">
                                     <Select
@@ -354,7 +399,7 @@ export default function LandingForm() {
                                 </div>
 
                                 {/* Delivery Speed - Full Width */}
-                                <div className="w-full">
+                                {/* <div className="w-full">
                                     <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
                                         <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
                                         <SelectContent>
@@ -362,83 +407,97 @@ export default function LandingForm() {
                                             <SelectItem value="express">Express (2 days)</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                </div>
-
-                                {/* Editing Tier - Full Width */}
-                                <Select
-                                    onValueChange={(val) => handleChange("editingTier", val)}
-                                    value={formData.editingTier}
-                                >
-                                    <SelectTrigger className="w-full text-sm">
-                                        <div className="flex items-center gap-2">
-                                            {formData.editingTier === "studio" && (
-                                                <>
-                                                    <Film className="w-4 h-4 text-blue-600" />
-                                                    <span className="text-blue-700 font-medium">Studio</span>
-                                                </>
-                                            )}
-                                            {formData.editingTier === "studioPro" && (
-                                                <>
-                                                    <Sparkles className="w-4 h-4 text-yellow-500" />
-                                                    <span className="text-yellow-600 font-medium">Studio Pro</span>
-                                                </>
-                                            )}
-                                            {formData.editingTier === "studioMax" && (
-                                                <>
-                                                    <Crown className="w-4 h-4 text-emerald-500" />
-                                                    <span className="text-emerald-600 font-medium">Studio Max</span>
-                                                </>
-                                            )}
-                                            {!formData.editingTier && (
-                                                <SelectValue placeholder="Select Editing Tier" />
-                                            )}
-                                        </div>
-                                    </SelectTrigger>
-
-                                    <SelectContent className="bg-white shadow-md rounded-md p-2">
-                                        <SelectItem value="studio">
-                                            <div className="flex items-start gap-3">
-                                                <Film className="w-4 h-4 mt-0.5 text-blue-600" />
-                                                <div>
-                                                    <span className="text-sm font-medium text-blue-700">Studio</span>
-                                                    <p className="text-xs text-blue-500">Standard quality editing</p>
-                                                    <p className="text-sm text-blue-500 font-semibold">+ Free $29 Basic Thumbnail</p>
-                                                </div>
-                                            </div>
-                                        </SelectItem>
-
-                                        <SelectItem value="studioPro">
-                                            <div className="flex items-start gap-3">
-                                                <Sparkles className="w-4 h-4 mt-0.5 text-yellow-500" />
-                                                <div>
-                                                    <span className="text-sm font-medium text-yellow-600">Studio Pro</span>
-                                                    <p className="text-xs text-yellow-500">Premium transitions & effects</p>
-                                                    <p className="text-sm text-yellow-500 font-semibold">+ Free $45 Custom-Branded Thumbnail</p>
-                                                </div>
-                                            </div>
-                                        </SelectItem>
-
-                                        <SelectItem value="studioMax">
-                                            <div className="flex items-start gap-3">
-                                                <Crown className="w-4 h-4 mt-0.5 text-emerald-500" />
-                                                <div>
-                                                    <span className="text-sm font-medium text-emerald-600">Studio Max</span>
-                                                    <p className="text-xs text-emerald-500">Elite production + speed</p>
-                                                    <p className="text-sm text-emerald-500 font-semibold">+ Free $59 Optimized Thumbnail</p>
-                                                </div>
-                                            </div>
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-
-
-
-
-
+                                </div> */}
 
                             </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                {/* Editing Tier - Full Width */}
+                                <div className="w-full">
+                                    <Select
+                                        onValueChange={(val) => handleChange("editingTier", val)}
+                                        value={formData.editingTier}
+                                    >
+                                        <SelectTrigger className="w-full text-sm">
+                                            <div className="flex items-center gap-2">
+                                                {formData.editingTier === "studio" && (
+                                                    <>
+                                                        <Film className="w-4 h-4 text-blue-600" />
+                                                        <span className="text-blue-700 font-medium">Studio</span>
+                                                    </>
+                                                )}
+                                                {formData.editingTier === "studioPro" && (
+                                                    <>
+                                                        <Sparkles className="w-4 h-4 text-yellow-500" />
+                                                        <span className="text-yellow-600 font-medium">Studio Pro</span>
+                                                    </>
+                                                )}
+                                                {formData.editingTier === "studioMax" && (
+                                                    <>
+                                                        <Crown className="w-4 h-4 text-emerald-500" />
+                                                        <span className="text-emerald-600 font-medium">Studio Max</span>
+                                                    </>
+                                                )}
+                                                {!formData.editingTier && (
+                                                    <SelectValue placeholder="Select Editing Tier" />
+                                                )}
+                                            </div>
+                                        </SelectTrigger>
 
+                                        <SelectContent className="bg-white shadow-md rounded-md p-2">
+                                            <SelectItem value="studio">
+                                                <div className="flex items-start gap-3">
+                                                    <Film className="w-4 h-4 mt-0.5 text-blue-600" />
+                                                    <div>
+                                                        <span className="text-sm font-medium text-blue-700">Studio</span>
+                                                        <p className="text-xs text-blue-500">Standard quality editing</p>
+                                                        <p className="text-sm text-blue-500 font-semibold">
+                                                            + Free{" "}
+                                                            {formData.videoType === 'short'
+                                                                ? thumbnailDescriptions['studio'].valueShort
+                                                                : thumbnailDescriptions['studio'].value}{" "}
+                                                            {thumbnailDescriptions['studio'].title}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </SelectItem>
 
+                                            <SelectItem value="studioPro">
+                                                <div className="flex items-start gap-3">
+                                                    <Sparkles className="w-4 h-4 mt-0.5 text-yellow-500" />
+                                                    <div>
+                                                        <span className="text-sm font-medium text-yellow-600">Studio Pro</span>
+                                                        <p className="text-xs text-yellow-500">Premium transitions & effects</p>
+                                                        <p className="text-sm text-yellow-500 font-semibold">
+                                                            + Free{" "}
+                                                            {formData.videoType === 'short'
+                                                                ? thumbnailDescriptions['studioPro'].valueShort
+                                                                : thumbnailDescriptions['studioPro'].value}{" "}
+                                                            {thumbnailDescriptions['studioPro'].title}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </SelectItem>
+
+                                            <SelectItem value="studioMax">
+                                                <div className="flex items-start gap-3">
+                                                    <Crown className="w-4 h-4 mt-0.5 text-emerald-500" />
+                                                    <div>
+                                                        <span className="text-sm font-medium text-emerald-600">Studio Max</span>
+                                                        <p className="text-xs text-emerald-500">Elite production + speed</p>
+                                                        <p className="text-sm text-emerald-500 font-semibold">
+                                                            + Free{" "}
+                                                            {formData.videoType === 'short'
+                                                                ? thumbnailDescriptions['studioMax'].valueShort
+                                                                : thumbnailDescriptions['studioMax'].value}{" "}
+                                                            {thumbnailDescriptions['studioMax'].title}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
                         </fieldset>
 
                     </div>
@@ -539,7 +598,7 @@ export default function LandingForm() {
                                             <span className="line-through text-zinc-400 text-base">
                                                 ${formatPrice(price.original)}
                                             </span>
-                                            <span className="text-emerald-400">
+                                            <span className="text-emerald-500 text-lg font-semibold">
                                                 {formatPriceWithSmallDecimals(price.discounted)}
                                             </span>
                                         </div>
@@ -567,9 +626,9 @@ export default function LandingForm() {
                                         </span>
                                     </>
                                 )}
-                               
+
                             </div>
-                           
+
 
                             <Button
                                 onClick={handleSubmit}
@@ -579,15 +638,23 @@ export default function LandingForm() {
                             </Button>
                         </div>
 
+
                         {formData.editingTier && thumbnailDescriptions[formData.editingTier] && (
-                            <p
-                                className={`text-sm font-semibold mt-1 ${thumbnailDescriptions[formData.editingTier].color}`}
-                            >
-                                + Free {thumbnailDescriptions[formData.editingTier].value}{" "}
-                                {thumbnailDescriptions[formData.editingTier].title}
-                            </p>
+                            <div className="mt-3 space-y-1">
+                                {/* Free Bonus Row */}
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}>
+                                        🎁 +{formData.videosCount} Free ${getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
+                                    </span>
+                                    <div
+                                        className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}
+                                    >
+                                        (${totalThumbValue})
+                                    </div>
+                                </div>
+                            </div>
                         )}
-                                
+
                         {/* ✅ Info line inside border */}
                         <div className="flex flex-col items-start gap-2 mt-2">
                             <span className="text-xs text-zinc-400">
@@ -689,9 +756,115 @@ export default function LandingForm() {
                         </div>
                     </div>
                 </div>
+
+                <TestOrderButton
+                    formData={formData}
+                    price={price}
+                    isCouponApplied={isCouponApplied}
+                    discountRate={discountRate}
+                />
+
             </CardContent>
         </Card>
 
 
     );
 }
+
+
+// ✅ Place this above or below LandingForm.jsx, not inside
+function TestOrderButton({ formData, price, isCouponApplied, discountRate }) {
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false); // 👈 Add loading state
+
+    const handleClick = async () => {
+        setLoading(true); // Start loading
+
+        const enrichedOrderData = {
+            ...formData,
+            price_original: Number((price.original ?? 0).toFixed(2)),
+            price_discounted: Number((price.discounted ?? 0).toFixed(2)),
+            is_coupon_applied: isCouponApplied,
+            discount_rate: discountRate,
+        };
+
+        try {
+            const res = await fetch("/api/submitOrder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(enrichedOrderData),
+            });
+
+            const result = await res.json();
+            console.log("Order response:", result);
+
+            if (result.success) {
+                const emailRes = await fetch("/api/sendConfirmationEmail", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(enrichedOrderData),
+                });
+
+                const emailResult = await emailRes.json();
+                console.log("Email response:", emailResult);
+
+                if (emailResult.success) {
+                    setShowModal(true);
+                } else {
+                    alert("Order saved, but email failed.");
+                }
+            } else {
+                alert("Failed to save order.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong.");
+        } finally {
+            setLoading(false); // End loading
+        }
+    };
+
+    return (
+        <>
+            <button
+                onClick={handleClick}
+                className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
+                disabled={loading}
+            >
+                {loading ? "Processing your order..." : "Test Order Submit"}
+            </button>
+
+            {loading && (
+                <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                    <div className="bg-white text-black px-6 py-5 rounded-2xl shadow-2xl flex flex-col items-center animate-fade-in">
+                        <svg
+                            className="w-8 h-8 text-emerald-600 animate-spin mb-3"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                            ></circle>
+                            <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 11-8 8z"
+                            ></path>
+                        </svg>
+                        <p className="text-lg font-medium">Processing your order...</p>
+                        <p className="text-sm text-gray-600 mt-1">Please wait a moment</p>
+                    </div>
+                </div>
+            )}
+
+
+            {showModal && <OrderConfirmationModal onClose={() => setShowModal(false)} />}
+        </>
+    );
+}
+

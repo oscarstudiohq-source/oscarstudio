@@ -1,3 +1,5 @@
+// app/page.tsx
+'use client';
 import Script from "next/script";
 import Image from "next/image";
 import Testimonials from './screen/Testimonials';
@@ -6,6 +8,7 @@ import LandingForm from './screen/LandingForm';
 import Steps from './screen/Steps.jsx';
 import ScrollingStats from './screen/ScrollingStats.jsx';
 import EditingTier from './screen/EditingTier';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -49,25 +52,57 @@ export default function Home() {
         </div>
       </a>
 
+      <header className="bg-white text-[#001c64] flex justify-between items-center px-4 sm:px-10 md:px-20 py-4 border-b border-gray-200 shadow-sm">
+        {/* Logo */}
+        <div className="text-xl sm:text-2xl font-extrabold tracking-tight">
+          TuesdayTrim
+        </div>
 
-     <main className="bg-[#000] text-white py-16">
+        {/* Navigation */}
+        <nav className="hidden md:flex space-x-6 font-medium text-sm">
+          <a href="/" className="hover:text-[#003087] transition-colors">Home</a>
+          <a href="/pricing" className="hover:text-[#003087] transition-colors">Pricing</a>
+          <a href="/contact" className="hover:text-[#003087] transition-colors">Contact</a>
+        </nav>
 
+        {/* CTA Button */}
+        <a
+          href="/order"
+          className="ml-4 bg-[#003087] hover:bg-[#001c64] transition-colors px-4 py-2 rounded-lg text-white font-semibold text-sm shadow"
+        >
+          Get Started
+        </a>
+      </header>
+
+
+
+
+      <main className="bg-white text-gray-900 py-8 sm:py-12 md:py-16">
+
+        <div
+          className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20 bg-[url('/icons/next.png')] bg-cover bg-center text-white"
+        >
+          {/* children */}
+        </div>
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20">
 
           {/* Left (Text) - 45% on desktop */}
-          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug">
+          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-[-40px] md:mt-[-100px]">
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug text-[#001c64]">
               You Shoot,<br /> We Edit. Deal?
             </h1>
-            <p className="text-base sm:text-lg text-zinc-300">
+
+            <p className="text-sm sm:text-base text-black">
               Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
               Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
             </p>
           </div>
 
+
           {/* Right (Form) - 55% on desktop */}
           <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
-          
+
             <Script
               src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
               strategy="afterInteractive"
@@ -79,22 +114,23 @@ export default function Home() {
       </main>
 
       {/* 🌟 Editing tier Section */}
-      <section className="bg-black text-white px-4 sm:px-10 md:px-20 py-12 sm:py-16">
-        <EditingTier />
+      <section className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-12 sm:py-16">
+          <EditingTier />
       </section>
 
+
       {/* 🌟 Steps Section */}
-      <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-white text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
         <Steps />
       </section>
 
-      {/* 🌟 Steps Section */}  
-      <section className="bg-black text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
+      {/* 🌟 Steps Section */}
+      <section className="bg-[#f3f3f6] text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
         <ScrollingStats />
       </section>
 
       {/* 🌟 Testimonial Section */}
-      <section className="bg-black text-white px-4 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-white text-white px-4 sm:px-10 md:px-20 py-12 sm:py-16">
         <Testimonials />
       </section>
     </>
