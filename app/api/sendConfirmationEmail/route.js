@@ -41,7 +41,7 @@ export async function POST(req) {
      <div style="background-color: #0d9488; color: white; padding: 24px; text-align: center;">
         <h2 style="margin: 0; font-size: 24px;">🎉 Order Confirmed!</h2>
 
-        <p style="margin: 8px 0 0; font-size: 16px;">
+        <p style="margin: 8px 0 0; font-size: 15px;">
           Thank you for your order, ${data.name || 'valued customer'}! Your support means a lot.
         </p>
 

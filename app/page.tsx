@@ -8,6 +8,8 @@ import LandingForm from './screen/LandingForm';
 import Steps from './screen/Steps.jsx';
 import ScrollingStats from './screen/ScrollingStats.jsx';
 import EditingTier from './screen/EditingTier';
+import Footer from "./screen/Footer";
+
 import Link from 'next/link';
 
 export default function Home() {
@@ -85,7 +87,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20">
 
           {/* Left (Text) - 45% on desktop */}
-          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-[-40px] md:mt-[-100px]">
+         <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug text-[#001c64]">
               You Shoot,<br /> We Edit. Deal?
@@ -111,24 +113,28 @@ export default function Home() {
       </main>
 
       {/* 🌟 Editing tier Section */}
-      <section className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-12 sm:py-16">
-          <EditingTier />
+      <section className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-6 sm:py-10">
+        <EditingTier />
       </section>
 
-
       {/* 🌟 Steps Section */}
-      <section className="bg-white text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
         <Steps />
       </section>
 
-      {/* 🌟 Steps Section */}
-      <section className="bg-[#f3f3f6] text-white px-2 sm:px-10 md:px-20 py-12 sm:py-16">
+      {/* 🌟 Stats Section */}
+      <section className="bg-[#f3f3f6] text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
         <ScrollingStats />
       </section>
 
       {/* 🌟 Testimonial Section */}
-      <section className="bg-white text-white px-4 sm:px-10 md:px-20 py-12 sm:py-16">
+      <section className="bg-white text-white px-4 sm:px-10 md:px-20 py-6 sm:py-10">
         <Testimonials />
+      </section>
+
+      {/* 🌟 Footer Section */}
+      <section className="bg-[#001435] text-white px-4 sm:px-10 md:px-20 py-6 sm:py-10">
+        <Footer />
       </section>
     </>
   );

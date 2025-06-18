@@ -221,7 +221,7 @@ export default function Testimonials() {
                 <div className="h-1 bg-gray-300 rounded-full w-20 sm:w-28 md:w-32 lg:w-48"></div>
             </div>
 
-            <section className="bg-white py-10 mt-16">
+            <section className="bg-white py-10 px-4 sm:px-6 md:px-12">
                
                 <div className="max-w-6xl mx-auto text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
@@ -239,7 +239,7 @@ export default function Testimonials() {
                             className="w-[85vw] sm:w-[300px] max-w-xs bg-gray-50 text-gray-800 p-4 rounded-2xl border border-gray-200 shrink-0 snap-start flex flex-col justify-between"
                         >
                             {/* Testimonial Text */}
-                            <p className="text-sm text-gray-600 mb-4">"{testimonial.text}"</p>
+                            <p className="text-sm text-gray-600 mb-2">"{testimonial.text}"</p>
 
                             {/* User Info Section */}
                             <div className="flex items-center space-x-4 mt-auto">
