@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://tuesdaytrim.com
+
+# Sitemaps
+Sitemap: https://tuesdaytrim.com/sitemap.xml
