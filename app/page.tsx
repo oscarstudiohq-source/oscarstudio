@@ -68,13 +68,11 @@ export default function Home() {
         {/* CTA Button */}
         <a
           href="/order"
-          className="ml-4 bg-[#003087] hover:bg-[#001c64] transition-colors px-4 py-2 rounded-lg text-white font-semibold text-sm shadow"
+          className="ml-4 bg-[#003087] hover:bg-[#0874e4] transition-colors px-4 py-2 rounded-lg text-white font-semibold text-sm shadow"
         >
           Get Started
         </a>
       </header>
-
-
 
 
       <main className="bg-white text-gray-900 py-8 sm:py-12 md:py-16">
@@ -98,7 +96,6 @@ export default function Home() {
               Whether it’s Reels, YouTube, or long-form content — we handle the editing, you stay focused on creating.
             </p>
           </div>
-
 
           {/* Right (Form) - 55% on desktop */}
           <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
