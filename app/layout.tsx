@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "TuesdayTrim – Clean, Pro Editing for YouTubers & Creators",
   description: "Affordable, professional video editing services for YouTubers, Shorts, and Reels.",
   icons: {
-    icon: "/favicon.ico", // Make sure favicon.ico is in your /public directory
+    icon: "/favicon.ico",
   },
   applicationName: "TuesdayTrim",
   appleWebApp: {

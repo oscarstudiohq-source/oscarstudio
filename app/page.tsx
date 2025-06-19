@@ -56,7 +56,8 @@ export default function Home() {
 
       <header id="home" className="bg-white text-[#001c64] flex justify-between items-center px-4 sm:px-10 md:px-20 py-4 border-b border-gray-200 shadow-sm">
         {/* Logo */}
-        <div className="text-xl sm:text-2xl font-extrabold tracking-tight">
+        <div className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
+          <img src="/favicon.ico" alt="TuesdayTrim Logo" className="w-8 h-8" />
           TuesdayTrim
         </div>
 
@@ -101,9 +102,18 @@ export default function Home() {
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-snug text-[#001c64]">
-              You Shoot,<br /> We Edit. Deal?
+            <h1
+              className="font-sans text-4xl sm:text-5xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
+              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+            >
+              You Shoot,<br/> We Edit.
             </h1>
+            {/* <h1
+              className="font-sans text-3xl sm:text-4xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
+              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+            >
+              Pay easy, fast,<br /> and Secure.
+            </h1> */}
 
             <p className="text-sm sm:text-base text-black">
               Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
