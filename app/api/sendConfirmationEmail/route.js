@@ -1,5 +1,6 @@
 // app/api/sendConfirmationEmail/route.js
 import { Resend } from 'resend';
+import { thumbnailDescriptions } from "../../screen/EditingTier";
 
 const resend = new Resend(process.env.RESEND_API_KEY); // 👈 Add this to .env.local
 
@@ -14,7 +15,6 @@ const durationKeyMap = {
   "15": "15 min",
   "20": "20 min",
 };
-
 
 export async function POST(req) {
   const data = await req.json();
@@ -32,13 +32,13 @@ export async function POST(req) {
   const SUPPORT_EMAIL = 'support@tuesdaytrim.com';
   const FROM_EMAIL = 'TuesdayTrim <support@tuesdaytrim.com>';
   const BCC_EMAILS = ['akashbajaj777@gmail.com'];
-  
+
   try {
     const response = await resend.emails.send({
       // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
       from: FROM_EMAIL,
       to: [data.email],
-      bcc: BCC_EMAILS,
+      // bcc: BCC_EMAILS,
       subject: '✅ Your Order has been Received!',
       html: `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
@@ -64,7 +64,12 @@ export async function POST(req) {
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Videos Count:</td><td>${data.videosCount}</td></tr>
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Video Duration:</td><td>${video_duration}</td></tr>
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Editing Tier:</td><td>${data.editingTier}</td></tr>
-          <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Included:</td><td>Free Thumbnail Design</td></tr>
+          ${data.videoType === 'long' && data.editingTier
+          ? `<tr>
+          <td style="width: 220px; padding: 8px 0; font-weight: 600;">Included:</td>
+          <td>Free ${thumbnailDescriptions[data.editingTier].title} (${thumbnailDescriptions[data.editingTier].value})</td>
+          </tr>`
+          : ''} 
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Delivery Speed:</td><td>${data.deliverySpeed}</td></tr>
         </table>
 

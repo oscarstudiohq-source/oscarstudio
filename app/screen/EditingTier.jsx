@@ -6,7 +6,11 @@ const tiers = [
         name: "studio",
         color: "text-blue-400",
         border: "border-zinc-700",
-        suitableFor: "Ideal for beginner YouTubers and emerging creators on Shorts, TikTok, and Reels seeking clean, basic editing at an affordable rate.",
+        suitableFor: (
+            <>
+                Ideal for creators <strong>who upload daily or multiple times a week</strong> on YouTube, Shorts, TikTok, or Reels. Get clean editing at a budget-friendly rate — perfect for staying consistent and keeping up with your content calendar without sacrificing quality.
+            </>
+        ),
         features: [
             "Basic editing (cut, trim, transitions)",
             "Royalty-free music",
@@ -23,7 +27,11 @@ const tiers = [
         name: "studioPro",
         color: "text-yellow-500",
         border: "border-yellow-500",
-        suitableFor: "Experienced YouTubers, vloggers, and content creators on Shorts, TikTok, Reels, and Podcasts seeking polished, professional editing", 
+        suitableFor: (
+            <>
+                Perfect for experienced or professional creators <strong>who upload once or twice a week</strong> on YouTube, Shorts, TikTok, Reels, or Podcasts. Studio Pro offers polished, professional editing with added creative depth — ideal for storytelling, audience engagement, and growing a loyal following.
+            </>
+        ),
         features: [
             "All Studio features",
             "Motion graphics & animations",
@@ -41,7 +49,11 @@ const tiers = [
         name: "studioMax",
         color: "text-emerald-400",
         border: "border-emerald-400",
-        suitableFor: "Brands, agencies, and enterprise creators",
+        suitableFor: (
+            <>
+                For Top Creators, Brands and Agencies
+            </>
+        ),
         features: [
             "All Studio Pro features",
             "Custom motion graphics",
@@ -62,7 +74,7 @@ export const thumbnailDescriptions = {
         title: "Standard Thumbnail",
         value: "$29",
         valueShort: "$15",
-        color:"text-blue-600",
+        color: "text-blue-600",
         points: [
             "Clean and clear visuals that get the message across.",
             "Ideal for creators just starting out on YouTube.",
@@ -95,13 +107,13 @@ export const thumbnailDescriptions = {
         ],
     },
 };
-  
+
 
 const TierCard = ({ tier }) => (
     <div
         className="rounded-xl p-6 bg-white transition duration-300"
     >
-  
+
         {/* Header */}
         <div className="flex items-center gap-2 mb-1">
             <h3 className={`text-lg font-semibold ${tier.color}`}>{tier.name}</h3>
@@ -110,11 +122,16 @@ const TierCard = ({ tier }) => (
                     ⭐ Popular for YouTube
                 </span>
             )}
+            {tier.name === "studioMax" && (
+                <span className="inline-block bg-black text-white text-xs md:text-sm font-semibold px-3 py-1 pb-1.5 rounded-full shadow-sm">
+                    ⭐⭐ Top Creators
+                </span>
+            )}
         </div>
 
         {/* Suitable For */}
         {tier.suitableFor && (
-            <p className="text-xs text-gray-500 mb-4 italic">{tier.suitableFor}</p>
+            <p className="text-xs text-gray-500 mb-4 mt-2 italic">{tier.suitableFor}</p>
         )}
 
         {/* Feature List */}
@@ -158,8 +175,9 @@ const TierCard = ({ tier }) => (
                         {thumbnailDescriptions[tier.name].value}
                     </span>
                     <br />
-                    <span className="text-sm text-gray-600">
-                        For <strong>Short Videos</strong>: {thumbnailDescriptions[tier.name].valueShort}
+                    <span className="text-xs text-gray-600">
+                        (For Long videos only)
+                        {/* <strong>Short Videos</strong>: {thumbnailDescriptions[tier.name].valueShort} */}
                     </span>
                 </p>
             </div>

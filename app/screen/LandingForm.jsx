@@ -9,20 +9,29 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { submitOrder } from '@/lib/submitOrder'; // adjust path as needed
 import OrderConfirmationModal from "@/components/OrderConfirmationModal"; // adjust path if needed
+import { toast } from "sonner";
 import {
     Tooltip,
     TooltipTrigger,
     TooltipContent,
     TooltipProvider
 } from "@/components/ui/tooltip";
-import { Film, Sparkles, Crown, Clock, Video, Smartphone, Monitor } from "lucide-react"; // modern icons
+import {
+    Film, Crown, Clock, Video, Smartphone, Monitor,
+    ListOrdered,
+    VideoIcon,
+    Timer,
+    Sparkles,
+    LinkIcon,
+    User,
+    Mail, } from "lucide-react"; // modern icons
 import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30 sec": { studio: 44.99, studioPro: 59.99, studioMax: 74.99 },
-        "60 sec": { studio: 64.99, studioPro: 84.99, studioMax: 104.99 },
-        "90 sec": { studio: 79.99, studioPro: 104.99, studioMax: 129.99 },
+        "30 sec": { studio: 39.99, studioPro: 54.99, studioMax: 69.99 },
+        "60 sec": { studio: 55.99, studioPro: 79.99, studioMax: 99.99 },
+        "90 sec": { studio: 69.99, studioPro: 99.99, studioMax: 124.99 },
     },
     long: {
         "3 min": { studio: 89.99, studioPro: 116.99, studioMax: 143.99 },
@@ -61,21 +70,9 @@ export default function LandingForm() {
         notes: "",
     });
 
-
-
+   
     const handleChange = (key, value) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
-    };
-
-
-
-    const validateForm = () => {
-        if (!formData.name || !formData.email || !formData.rawFootage) {
-            alert("Please fill all required fields.");
-            return false;
-        }
-
-        return true;
     };
 
     const durationKeyMap = {
@@ -137,9 +134,88 @@ export default function LandingForm() {
         discountRate,
     ]);
 
+    const validateForm = (formData) => {
+        if (!formData.videosCount) {
+            toast("Please select total videos you want to order.", {
+                description: "Choose a quantity to proceed.",
+                icon: <ListOrdered className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.videoType) {
+            toast("Please select video format.", {
+                description: "Pick between short or long format.",
+                icon: <VideoIcon className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.videoDuration) {
+            toast("Please select video length.", {
+                description: "Select the length of your video.",
+                icon: <Timer className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.editingTier) {
+            toast("Please select an editing tier.", {
+                description: "Choose from Studio, Studio Pro, or Studio Max.",
+                icon: <Sparkles className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.rawFootage) {
+            toast("Please provide a link to your raw footage.", {
+                description: "We need the footage link to begin editing.",
+                icon: <LinkIcon className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.name) {
+            toast("Please enter your name.", {
+                description: "We’ll use this for your order.",
+                icon: <User className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        if (!formData.email) {
+            toast("Please enter your email address.", {
+                description: "So we can notify you when it’s ready.",
+                icon: <Mail className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
+        return true;
+      };
+
     // Submit handler
     const handleSubmit = () => {
         try {
+            //validation
+            if (!validateForm(formData)) {
+                return;
+            }
+
             const { original, discounted } = calculatePrice();
             const finalPrice = parseFloat(discounted);
 
@@ -235,7 +311,7 @@ export default function LandingForm() {
     return (
         <Card className="px-1 sm:px-2 py-4 shadow-xl w-full max-w-[640px]">
             <CardContent className="space-y-4 text-sm px-2 sm:px-2 md:px-5">
- 
+
                 <h2 className="text-xl font-bold text-[#001c64]">Submit Your Video for Editing</h2>
 
                 <div className="flex flex-col md:flex-row gap-5">
@@ -293,7 +369,7 @@ export default function LandingForm() {
                                             // Auto-set video type only for known packs
                                             if (val === "4" || val === "8") {
                                                 updatedVideoType = "long";
-                                            } else if (val === "7" || val === "15") {
+                                            } else if (val === "5" || val === "10" || val === "15") {
                                                 updatedVideoType = "short";
                                             }
 
@@ -325,7 +401,8 @@ export default function LandingForm() {
 
                                             {/* Shorts & Reels Pack */}
                                             <div className="px-2 py-1 text-xs text-emerald-500 tracking-wide">Shorts & Reels Packs</div>
-                                            <SelectItem value="7">7 Shorts</SelectItem>
+                                            <SelectItem value="5">5 Shorts</SelectItem>
+                                            <SelectItem value="10">10 Shorts</SelectItem>
                                             <SelectItem value="15">15 Shorts</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -421,7 +498,7 @@ export default function LandingForm() {
                                         value={formData.editingTier}
                                     >
                                         <SelectTrigger className="w-full text-sm">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 text black">
                                                 {formData.editingTier === "studio" && (
                                                     <>
                                                         <Film className="w-4 h-4 text-blue-600" />
@@ -443,6 +520,7 @@ export default function LandingForm() {
                                                 {!formData.editingTier && (
                                                     <SelectValue placeholder="Select Editing Tier" />
                                                 )}
+
                                             </div>
                                         </SelectTrigger>
 
@@ -453,13 +531,13 @@ export default function LandingForm() {
                                                     <div>
                                                         <span className="text-sm font-medium text-blue-700">Studio</span>
                                                         <p className="text-xs text-blue-500">Standard quality editing</p>
-                                                        <p className="text-sm text-blue-500 font-semibold">
-                                                            + Free{" "}
-                                                            {formData.videoType === 'short'
-                                                                ? thumbnailDescriptions['studio'].valueShort
-                                                                : thumbnailDescriptions['studio'].value}{" "}
-                                                            {thumbnailDescriptions['studio'].title}
-                                                        </p>
+                                                        {formData.videoType !== 'short' && (
+                                                            <p className="text-sm text-blue-500 font-semibold">
+                                                                + Free{" "}
+                                                                {thumbnailDescriptions['studio'].value}{" "}
+                                                                {thumbnailDescriptions['studio'].title}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </SelectItem>
@@ -470,13 +548,12 @@ export default function LandingForm() {
                                                     <div>
                                                         <span className="text-sm font-medium text-yellow-600">Studio Pro</span>
                                                         <p className="text-xs text-yellow-500">Premium transitions & effects</p>
-                                                        <p className="text-sm text-yellow-500 font-semibold">
-                                                            + Free{" "}
-                                                            {formData.videoType === 'short'
-                                                                ? thumbnailDescriptions['studioPro'].valueShort
-                                                                : thumbnailDescriptions['studioPro'].value}{" "}
-                                                            {thumbnailDescriptions['studioPro'].title}
-                                                        </p>
+                                                        {formData.videoType !== 'short' && (
+                                                            <p className="text-sm text-yellow-500 font-semibold">
+                                                                + Free {thumbnailDescriptions['studioPro'].value}{" "}
+                                                                {thumbnailDescriptions['studioPro'].title}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </SelectItem>
@@ -487,18 +564,18 @@ export default function LandingForm() {
                                                     <div>
                                                         <span className="text-sm font-medium text-emerald-600">Studio Max</span>
                                                         <p className="text-xs text-emerald-500">Elite production + speed</p>
-                                                        <p className="text-sm text-emerald-500 font-semibold">
-                                                            + Free{" "}
-                                                            {formData.videoType === 'short'
-                                                                ? thumbnailDescriptions['studioMax'].valueShort
-                                                                : thumbnailDescriptions['studioMax'].value}{" "}
-                                                            {thumbnailDescriptions['studioMax'].title}
-                                                        </p>
+                                                        {formData.videoType !== 'short' && (
+                                                            <p className="text-sm text-emerald-500 font-semibold">
+                                                                + Free {thumbnailDescriptions['studioMax'].value}{" "}
+                                                                {thumbnailDescriptions['studioMax'].title}
+                                                            </p>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </SelectItem>
                                         </SelectContent>
                                     </Select>
+
                                 </div>
                             </div>
                         </fieldset>
@@ -644,27 +721,28 @@ export default function LandingForm() {
                             </Button>
                         </div>
 
-
-                        {formData.editingTier && thumbnailDescriptions[formData.editingTier] && (
-                            <div className="mt-3 space-y-1">
-                                {/* Free Bonus Row */}
-                                <div className="flex items-center gap-2">
-                                    <span className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}>
-                                        🎁 +{formData.videosCount} Free ${getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
-                                    </span>
-                                    <div
-                                        className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}
-                                    >
-                                        (${totalThumbValue})
+                        {formData.videoType !== 'short' &&
+                            formData.editingTier && thumbnailDescriptions[formData.editingTier] && (
+                                <div className="mt-3 space-y-1">
+                                    {/* Free Bonus Row */}
+                                    <div className="flex items-center gap-2">
+                                        <span className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}>
+                                            🎁 +{formData.videosCount} Free ${getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
+                                        </span>
+                                        <div
+                                            className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}
+                                        >
+                                            (${totalThumbValue})
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
+
 
                         {/* ✅ Info line inside border */}
                         <div className="flex flex-col items-start gap-2 mt-2">
                             <span className="text-xs text-zinc-400">
-                                All prices include thumbnail design, platform fees, and taxes.
+                                All prices include platform fees and taxes.
                             </span>
 
                             <button
