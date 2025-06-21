@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import Heading from '../../components/Heading';
 
 const stats = [
     { label: "Videos Edited", value: 350, icon: "/icons/play-button.png" },
@@ -56,9 +57,12 @@ const AnimatedStats = () => {
             className="bg-[#f3f3f6] text-gray-900 py-10 px-6 md:px-20"
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
                     Trusted by Creators Worldwide
-                </h2>
+                </h2> */}
+                <Heading className="text-[#001c64]">
+                    Trusted by Creators Worldwide
+                </Heading>
                 <p className="text-black mt-2">We let our numbers speak.</p>
             </div>
 

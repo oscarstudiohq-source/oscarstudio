@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle } from "lucide-react";
+import Heading from '../../components/Heading';
 
 export default function HowItWorks() {
     const steps = [
@@ -7,14 +8,14 @@ export default function HowItWorks() {
             title: "Step 1",
             heading: "Submit Details & Footage",
             description:
-                "Fill out the form with your video links from Google Drive, YouTube, or Dropbox — we’ll handle the rest.",
+                "Fill out a short form with your name, email, editing instructions, and video links (Google Drive, Dropbox, or YouTube).",
             icon: "/icons/next.png",
         },
         {
             title: "Step 2",
             heading: "Choose a Package & Pay",
             description:
-                "Pick the editing package that fits your needs — whether it's a single video or a monthly bundle.",
+                "Pick the editing package that fits your needs — choose your editing tier and number of videos, whether it’s a single video or a monthly bundle, and place your order.",
             icon: "/icons/atm-card.png",
         },
         {
@@ -29,9 +30,15 @@ export default function HowItWorks() {
 
     return (
         <section className="bg-[#f5f7fa] text-gray-900 py-16 px-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-14 text-[#001c64]">
-                How It Works
-            </h2>
+            <div className="max-w-6xl mx-auto text-center mb-12">
+                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                   How It Works
+                </h2> */}
+                <Heading className="text-[#001c64]">
+                    How It Works
+                </Heading>
+                <p className="text-black mt-2">3-Step Process to Get Your Videos Edited & Ready to Post</p>
+            </div>
 
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 relative">
                 {steps.map((step, index) => (

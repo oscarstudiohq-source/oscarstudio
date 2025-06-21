@@ -12,6 +12,8 @@ import Footer from "./screen/Footer";
 
 import Link from 'next/link';
 
+import Heading from '../components/Heading';
+
 export default function Home() {
   return (
     <>
@@ -101,13 +103,17 @@ export default function Home() {
 
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
-
+            {/* 
             <h1
               className="font-sans font-extrabold text-[40px] sm:text-[56px] md:text-[70px] leading-[1.1] tracking-[-0.03em] text-[#001c64]"
               style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
             >
               You Shoot,<br />We Edit.
-            </h1>
+            </h1> */}
+
+            <Heading className="text-[#001c64] text-[40px] sm:text-[56px] md:text-[66px]" weight={600}>
+              You Shoot,<br />We Edit.
+            </Heading>
 
             {/* <h1
               className="font-sans text-3xl sm:text-4xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
@@ -127,7 +133,7 @@ export default function Home() {
 
             {/* <Script src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm">
             </Script> */}
-            
+
             <LandingForm />
           </div>
 
@@ -137,6 +143,19 @@ export default function Home() {
       {/* 🌟 Editing tier Section */}
       <section id="editingTier" className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-6 sm:py-10">
         <EditingTier />
+      </section>
+
+
+      <section id="text-section1" className="bg-[#0070e0] text-white py-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+
+          <Heading className="text-[#ffffff]">
+            We never showcase your videos<br />
+            or share them with other clients as samples.<br />
+            Your content stays completely private.
+          </Heading>
+
+        </div>
       </section>
 
       {/* 🌟 Steps Section */}

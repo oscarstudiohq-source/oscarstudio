@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle } from "lucide-react"; // Optional, replace or remove
+import Heading from '../../components/Heading';
 
 const tiers = [
     {
@@ -201,7 +202,11 @@ const TierComparisonSection = () => {
             style={{ backgroundColor: "#f3f3f6" }}
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">Compare Our Editing Tiers</h2>
+                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">Compare Our Editing Tiers</h2> */}
+                <Heading className="text-[#001c64]">
+                    Compare Our Editing Tiers
+                </Heading>
+                
                 <p className="text-black mt-2">Choose the plan that best fits your needs.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">

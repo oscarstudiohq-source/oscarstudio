@@ -1,6 +1,7 @@
 "use client"; // 👈 Must be the first line
 import React from "react"; // ← Add this at the top if your setup requires it
 import { useEffect, useRef } from "react";
+import Heading from '../../components/Heading';
 
 const testimonials = [
     {
@@ -10,16 +11,47 @@ const testimonials = [
         image: "/clients/chris.png"
     },
     {
-        name: "Brandon L.", 
+        name: "Maya B.",
+        text: "TuesdayTrim helped me upload 4x more videos per month — and my subscriber count is finally growing.",
+        rating: 5,
+        image: "/clients/maya.png"
+    },
+    {
+        name: "Brandon L.",
         text: "I almost hired someone on Fiverr, but saw this service had 20% off and a premium thumbnail included. Went with Studio Pro — no extra fees, and way more polished.",
         rating: 5,
         image: "/clients/brandon.png"
     },
     {
+        name: "Isla W.",
+        text: "Editing used to slow me down. With TuesdayTrim, I upload weekly without the burnout.",
+        rating: 5,
+        image: "/clients/isla.png"
+    },
+
+    {
         name: "Emily R.",
         text: "I sent in some shaky clips from my iPhone and got back a super polished promo reel. Already recommended to my startup friends!",
-        rating: 5,
+        rating: 4.5,
         image: "/clients/emily.png"
+    },
+    {
+        name: "Max G.",
+        text: "Their turnaround was super fast and exactly what I needed. I’ve never been this consistent on YouTube.",
+        rating: 5,
+        image: "/clients/max.png"
+    },
+    {
+        name: "Sienna L.",
+        text: "I focus on creating — they handle the edits. That shift helped me hit 10K subs this month.",
+        rating: 5,
+        image: "/clients/sienna.png"
+    },
+    {
+        name: "Jasper K.",
+        text: "Now I spend zero hours editing — just record and send. Their team takes care of everything.",
+        rating: 5,
+        image: "/clients/jasper.png"
     },
     {
         name: "Ryan C.",  // Male
@@ -222,11 +254,14 @@ export default function Testimonials() {
             </div>
 
             <section className="bg-white py-10 px-4 sm:px-6 md:px-12">
-               
+
                 <div className="max-w-6xl mx-auto text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                    {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
                         Creators Trust Us
-                    </h2>
+                    </h2> */}
+                    <Heading className="text-[#001c64]">
+                        Creators Trust Us
+                    </Heading>
                     <p className="text-black mt-2">Hear what creators say about their experience with us.</p>
                 </div>
                 <div
@@ -286,6 +321,6 @@ export default function Testimonials() {
                 </div>
             </section>
         </>
-      
+
     );
 }
