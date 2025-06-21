@@ -164,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* 🌟 Stats Section */}
-      <section id="scrollingStats" className="bg-[#f3f3f6] text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
+      <section id="scrollingStats" className="bg-[#001435] text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
         <ScrollingStats />
       </section>
 

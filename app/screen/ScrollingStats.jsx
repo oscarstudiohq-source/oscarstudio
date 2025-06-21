@@ -4,7 +4,7 @@ import Heading from '../../components/Heading';
 
 const stats = [
     { label: "Videos Edited", value: 350, icon: "/icons/play-button.png" },
-    { label: "Happy Creators", value: 120, icon: "/clients/james.png" },
+    { label: "Happy Creators", value: 120, icon: "/icons/happy-face.png" },
     { label: "Avg. Delivery Time", value: 48, suffix: "hrs", icon: "/icons/time-passing.png" },
     { label: "Countries Served", value: 5, icon: "/icons/airplane.png" },
 ];
@@ -54,16 +54,16 @@ const AnimatedStats = () => {
        
         <section
             ref={containerRef}
-            className="bg-[#f3f3f6] text-gray-900 py-10 px-6 md:px-20"
+            className="bg-[#001435] text-gray-900 py-16 px-6 md:px-20"
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
                 {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
                     Trusted by Creators Worldwide
                 </h2> */}
-                <Heading className="text-[#001c64]">
-                    Trusted by Creators Worldwide
+                <Heading className="text-[#ffffff]">
+                    Built on Results
                 </Heading>
-                <p className="text-black mt-2">We let our numbers speak.</p>
+                <p className="text-black mt-2 text-white">We've edited hundreds of videos for creators across the world — our work speaks for itself.</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-4 md:gap-8 max-w-5xl mx-auto">
@@ -75,7 +75,7 @@ const AnimatedStats = () => {
                         <img
                             src={stat.icon || stat.image}
                             alt={stat.label}
-                            className="w-12 h-12 object-contain rounded-full"
+                            className="w-12 h-12 object-contain"
                         />
                         <h3 className="text-3xl font-bold text-gray-900 pt-4">
                             {animatedValues[index]}
