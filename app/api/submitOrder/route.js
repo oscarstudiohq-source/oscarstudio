@@ -46,7 +46,7 @@ export async function POST(req) {
 
     const formattedOrder = toSnakeCaseOrder(orderData);
 
-    console.log("formattedOrder:", formattedOrder);
+    // console.log("formattedOrder:", formattedOrder);
 
     const { error } = await supabase.from('orders').insert([formattedOrder]);
 

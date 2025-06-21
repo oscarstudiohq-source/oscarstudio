@@ -90,7 +90,7 @@ export default function Home() {
       </header>
 
 
-      <main id="orderSection" className="bg-white text-gray-900 py-8 sm:py-12 md:py-16">
+      <main id="orderSection" className="bg-white text-gray-900 py-8 sm:py-10 md:py-8 lg:py-6">
 
         <div
           className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20 bg-[url('/icons/next.png')] bg-cover bg-center text-white"
@@ -103,11 +103,12 @@ export default function Home() {
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
 
             <h1
-              className="font-sans text-4xl sm:text-5xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
+              className="font-sans font-extrabold text-[40px] sm:text-[56px] md:text-[70px] leading-[1.1] tracking-[-0.03em] text-[#001c64]"
               style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
             >
-              You Shoot,<br/> We Edit.
+              You Shoot,<br />We Edit.
             </h1>
+
             {/* <h1
               className="font-sans text-3xl sm:text-4xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
               style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
@@ -124,10 +125,9 @@ export default function Home() {
           {/* Right (Form) - 55% on desktop */}
           <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
 
-            <Script
-              src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm&currency=USD"
-              strategy="afterInteractive"
-            />
+            {/* <Script src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm">
+            </Script> */}
+            
             <LandingForm />
           </div>
 

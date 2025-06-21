@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TuesdayTrim – Clean, Pro Editing for YouTubers & Creators",
-  description: "Affordable, professional video editing services for YouTubers, Shorts, and Reels.",
+  title: "TuesdayTrim – Best Video Editing for YouTube Creators in the US, UK & Europe",
+  description: "Tired of editing YouTube videos, Shorts, Reels, or TikToks? TuesdayTrim offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — order now!",
   icons: {
     icon: "/favicon.ico",
   },

@@ -1,12 +1,14 @@
 "use client";
 import Script from "next/script";
 import { useState, useEffect, useRef } from "react";
+import { loadScript } from "@paypal/paypal-js";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { submitOrderAndSendEmail } from "@/lib/submitOrderAndEmail";
 import { submitOrder } from '@/lib/submitOrder'; // adjust path as needed
 import OrderConfirmationModal from "@/components/OrderConfirmationModal"; // adjust path if needed
 import { toast } from "sonner";
@@ -24,26 +26,26 @@ import {
     Sparkles,
     LinkIcon,
     User,
-    Mail, } from "lucide-react"; // modern icons
+    Mail,
+    Info
+} from "lucide-react"; // modern icons
 import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30 sec": { studio: 39.99, studioPro: 54.99, studioMax: 69.99 },
-        "60 sec": { studio: 55.99, studioPro: 79.99, studioMax: 99.99 },
-        "90 sec": { studio: 69.99, studioPro: 99.99, studioMax: 124.99 },
+        "30 sec": { studio: 39, studioPro: 54, studioMax: 69 },
+        "60 sec": { studio: 50, studioPro: 79, studioMax: 99 },
+        "90 sec": { studio: 64, studioPro: 99, studioMax: 124 },
     },
     long: {
-        "3 min": { studio: 89.99, studioPro: 116.99, studioMax: 143.99 },
-        "5 min": { studio: 129.99, studioPro: 168.99, studioMax: 207.99 },
-        "7 min": { studio: 169.99, studioPro: 220.99, studioMax: 271.99 },
-        "10 min": { studio: 199.99, studioPro: 259.99, studioMax: 319.99 },
-        "15 min": { studio: 239.99, studioPro: 311.99, studioMax: 383.99 },
-        "20 min": { studio: 279.99, studioPro: 363.99, studioMax: 447.99 },
+        "3 min": { studio: 84, studioPro: 116, studioMax: 143 },
+        "5 min": { studio: 124, studioPro: 168, studioMax: 207 },
+        "7 min": { studio: 164, studioPro: 220, studioMax: 271 },
+        "10 min": { studio: 194, studioPro: 259, studioMax: 319 },
+        "15 min": { studio: 234, studioPro: 311, studioMax: 383 },
+        "20 min": { studio: 274, studioPro: 363, studioMax: 447 },
     },
 };
-
-
 
 export default function LandingForm() {
     const paypalRef = useRef(null);
@@ -52,6 +54,10 @@ export default function LandingForm() {
     const [price, setPrice] = useState({ original: 0, discounted: 0 });
     const [isCouponApplied, setIsCouponApplied] = useState(false);
     const [discountRate, setDiscountRate] = useState(20);
+
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
 
     const [formData, setFormData] = useState({
         name: "",
@@ -70,7 +76,7 @@ export default function LandingForm() {
         notes: "",
     });
 
-   
+
     const handleChange = (key, value) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
     };
@@ -175,15 +181,15 @@ export default function LandingForm() {
             return false;
         }
 
-        if (!formData.rawFootage) {
-            toast("Please provide a link to your raw footage.", {
-                description: "We need the footage link to begin editing.",
-                icon: <LinkIcon className="text-red-500 w-5 h-5" />,
-                position: "top-right",
-                duration: 3000,
-            });
-            return false;
-        }
+        // if (!formData.rawFootage) {
+        //     toast("Please provide a link to your raw footage.", {
+        //         description: "We need the footage link to begin editing.",
+        //         icon: <LinkIcon className="text-red-500 w-5 h-5" />,
+        //         position: "top-right",
+        //         duration: 3000,
+        //     });
+        //     return false;
+        // }
 
         if (!formData.name) {
             toast("Please enter your name.", {
@@ -205,8 +211,20 @@ export default function LandingForm() {
             return false;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(formData.email)) {
+            toast("Invalid email format.", {
+                description: "Please enter a valid email address like john@example.com.",
+                icon: <Mail className="text-red-500 w-5 h-5" />,
+                position: "top-right",
+                duration: 3000,
+            });
+            return false;
+        }
+
         return true;
-      };
+    };
 
     // Submit handler
     const handleSubmit = () => {
@@ -236,33 +254,99 @@ export default function LandingForm() {
         }
     };
 
+    //only for testing emails
+    const testHandleEmailClick = async () => {
+        setLoading(true);
+        try {
+            const result = await submitOrderAndSendEmail({
+                formData,
+                price,
+                isCouponApplied,
+                discountRate,
+            });
+
+            if (result.status === "success") {
+                setShowModal(true);
+            } else {
+                alert(result.message); // Friendly message shown to user
+            }
+
+        } catch (err) {
+            console.error("Unexpected error:", err);
+            alert("Something went wrong after payment.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        if (!showPayPal || !paypalRef.current || !window.paypal) return;
 
-        // Clear old buttons if any (important when price changes)
-        paypalRef.current.innerHTML = "";
+        if (!showPayPal || !paypalRef.current) return;
 
-        window.paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [
-                        {
-                            amount: {
-                                value: price.discounted.toFixed(2), // format number properly
-                            },
-                        },
-                    ],
-                });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then((details) => {
-                    alert(`Payment completed by ${details.payer.name.given_name}`);
-                });
-            },
-            onError: (err) => {
-                console.error("PayPal Error:", err);
-            },
-        }).render(paypalRef.current);
+        paypalRef.current.innerHTML = ""; // Clear previous buttons
+
+        loadScript({
+            "client-id": "AXTR073IFNMsxf2GrOHgXL8cjwPP59n1whtjsaj9QhQ3yWp_O3SXkeOjiaxVkI-xwS8aldqxponVF_Xj", // Replace with actual Sandbox Client ID
+            currency: "USD",
+            // "buyer-country": "IN",
+            commit: true,
+            components: "buttons",
+            "data-sdk-integration-source": "button-factory", // ✅ Add this line
+        })
+            .then((paypal) => {
+                if (!paypal) {
+                    console.error("PayPal SDK not loaded.");
+                    return;
+                }
+                else {
+                    console.log("PayPal SDK loaded successfully");
+                }
+
+                paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [
+                                {
+                                    amount: {
+                                        value: price.discounted.toFixed(2),
+                                    },
+                                },
+                            ],
+                        });
+                    },
+                    onApprove: async (data, actions) => {
+                        setLoading(true);
+                        try {
+                            await actions.order.capture();
+
+                            const result = await submitOrderAndSendEmail({
+                                formData,
+                                price,
+                                isCouponApplied,
+                                discountRate,
+                            });
+
+                            if (result.status === "success") {
+                                setShowModal(true);
+                            } else {
+                                alert(result.message); // Friendly message shown to user
+                            }
+
+                        } catch (err) {
+                            console.error("Unexpected error:", err);
+                            alert("Something went wrong after payment.");
+                        } finally {
+                            setLoading(false);
+                        }
+                      },
+                    onError: (err) => {
+                        console.error("PayPal Error:", err);
+                    },
+                }).render(paypalRef.current);
+            })
+            .catch((err) => {
+                console.error("Failed to load PayPal SDK:", err);
+            });
     }, [showPayPal, price]); // <-- include showPayPal here
 
     const formatPrice = (amount) => {
@@ -308,6 +392,10 @@ export default function LandingForm() {
         ? (getEffectiveThumbnailValue() * Number(formData.videosCount)).toFixed(2)
         : "0.00";
 
+
+
+    const [showTooltip, setShowTooltip] = useState(false);
+
     return (
         <Card className="px-1 sm:px-2 py-4 shadow-xl w-full max-w-[640px]">
             <CardContent className="space-y-4 text-sm px-2 sm:px-2 md:px-5">
@@ -323,7 +411,7 @@ export default function LandingForm() {
                                 Edit this footage
                             </legend>
 
-                            <Tooltip>
+                            {/* <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Input
                                         className="text-sm"
@@ -341,9 +429,61 @@ export default function LandingForm() {
                                     Paste a link to your raw footage (Google Drive, Dropbox, YouTube, etc.)<br />
                                     We’ll download the file and use it to edit your video.
                                 </TooltipContent>
-                            </Tooltip>
+                            </Tooltip> */}
 
-                            <div className="flex items-center gap-3 my-4">
+                            <div className="flex items-center gap-2">
+                                <Textarea
+                                    className="text-sm flex-1 placeholder:text-xs placeholder:text-gray-400"
+                                    rows={3}
+                                    value={formData.rawFootage}
+                                    onChange={(e) => handleChange("rawFootage", e.target.value)}
+                                    placeholder="Paste the shared folder link (Google Drive, Dropbox, etc.) with all your footage"
+                                />
+
+
+                                <Tooltip open={showTooltip} onOpenChange={setShowTooltip}>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            type="button"
+                                            size="icon"
+                                            variant="outline"
+                                            className="p-2 border border-gray-300"
+                                            onClick={() => setShowTooltip((prev) => !prev)}
+                                        >
+                                            <Info className="w-4 h-4 text-gray-700" />
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                        side="top"
+                                        className="text-xs max-w-sm bg-[#001c64] text-white rounded px-3 py-2 shadow"
+                                    >
+                                        <p className="font-semibold mb-1">📤 Upload your raw footage to a folder using one of the platforms below:</p>
+
+                                        <p className="mt-2">
+                                            <strong>Google Drive:</strong> Upload all footage into a folder → Right-click the folder → “Get link” → Set access to <em>Anyone with the link</em> → <em>Ensure downloads are not restricted in advanced sharing settings</em> → Paste the folder link here.
+                                        </p>
+
+                                        <p className="mt-2">
+                                            <strong>Dropbox:</strong> Upload your footage to a folder → Click “Share” on the folder → “Copy link” → Ensure the link allows view/download access → <em>Ensure downloads are not restricted</em> → Paste the folder link here.
+                                        </p>
+
+                                        <p className="mt-2">
+                                            <strong>YouTube (Unlisted):</strong> Upload your video as <em>Unlisted</em> → Copy the video URL → Paste it here.
+                                        </p>
+
+                                        <p className="mt-3 text-amber-300 font-medium">
+                                            ✔️ Make sure we can view or download the footage without logging in.
+                                        </p>
+                                    </TooltipContent>
+
+
+                                </Tooltip>
+                            </div>
+                            <p className="text-xs text-gray-500 mt-0">
+                                📂 Please upload all related video files into a single folder and paste the shared link here.
+                                Make sure access is set to <em>Anyone with the link</em> and downloads are not restricted.
+                            </p>
+                            <div className="flex items-center gap-3 mb-2 mt-1">
                                 <div className="flex-grow h-px bg-zinc-300" />
                                 <span className="text-xs text-zinc-500 whitespace-nowrap">Your Requirements</span>
                                 <div className="flex-grow h-px bg-zinc-300" />
@@ -464,34 +604,6 @@ export default function LandingForm() {
                                     </Select>
                                 </div>
 
-                                {/* Country */}
-                                <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("country", val)} defaultValue="US">
-                                        <SelectTrigger className="w-full text-sm">
-                                            <SelectValue placeholder="Select your country" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="US">United States</SelectItem>
-                                            <SelectItem value="EU">Europe</SelectItem>
-                                            <SelectItem value="AS">Asia</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Delivery Speed - Full Width */}
-                                {/* <div className="w-full">
-                                    <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
-                                        <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="standard">Standard (5 days)</SelectItem>
-                                            <SelectItem value="express">Express (2 days)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div> */}
-
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3">
-                                {/* Editing Tier - Full Width */}
                                 <div className="w-full">
                                     <Select
                                         onValueChange={(val) => handleChange("editingTier", val)}
@@ -518,7 +630,7 @@ export default function LandingForm() {
                                                     </>
                                                 )}
                                                 {!formData.editingTier && (
-                                                    <SelectValue placeholder="Select Editing Tier" />
+                                                    <SelectValue placeholder="Editing Tier" />
                                                 )}
 
                                             </div>
@@ -577,6 +689,22 @@ export default function LandingForm() {
                                     </Select>
 
                                 </div>
+
+                                {/* Delivery Speed - Full Width */}
+                                {/* <div className="w-full">
+                                    <Select onValueChange={(val) => handleChange("deliverySpeed", val)} defaultValue="standard">
+                                        <SelectTrigger className="w-full text-sm"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="standard">Standard (5 days)</SelectItem>
+                                            <SelectItem value="express">Express (2 days)</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div> */}
+
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {/* Editing Tier - Full Width */}
+
                             </div>
                         </fieldset>
 
@@ -604,6 +732,19 @@ export default function LandingForm() {
                                 placeholder="you@example.com"
                             />
 
+                            {/* Country */}
+                            <div className="w-full">
+                                <Select onValueChange={(val) => handleChange("country", val)} defaultValue="US">
+                                    <SelectTrigger className="w-full text-sm">
+                                        <SelectValue placeholder="Select your country" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="US">United States</SelectItem>
+                                        <SelectItem value="EU">Europe</SelectItem>
+                                        <SelectItem value="AS">Asia</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {/* <Select onValueChange={(val) => handleChange("country", val)}>
                                 <SelectTrigger className="w-full text-sm">
                                     <SelectValue placeholder="Select your country" />
@@ -687,14 +828,14 @@ export default function LandingForm() {
                                         </div>
 
                                         {/* INR Price with discount (unchanged) */}
-                                        <div className="flex items-baseline gap-1">
+                                        {/* <div className="flex items-baseline gap-1">
                                             <span className="line-through text-zinc-400 text-sm">
                                                 {formatINR(price.original * 83)}
                                             </span>
                                             <span className="text-emerald-400 text-sm font-semibold">
                                                 {formatINR(price.discounted * 83)}
                                             </span>
-                                        </div>
+                                        </div> */}
                                     </>
                                 ) : (
                                     <>
@@ -704,9 +845,9 @@ export default function LandingForm() {
                                         </span>
 
                                         {/* INR Price without discount (unchanged) */}
-                                        <span className="text-emerald-500 text-sm font-semibold">
+                                        {/* <span className="text-emerald-500 text-sm font-semibold">
                                             {formatINR(price.original * 83)}
-                                        </span>
+                                        </span> */}
                                     </>
                                 )}
 
@@ -715,7 +856,7 @@ export default function LandingForm() {
 
                             <Button
                                 onClick={handleSubmit}
-                                className="bg-[#003087] hover:bg-[#0874e4] text-white font-medium text-sm px-5 py-2.5 rounded-md w-full sm:w-auto transition-colors duration-200"
+                                className="cursor-pointer bg-[#003087] hover:bg-[#0874e4] text-white font-medium text-sm px-5 py-2.5 rounded-md w-full sm:w-auto transition-colors duration-200"
                             >
                                 Continue
                             </Button>
@@ -814,10 +955,41 @@ export default function LandingForm() {
 
 
                     {/* Right - Reserve 40% space, even if hidden */}
-                    <div className="w-full sm:w-[40%] min-h-[56px]">
-                        {showPayPal && (
-                            <div ref={paypalRef} className="w-full" />
+                    <div className="relative w-full sm:w-[40%] min-h-[56px]">
+                        {/* ✅ Loading overlay */}
+                        {loading && (
+                            <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                                <div className="bg-white text-black px-6 py-5 rounded-2xl shadow-2xl flex flex-col items-center animate-fade-in">
+                                    <svg
+                                        className="w-8 h-8 text-emerald-600 animate-spin mb-3"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        ></circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 11-8 8z"
+                                        ></path>
+                                    </svg>
+                                    <p className="text-lg font-medium">Processing your order...</p>
+                                    <p className="text-sm text-gray-600 mt-1">Please wait a moment</p>
+                                </div>
+                            </div>
                         )}
+
+                        {/* ✅ Confirmation modal */}
+                        {showModal && <OrderConfirmationModal onClose={() => setShowModal(false)} />}
+
+                        {/* ✅ PayPal buttons container */}
+                        {showPayPal && <div ref={paypalRef} className="w-full" />}
                     </div>
                 </div>
 
@@ -841,114 +1013,18 @@ export default function LandingForm() {
                     </div>
                 </div>
 
-                <TestOrderButton
-                    formData={formData}
-                    price={price}
-                    isCouponApplied={isCouponApplied}
-                    discountRate={discountRate}
-                />
+                {/* <button
+                    onClick={testHandleEmailClick}
+                    className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
+                    disabled={loading}
+                >
+                    Test Order Submit - New
+                </button> */}
 
             </CardContent>
         </Card>
 
 
-    );
-}
-
-
-// ✅ Place this above or below LandingForm.jsx, not inside
-function TestOrderButton({ formData, price, isCouponApplied, discountRate }) {
-    const [showModal, setShowModal] = useState(false);
-    const [loading, setLoading] = useState(false); // 👈 Add loading state
-
-    const handleClick = async () => {
-        setLoading(true); // Start loading
-
-        const enrichedOrderData = {
-            ...formData,
-            price_original: Number((price.original ?? 0).toFixed(2)),
-            price_discounted: Number((price.discounted ?? 0).toFixed(2)),
-            is_coupon_applied: isCouponApplied,
-            discount_rate: discountRate,
-        };
-
-        try {
-            const res = await fetch("/api/submitOrder", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(enrichedOrderData),
-            });
-
-            const result = await res.json();
-            console.log("Order response:", result);
-
-            if (result.success) {
-                const emailRes = await fetch("/api/sendConfirmationEmail", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(enrichedOrderData),
-                });
-
-                const emailResult = await emailRes.json();
-                console.log("Email response:", emailResult);
-
-                if (emailResult.success) {
-                    setShowModal(true);
-                } else {
-                    alert("Order saved, but email failed.");
-                }
-            } else {
-                alert("Failed to save order.");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Something went wrong.");
-        } finally {
-            setLoading(false); // End loading
-        }
-    };
-
-    return (
-        <>
-            <button
-                onClick={handleClick}
-                className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 disabled:opacity-50"
-                disabled={loading}
-            >
-                {loading ? "Processing your order..." : "Test Order Submit"}
-            </button>
-
-            {loading && (
-                <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                    <div className="bg-white text-black px-6 py-5 rounded-2xl shadow-2xl flex flex-col items-center animate-fade-in">
-                        <svg
-                            className="w-8 h-8 text-emerald-600 animate-spin mb-3"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <circle
-                                className="opacity-25"
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                            ></circle>
-                            <path
-                                className="opacity-75"
-                                fill="currentColor"
-                                d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 11-8 8z"
-                            ></path>
-                        </svg>
-                        <p className="text-lg font-medium">Processing your order...</p>
-                        <p className="text-sm text-gray-600 mt-1">Please wait a moment</p>
-                    </div>
-                </div>
-            )}
-
-
-            {showModal && <OrderConfirmationModal onClose={() => setShowModal(false)} />}
-        </>
     );
 }
 

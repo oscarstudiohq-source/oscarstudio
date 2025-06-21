@@ -102,9 +102,16 @@ export async function POST(req) {
 
     console.log("✅ Resend API response:", response);
 
+    if (response?.error) {
+      return new Response(JSON.stringify({ success: false, message: response.error.message }), {
+        status: 500,
+      });
+    }
+
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
     });
+    
   } catch (error) {
     console.error("❌ Failed to send email:", error);
     return new Response(JSON.stringify({ success: false, error }), {

@@ -15,7 +15,7 @@ const tiers = [
             "Basic editing (cut, trim, transitions)",
             "Royalty-free music",
             "Color correction",
-            "Thumbnail Design (Standard)",
+            "Free Thumbnail Design (Standard)",
             "1 Revision",
             {
                 title: "Delivery",
@@ -37,7 +37,7 @@ const tiers = [
             "Motion graphics & animations",
             "Color grading",
             "Sound design",
-            "Custom-Branded Thumbnail Design",
+            "Free Custom-Branded Thumbnail Design",
             "2 Revisions",
             {
                 title: "Delivery",
@@ -59,7 +59,7 @@ const tiers = [
             "Custom motion graphics",
             "Advanced color grading",
             "Scripting & storyboarding",
-            "Optimized Thumbnail Strategy",
+            "Free Optimized Thumbnail Strategy",
             "Unlimited revisions",
             {
                 title: "Delivery",
