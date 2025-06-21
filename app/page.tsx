@@ -145,7 +145,7 @@ export default function Home() {
         <EditingTier />
       </section>
 
-
+      {/* 🌟 information Section */}
       <section id="text-section1" className="bg-[#0070e0] text-white py-20 px-6 text-center">
         <div className="max-w-4xl mx-auto">
 
