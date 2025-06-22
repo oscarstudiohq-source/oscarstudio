@@ -29,7 +29,7 @@ export default function HowItWorks() {
       
 
     return (
-        <section className="bg-[#f5f7fa] text-gray-900 py-16 px-6">
+        <section className="bg-[#f3f3f6] text-gray-900 py-16 px-6">
             <div className="max-w-6xl mx-auto text-center mb-12">
                 {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
                    How It Works
@@ -44,7 +44,7 @@ export default function HowItWorks() {
                 {steps.map((step, index) => (
                     <div
                         key={index}
-                        className="relative text-center p-6 bg-white rounded-2xl border border-gray-200 shadow-md"
+                        className="relative text-center p-6 bg-white rounded-2xl"
                     >
                         {index === 2 ? (
                             <div className="flex justify-center items-center space-x-[-10px] mb-4">

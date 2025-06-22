@@ -248,7 +248,7 @@ export default function Testimonials() {
     }, []);
 
     return (
-        <>
+        <div className="py-6">
             <div className="flex flex-col items-center mb-2">
                 <div className="h-1 bg-gray-300 rounded-full w-20 sm:w-28 md:w-32 lg:w-48"></div>
             </div>
@@ -320,7 +320,7 @@ export default function Testimonials() {
                     ))}
                 </div>
             </section>
-        </>
+        </div>
 
     );
 }
