@@ -38,6 +38,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {/* ✅ JSON-LD Schema for Google favicon/logo */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "TuesdayTrim",
+              "url": "https://tuesdaytrim.com",
+              "logo": "https://tuesdaytrim.com/favicon-32x32.png",
+            }),
+          }}
+        />
         <Toaster richColors position="top-right" />
         {children}
       </body>
