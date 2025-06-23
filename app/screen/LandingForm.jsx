@@ -58,7 +58,6 @@ export default function LandingForm() {
     const [showModal, setShowModal] = useState(false);
     const [loading, setLoading] = useState(false);
 
-
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -75,7 +74,10 @@ export default function LandingForm() {
         language: "en",
         notes: "",
     });
-
+    const formDataRef = useRef(formData);
+    useEffect(() => {
+        formDataRef.current = formData;
+    }, [formData]);
 
     const handleChange = (key, value) => {
         setFormData((prev) => ({ ...prev, [key]: value }));
@@ -283,16 +285,20 @@ export default function LandingForm() {
 
         if (!showPayPal || !paypalRef.current) return;
 
+        const clientId =
+            process.env.NODE_ENV === "production"
+                ? process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID_PROD
+                : process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID_SANDBOX;
+
         paypalRef.current.innerHTML = ""; // Clear previous buttons
 
         loadScript({
-            "client-id": "AXTR073IFNMsxf2GrOHgXL8cjwPP59n1whtjsaj9QhQ3yWp_O3SXkeOjiaxVkI-xwS8aldqxponVF_Xj", // Replace with actual Sandbox Client ID
+            "client-id": clientId,
             currency: "USD",
-            // "buyer-country": "IN",
             commit: true,
             components: "buttons",
-            "data-sdk-integration-source": "button-factory", // ✅ Add this line
-        })
+            "data-sdk-integration-source": "button-factory",
+          })
             .then((paypal) => {
                 if (!paypal) {
                     console.error("PayPal SDK not loaded.");
@@ -320,7 +326,7 @@ export default function LandingForm() {
                             await actions.order.capture();
 
                             const result = await submitOrderAndSendEmail({
-                                formData,
+                                formData: formDataRef.current, // ✅ Use latest form data here
                                 price,
                                 isCouponApplied,
                                 discountRate,
@@ -1013,13 +1019,13 @@ export default function LandingForm() {
                     </div>
                 </div>
 
-                {/* <button
+                <button
                     onClick={testHandleEmailClick}
                     className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
                     disabled={loading}
                 >
                     Test Order Submit - New
-                </button> */}
+                </button>
 
             </CardContent>
         </Card>

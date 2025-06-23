@@ -27,7 +27,6 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   applicationName: "TuesdayTrim",
-  themeColor: "#ffffff",
   manifest: "/site.webmanifest",
   appleWebApp: {
     title: "TuesdayTrim",

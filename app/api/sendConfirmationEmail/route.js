@@ -37,7 +37,7 @@ export async function POST(req) {
     const response = await resend.emails.send({
       // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
       from: FROM_EMAIL,
-      to: [data.email],
+      // to: [data.email],
       // bcc: BCC_EMAILS,
       subject: '✅ Your Order has been Received!',
       html: `
