@@ -8,11 +8,8 @@ const durationKeyMap = {
   "0": "30 sec",
   "1": "60 sec",
   "2": "90 sec",
-  "3": "3 min",
   "5": "5 min",
-  "7": "7 min",
   "10": "10 min",
-  "15": "15 min",
   "20": "20 min",
 };
 
@@ -65,7 +62,7 @@ export async function POST(req) {
           ${data.videoType === 'long' && data.editingTier
           ? `<tr>
           <td style="width: 220px; padding: 8px 0; font-weight: 600;">Included:</td>
-          <td>Free ${thumbnailDescriptions[data.editingTier].title} (${thumbnailDescriptions[data.editingTier].value})</td>
+          <td>${data.videosCount} Free ${thumbnailDescriptions[data.editingTier].title} (${thumbnailDescriptions[data.editingTier].value})</td>
           </tr>`
           : ''} 
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Delivery Speed:</td><td>${data.deliverySpeed}</td></tr>

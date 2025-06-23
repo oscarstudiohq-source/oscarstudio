@@ -4,11 +4,8 @@ const durationKeyMap = {
     "0": "30 sec",
     "1": "60 sec",
     "2": "90 sec",
-    "3": "3 min",
     "5": "5 min",
-    "7": "7 min",
     "10": "10 min",
-    "15": "15 min",
     "20": "20 min",
 };
 

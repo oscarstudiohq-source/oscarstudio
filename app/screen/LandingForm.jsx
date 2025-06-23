@@ -33,17 +33,14 @@ import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30 sec": { studio: 39, studioPro: 54, studioMax: 69 },
-        "60 sec": { studio: 50, studioPro: 79, studioMax: 99 },
-        "90 sec": { studio: 64, studioPro: 99, studioMax: 124 },
+        "30 sec": { studio: 35, studioPro: 49, studioMax: 69 },
+        "60 sec": { studio: 45, studioPro: 69, studioMax: 99 },
+        "90 sec": { studio: 59, studioPro: 89, studioMax: 124 },
     },
     long: {
-        "3 min": { studio: 84, studioPro: 116, studioMax: 143 },
-        "5 min": { studio: 124, studioPro: 168, studioMax: 207 },
-        "7 min": { studio: 164, studioPro: 220, studioMax: 271 },
-        "10 min": { studio: 194, studioPro: 259, studioMax: 319 },
-        "15 min": { studio: 234, studioPro: 311, studioMax: 383 },
-        "20 min": { studio: 274, studioPro: 363, studioMax: 447 },
+        "5 min": { studio: 114, studioPro: 159, studioMax: 207 },
+        "10 min": { studio: 169, studioPro: 229, studioMax: 319 },
+        "20 min": { studio: 249, studioPro: 329, studioMax: 447 },
     },
 };
 
@@ -87,15 +84,12 @@ export default function LandingForm() {
         "0": "30 sec",
         "1": "60 sec",
         "2": "90 sec",
-        "3": "3 min",
         "5": "5 min",
-        "7": "7 min",
         "10": "10 min",
-        "15": "15 min",
         "20": "20 min",
     };
     const shortKeys = ["0", "1", "2"];
-    const longKeys = ["3", "5", "7", "10", "15", "20"];
+    const longKeys = ["5", "10", "20"];
 
     // Price calculation
     const calculatePrice = () => {
