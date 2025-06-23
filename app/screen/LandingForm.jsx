@@ -1019,13 +1019,13 @@ export default function LandingForm() {
                     </div>
                 </div>
 
-                <button
+                {/* <button
                     onClick={testHandleEmailClick}
                     className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
                     disabled={loading}
                 >
                     Test Order Submit - New
-                </button>
+                </button> */}
 
             </CardContent>
         </Card>

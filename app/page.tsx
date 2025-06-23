@@ -150,9 +150,8 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
 
           <Heading className="text-[#ffffff]">
-            We never showcase your videos<br />
-            or share them with other clients as samples.<br />
-            Your content stays completely private.
+            We never showcase your videos or share them with other clients as samples.<br />
+            Your content stays 100% private and secure.
           </Heading>
 
         </div>
