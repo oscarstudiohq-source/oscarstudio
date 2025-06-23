@@ -34,8 +34,8 @@ import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 const basePrices = {
     short: {
         "30 sec": { studio: 39, studioPro: 59, studioMax: 75 },
-        "60 sec": { studio: 50, studioPro: 79, studioMax: 99 },
-        "90 sec": { studio: 64, studioPro: 99, studioMax: 124 },
+        "60 sec": { studio: 50, studioPro: 75, studioMax: 99 },
+        "90 sec": { studio: 64, studioPro: 95, studioMax: 124 },
     },
     long: {
         "5 min": { studio: 119, studioPro: 169, studioMax: 219 },
