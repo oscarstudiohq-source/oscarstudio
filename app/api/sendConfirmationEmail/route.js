@@ -37,8 +37,8 @@ export async function POST(req) {
     const response = await resend.emails.send({
       // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
       from: FROM_EMAIL,
-      // to: [data.email],
-      // bcc: BCC_EMAILS,
+      to: [data.email],
+      bcc: BCC_EMAILS,
       subject: '✅ Your Order has been Received!',
       html: `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
@@ -49,8 +49,6 @@ export async function POST(req) {
         <p style="margin: 8px 0 0; font-size: 15px;">
           Thank you for your order, ${data.name || 'valued customer'}! Your support means a lot.
         </p>
-
-        <p style="margin-top: 16px;"><strong>This is a test email.</strong> If you received this by mistake, please ignore it.</p>
 
       </div>
 

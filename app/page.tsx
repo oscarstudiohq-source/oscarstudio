@@ -111,7 +111,7 @@ export default function Home() {
               You Shoot,<br />We Edit.
             </h1> */}
 
-            <Heading className="text-[#001c64] text-[40px] sm:text-[56px] md:text-[66px]" weight={600}>
+            <Heading className="text-[#001c64] text-[36px] sm:text-[50px] md:text-[66px]" weight={600}>
               You Shoot,<br />We Edit.
             </Heading>
 
