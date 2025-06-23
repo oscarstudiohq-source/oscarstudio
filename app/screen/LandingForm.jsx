@@ -33,15 +33,15 @@ import { thumbnailDescriptions } from "./EditingTier"; // adjust path if needed
 
 const basePrices = {
     short: {
-        "30 sec": { studio: 35, studioPro: 49, studioMax: 69 },
-        "60 sec": { studio: 45, studioPro: 69, studioMax: 99 },
-        "90 sec": { studio: 59, studioPro: 89, studioMax: 124 },
+        "30 sec": { studio: 39, studioPro: 59, studioMax: 75 },
+        "60 sec": { studio: 50, studioPro: 79, studioMax: 99 },
+        "90 sec": { studio: 64, studioPro: 99, studioMax: 124 },
     },
     long: {
-        "5 min": { studio: 114, studioPro: 159, studioMax: 207 },
-        "10 min": { studio: 169, studioPro: 229, studioMax: 319 },
-        "20 min": { studio: 249, studioPro: 329, studioMax: 447 },
-    },
+        "5 min": { studio: 119, studioPro: 169, studioMax: 219 },
+        "10 min": { studio: 179, studioPro: 239, studioMax: 329 },
+        "20 min": { studio: 269, studioPro: 359, studioMax: 469 },
+    }
 };
 
 export default function LandingForm() {
