@@ -36,8 +36,20 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <title>TuesdayTrim – Best Video Editing for YouTube Creators in the US, UK & Europe</title>
+        <meta
+          name="description"
+          content="Tired of editing YouTube videos, Shorts, Reels, or TikToks? TuesdayTrim offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — book now!"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* ✅ JSON-LD Schema for Google favicon/logo */}
+        {/* ✅ JSON-LD Schema for logo (used by Google for rich results) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
