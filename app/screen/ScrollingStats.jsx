@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Heading from '../../components/Heading';
 
 const stats = [
-    { label: "Videos Edited", value: 350, icon: "/icons/play-button.png" },
-    { label: "Happy Creators", value: 120, icon: "/icons/happy-face.png" },
+    { label: "Videos Edited", value: 2500, suffix: "+", icon: "/icons/play-button.png" },
+    { label: "Happy Creators", value: 200, suffix: "+", icon: "/icons/happy-face.png" },
     { label: "Avg. Delivery Time", value: 48, suffix: "hrs", icon: "/icons/time-passing.png" },
-    { label: "Countries Served", value: 5, icon: "/icons/airplane.png" },
+    { label: "Countries Served", value: 5, suffix: "", icon: "/icons/airplane.png" },
 ];
 
 const AnimatedStats = () => {

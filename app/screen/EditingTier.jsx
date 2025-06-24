@@ -9,7 +9,7 @@ const tiers = [
         border: "border-zinc-700",
         suitableFor: (
             <>
-                Ideal for creators <strong>who upload daily or multiple times a week</strong> on YouTube, Shorts, TikTok, or Reels. Get clean editing at a budget-friendly rate — perfect for staying consistent and keeping up with your content calendar without sacrificing quality.
+                Ideal for creators <strong>who upload frequently</strong> on YouTube, Shorts, TikTok, or Reels <strong>and require clean basic editing</strong>. Get clean editing at a budget-friendly rate — perfect for staying consistent and keeping up with your content calendar without sacrificing quality.
             </>
         ),
         features: [
@@ -20,7 +20,7 @@ const tiers = [
             "1 Revision",
             {
                 title: "Delivery",
-                subitems: ["Short – 2 days", "Long – 3 days"],
+                subitems: ["Short: Typically 1–2 days", "Long: Typically 2–3 days"],
             },
         ],
     },
@@ -30,7 +30,7 @@ const tiers = [
         border: "border-yellow-500",
         suitableFor: (
             <>
-                Perfect for experienced or professional creators <strong>who upload once or twice a week</strong> on YouTube, Shorts, TikTok, Reels, or Podcasts. Studio Pro offers polished, professional editing with added creative depth — ideal for storytelling, audience engagement, and growing a loyal following.
+                Perfect for experienced or professional creators <strong>who upload multiple times a week</strong> on YouTube, Shorts, TikTok, Reels, or Podcasts <strong>and require polished, professional editing</strong>. Studio Pro offers polished, professional editing with added creative depth — ideal for storytelling, audience engagement, and growing a loyal following.
             </>
         ),
         features: [
@@ -42,7 +42,7 @@ const tiers = [
             "2 Revisions",
             {
                 title: "Delivery",
-                subitems: ["Short – 2 days", "Long – 3 days"],
+                subitems: ["Short: Typically 1–2 days", "Long: Typically 2–3 days"],
             },
         ],
     },
@@ -52,7 +52,7 @@ const tiers = [
         border: "border-emerald-400",
         suitableFor: (
             <>
-                For Top Creators, Brands and Agencies
+                <strong>For Top Creators who require premium editing</strong>
             </>
         ),
         features: [
@@ -64,7 +64,7 @@ const tiers = [
             "Unlimited revisions",
             {
                 title: "Delivery",
-                subitems: ["Short – 2 days", "Long – 3 days"],
+                subitems: ["Short: Typically 1–2 days", "Long: Typically 2–3 days"],
             },
         ],
     },

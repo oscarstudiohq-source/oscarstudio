@@ -14,9 +14,26 @@ const durationKeyMap = {
 };
 
 export async function POST(req) {
+  
   const data = await req.json();
 
   const video_duration = durationKeyMap[data.videoDuration] ?? data.videoDuration;
+
+  const orderDate = new Date();
+  const formattedOrderDate = orderDate.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 30);
+
+  const formattedExpirationDate = expirationDate.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   // ✅ Basic validation
   if (!data.email) {
@@ -66,6 +83,7 @@ export async function POST(req) {
           </tr>`
           : ''} 
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Delivery Speed:</td><td>${data.deliverySpeed}</td></tr>
+           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Order Date:</td><td>${formattedOrderDate}</td></tr>
         </table>
 
         <h3 style="margin-top: 32px; margin-bottom: 16px; color: #0f172a;">💳 Payment Details</h3>
@@ -83,7 +101,10 @@ export async function POST(req) {
         </table>
 
         <p style="margin-top: 32px;">We'll start working on your order shortly. If you have any questions, feel free to reply to this email.</p>
-        <p style="margin-top: 16px;">– Your Studio</p>
+        <p style="margin-top: 16px;">
+          📅 This order is valid for 30 days and will expire on <strong>${formattedExpirationDate}</strong>.
+        </p>
+        <p style="margin-top: 16px;">– TuesdayTrim</p>
       </div>
 
       <div style="background-color: #f1f5f9; text-align: center; padding: 16px; font-size: 13px; color: #64748b;">
