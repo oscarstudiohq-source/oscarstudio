@@ -988,7 +988,7 @@ export default function LandingForm() {
                         {/* ✅ Confirmation modal */}
                         {showModal && <OrderConfirmationModal onClose={() => setShowModal(false)} />}
 
-                        {/* ✅ PayPal buttons container */}
+                        {/* ✅ PayPal buttons container  */}
                         {showPayPal && <div ref={paypalRef} className="w-full" />}
                     </div>
                 </div>
@@ -1013,13 +1013,14 @@ export default function LandingForm() {
                     </div>
                 </div>
 
-                <button
+                {/* Trust Email and Order confirmation */}
+                {/* <button
                     onClick={testHandleEmailClick}
                     className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
                     disabled={loading}
                 >
                     Test Order Submit - New
-                </button>
+                </button> */}
 
             </CardContent>
         </Card>
