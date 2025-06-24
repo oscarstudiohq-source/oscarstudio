@@ -154,7 +154,7 @@ export default function Home() {
             Your content stays 100% private and secure.
           </Heading>
           <div className="text-white text-sm md:text-base mt-1">
-            Demo uses non-client footage to respect creator privacy*
+            Demo below uses non-client footage to respect creator privacy*
           </div>
         </div>
       </section>
