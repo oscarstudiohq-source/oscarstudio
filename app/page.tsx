@@ -175,7 +175,7 @@ export default function Home() {
 
         {/* Overlay Text */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-4 text-center">
-          <div className="bg-[#000] bg-opacity-50 px-4 py-3 md:px-6 md:py-4 rounded-lg">
+          <div className="bg-[#001c64] bg-opacity-50 px-4 py-3 md:px-6 md:py-4 rounded-lg">
             <div className="text-white text-xl md:text-4xl font-semibold">
               100% Private & Secure
             </div>
