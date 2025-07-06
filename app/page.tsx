@@ -19,7 +19,8 @@ export default function Home() {
     <>
 
       <a
-        href="https://wa.me/918824083829"
+        // href="https://wa.me/918824083829"
+        href="https://wa.me/918426919793"
         className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group"
         target="_blank"
         rel="noopener noreferrer"
@@ -146,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* 🌟 information Section */}
-      <section id="text-section1" className="bg-[#0070e0] text-white py-20 px-6 text-center">
+      <section id="text-section1" className="bg-[#0070e0] text-white py-16 px-6 text-center">
         <div className="max-w-4xl mx-auto">
 
           <Heading className="text-[#ffffff]">
