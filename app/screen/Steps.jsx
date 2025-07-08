@@ -6,76 +6,73 @@ export default function HowItWorks() {
     const steps = [
         {
             title: "Step 1",
-            heading: "Submit Details & Footage",
+            heading: "Submit Video Details & Select Package",
             description:
-                "Fill out a short form with your name, email, editing instructions, and video links (Google Drive, Dropbox, or YouTube).",
-            icon: "/icons/next.png",
+                "Fill out a brief form with your name, email, video count, editing tier, and video links (Google Drive, Dropbox, or YouTube).",
+            icon: "/images/details.png",
         },
         {
             title: "Step 2",
-            heading: "Choose a Package & Pay",
+            heading: "Make Payment",
             description:
-                "Pick the editing package that fits your needs — choose your editing tier and number of videos, whether it’s a single video or a monthly bundle, and place your order.",
-            icon: "/icons/atm-card.png",
+                "Review your selected package and securely complete the payment to confirm your order and start the editing process.",
+            icon: "/images/payment.png",
         },
         {
             title: "Step 3",
+            heading: "Get Order Confirmation on Email",
+            description:
+                "You'll receive a confirmation email with your order summary and timeline. Sit back while our editors get to work.",
+            icon: "/images/order.png",
+        },
+        {
+            title: "Step 4",
             heading: "Get Ready-to-Post Videos",
             description:
-                "Receive professionally edited content, fully optimized for YouTube, Shorts, Reels, or TikTok — ready to upload.",
-            icon: "/icons/deliver.svg",
+                "Receive high-quality, professionally edited videos — formatted and optimized for YouTube, Shorts, Reels, and TikTok. Just upload and go!",
+            icon: "/images/edited.png",
         },
     ];
-      
+
+
 
     return (
         <section className="bg-[#f3f3f6] text-gray-900 py-16 px-6">
             <div className="max-w-6xl mx-auto text-center mb-12">
-                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
-                   How It Works
-                </h2> */}
-                <Heading className="text-[#001c64]">
-                    How It Works
-                </Heading>
-                <p className="text-black mt-2">3-Step Process to Get Your Videos Edited & Ready to Post</p>
+                <Heading className="text-[#001c64]">How It Works</Heading>
+                <p className="text-black mt-2">4-Step Process to Get Your Videos Edited & Ready to Post</p>
             </div>
 
-            <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 relative">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {steps.map((step, index) => (
                     <div
                         key={index}
-                        className="relative text-center p-6 bg-white rounded-2xl"
+                        className="flex flex-col items-center text-center bg-white rounded-2xl p-6 shadow-md h-full"
                     >
-                        {index === 2 ? (
-                            <div className="flex justify-center items-center space-x-[-10px] mb-4">
-                                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 border border-gray-200 z-30">
-                                    <img src="/icons/youtube.png" alt="YouTube" className="w-10 h-10" />
-                                </div>
-                                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 border border-gray-200 z-20">
-                                    <img src="/icons/instagram.png" alt="Instagram" className="w-10 h-10" />
-                                </div>
-                                <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 border border-gray-200 z-10">
-                                    <img src="/icons/tik-tok.png" alt="TikTok" className="w-10 h-10" />
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="mx-auto mb-4 w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 relative">
-                                <img src={step.icon} alt={step.heading} className="w-8 h-8" />
-                            </div>
-                        )}
+                        {/* Image container with separator */}
+                        <div className="w-full max-w-[220px] min-h-[120px] mx-auto pb-6">
+                            <img
+                                src={step.icon}
+                                alt={step.heading}
+                                className="w-full h-auto object-contain rounded-md"
+                            />
+                            {/* Separator line with some margin */}
+                            <hr className="border-gray-400 mt-8" />
+                        </div>
 
-                        <p className="text-sm uppercase text-gray-500 tracking-wide mb-1">
-                            {step.title}
-                        </p>
-                        <h3 className="text-lg font-semibold mb-2 mt-4">{step.heading}</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">
-                            {step.description}
-                        </p>
+                        {/* Text container with spacing from separator */}
+                        <div className="flex flex-col items-center mt-0">
+                            <p className="text-xs uppercase text-gray-500 tracking-wider mb-1">{step.title}</p>
+                            <h3 className="text-base font-semibold mb-2">{step.heading}</h3>
+                            <p className="text-sm text-gray-600 leading-relaxed max-w-[280px]">{step.description}</p>
+                        </div>
                     </div>
+
                 ))}
             </div>
         </section>
-    
+
+
     );
 
 }

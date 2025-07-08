@@ -8,6 +8,7 @@ import LandingForm from './screen/LandingForm';
 import Steps from './screen/Steps.jsx';
 import ScrollingStats from './screen/ScrollingStats.jsx';
 import EditingTier from './screen/EditingTier';
+import Header from "../components/Header";
 import Footer from "./screen/Footer";
 
 import Link from 'next/link';
@@ -19,12 +20,12 @@ export default function Home() {
     <>
 
       <a
-        // href="https://wa.me/918824083829"
-        href="https://wa.me/918426919793"
+        href="https://wa.me/918426919793?text=Hi%2C%20I%E2%80%99m%20looking%20to%20get%20my%20videos%20edited%20with%20TuesdayTrim.%20Can%20you%20help%3F"
         className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group"
         target="_blank"
         rel="noopener noreferrer"
       >
+
         {/* Avatar with badge wrapper */}
         <div className="relative">
           {/* Your Photo */}
@@ -57,41 +58,7 @@ export default function Home() {
         </div>
       </a>
 
-      <header id="home" className="bg-white text-[#001c64] flex justify-between items-center px-4 sm:px-10 md:px-20 py-4 border-b border-gray-200 shadow-sm">
-        {/* Logo */}
-        <div className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
-          <img src="/favicon.ico" alt="TuesdayTrim Logo" className="w-8 h-8" />
-          TuesdayTrim
-        </div>
-
-        {/* Navigation */}
-        <nav className="hidden md:flex space-x-6 font-medium text-sm">
-          <div className="flex gap-3">
-            <a
-              href="#home"
-              className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
-            >
-              Home
-            </a>
-            <a
-              href="#footer"
-              className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
-            >
-              Contact
-            </a>
-          </div>
-
-        </nav>
-
-        {/* CTA Button */}
-        <a
-          href="#orderSection"
-          className="ml-4 bg-[#003087] hover:bg-[#0874e4] transition-colors px-5 py-2 rounded-full text-white font-semibold text-base shadow"
-        >
-          Get Started
-        </a>
-      </header>
-
+      <Header />
 
       <main id="orderSection" className="bg-white text-gray-900 py-8 sm:py-10 md:py-8 lg:py-6">
 
@@ -104,24 +71,10 @@ export default function Home() {
 
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
-            {/* 
-            <h1
-              className="font-sans font-extrabold text-[40px] sm:text-[56px] md:text-[70px] leading-[1.1] tracking-[-0.03em] text-[#001c64]"
-              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-            >
-              You Shoot,<br />We Edit.
-            </h1> */}
-
+            
             <Heading className="text-[#001c64] text-[36px] sm:text-[50px] md:text-[66px]" weight={600}>
               You Shoot,<br />We Edit.
             </Heading>
-
-            {/* <h1
-              className="font-sans text-3xl sm:text-4xl md:text-7xl font-extrabold leading-snug tracking-[-0.04em] text-[#001c64]"
-              style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
-            >
-              Pay easy, fast,<br /> and Secure.
-            </h1> */}
 
             <p className="text-sm sm:text-base text-black">
               Send us your raw footage, and we’ll turn it into polished, ready-to-post videos.
@@ -141,6 +94,26 @@ export default function Home() {
         </div>
       </main>
 
+      {/* 🌟 Steps Section */}
+      <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
+        <Steps />
+      </section>
+
+      {/* 🌟 information Section */}
+      <section id="text-section1" className="bg-[#0070e0] text-white py-16 px-6 text-center">
+        <div className="max-w-4xl mx-auto">
+
+          <Heading className="text-[#ffffff]">
+            The growth secret of top 1% creators?<br />
+            Pro editing. That’s us.
+          </Heading>
+          <div className="text-white text-sm md:text-base mt-2">
+            Want your videos go viral? Let us do the editing.
+          </div>
+        </div>
+      </section>
+
+
       {/* 🌟 Editing tier Section */}
       <section id="editingTier" className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-6 sm:py-10">
         <EditingTier />
@@ -151,11 +124,13 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
 
           <Heading className="text-[#ffffff]">
-            Your content stays 100% private and secure.
+            Want more engagement on your videos?<br />
+            Fast, high-quality edits that keep viewers hooked.
           </Heading>
-          <div className="text-white text-sm md:text-base mt-1">
-            Demo below uses non-client footage to respect creator privacy*
+          <div className="text-white text-sm md:text-base mt-2">
+            Gain more subscribers, followers, and boost engagement with expertly edited videos designed for growth.
           </div>
+
         </div>
       </section>
 
@@ -174,20 +149,22 @@ export default function Home() {
         </video>
       </div>
 
-      {/* 🌟 Steps Section */}
-      <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
-        <Steps />
-      </section>
-
-      {/* 🌟 Stats Section */}
-      <section id="scrollingStats" className="bg-[#001435] text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
-        <ScrollingStats />
-      </section>
 
       {/* 🌟 Testimonial Section */}
       <section id="testimonials" className="bg-white text-white px-4 sm:px-10 md:px-20 py-6 sm:py-10">
         <Testimonials />
       </section>
+
+      {/* 🌟 Stats Section */}
+      <section
+        id="scrollingStats"
+        className="bg-[#fff] px-2 sm:px-6 md:px-8 py-6 pb-10 sm:py-10 mb-12"
+      >
+        <div className="bg-[#001435] text-white rounded-2xl px-4 sm:px-10 py-6 sm:py-8 shadow-md max-w-7xl mx-auto">
+          <ScrollingStats />
+        </div>
+      </section>
+
 
       {/* 🌟 Footer Section */}
       <section id="footer" className="bg-[#001435] text-white px-4 sm:px-10 md:px-20 py-6 sm:py-10">

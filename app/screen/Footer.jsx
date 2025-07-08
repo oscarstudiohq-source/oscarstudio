@@ -25,11 +25,13 @@ export default function Footer() {
                 </div>
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Contact</h4>
-                    <ul className="space-y-2 text-sm">
+
+                    <ul className="space-y-2 text-sm text-gray-100">
                         <li>
-                            Email: <a
+                            Email:{" "}
+                            <a
                                 href="mailto:support@tuesdaytrim.com"
-                                className="hover:underline text-gray-100"
+                                className="hover:underline"
                             >
                                 support@tuesdaytrim.com
                             </a>
@@ -37,7 +39,7 @@ export default function Footer() {
                         <li>
                             <a
                                 href="https://wa.me/918824083829"
-                                className="hover:underline text-gray-100"
+                                className="hover:underline"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -45,7 +47,37 @@ export default function Footer() {
                             </a>
                         </li>
                     </ul>
+
+                    {/* ✅ Social Icons with Label */}
+                    <div className="mt-6">
+                        <p className="text-sm font-medium text-gray-300 mb-4">Follow us on</p>
+                        <div className="flex gap-4">
+                            <a
+                                href="https://www.facebook.com/people/TuesdayTrim/61578226494486/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img src="/icons/facebook.png" alt="Facebook" className="w-6 h-6" />
+                            </a>
+                            <a
+                                href="https://instagram.com/yourprofile"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
+                            </a>
+                            <a
+                                href="https://www.youtube.com/@tuesdaytrim"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <img src="/icons/youtube.png" alt="YouTube" className="w-6 h-6" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
+
                 {/* <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Follow Us</h4>
                     <div className="flex space-x-4">

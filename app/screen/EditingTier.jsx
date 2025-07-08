@@ -17,7 +17,7 @@ const tiers = [
             "Royalty-free music",
             "Color correction",
             "Free Thumbnail Design (Standard)",
-            "1 Revision",
+            "3 Revision",
             {
                 title: "Delivery",
                 subitems: ["Short: Typically 1–2 days", "Long: Typically 2–3 days"],
@@ -39,7 +39,7 @@ const tiers = [
             "Color grading",
             "Sound design",
             "Free Custom-Branded Thumbnail Design",
-            "2 Revisions",
+            "3 Revisions",
             {
                 title: "Delivery",
                 subitems: ["Short: Typically 1–2 days", "Long: Typically 2–3 days"],
