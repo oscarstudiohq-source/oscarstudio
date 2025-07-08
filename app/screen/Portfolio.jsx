@@ -54,7 +54,7 @@ const portfolioVideos = [
         title: "AI in 60 Seconds",
         type: "short",
     },
-      
+
     //long videos
     {
         url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
@@ -129,16 +129,17 @@ function convertToEmbed(url) {
     return null; // For Instagram, Dropbox, etc.
 }
 
+
 function VideoCard({ url, title, type }) {
     const isShort = type === "short";
     const embedUrl = convertToEmbed(url);
     const supportsEmbed = !!embedUrl;
 
     return (
-        <div className="group w-fit">
+        <div className="group w-full">
             <div
-                className={`overflow-hidden rounded-xl shadow-md hover:shadow-xl transition border border-gray-200 ${isShort ? "w-40 h-72" : "w-64 h-36"
-                    } bg-black`}
+                className={`overflow-hidden rounded-xl shadow-md hover:shadow-xl transition border border-gray-200 bg-black 
+          ${isShort ? "aspect-[9/16]" : "aspect-video"}`}
             >
                 {supportsEmbed ? (
                     <iframe
@@ -163,13 +164,15 @@ function VideoCard({ url, title, type }) {
                 <h3 className="text-sm font-semibold text-[#001c64] truncate group-hover:text-[#003087]">
                     {title}
                 </h3>
-                <span className="text-xs text-[#003087] uppercase">
+                {/* <span className="text-xs text-[#003087] uppercase">
                     {isShort ? "Short Video" : "Long-form Video"}
-                </span>
+                </span> */}
             </div>
         </div>
     );
 }
+
+
 
 export default function Portfolio() {
     const shorts = portfolioVideos.filter((v) => v.type === "short");
@@ -184,7 +187,10 @@ export default function Portfolio() {
             <Header />
 
             {/* 🌟 Information Section */}
-            <section id="text-section1" className="bg-[#fff] pt-12 py-2 px-4 sm:px-6 lg:px-8">
+            <section
+                id="text-section1"
+                className="bg-white px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-5 md:pb-6"
+            >
                 <div className="max-w-7xl mx-auto">
                     <div className="bg-[#001c64] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
                         <Heading className="text-white text-2xl sm:text-3xl font-bold">
@@ -198,21 +204,12 @@ export default function Portfolio() {
             </section>
 
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-                {/* Main Title */}
-                {/* <Heading className="text-[#001c64]">
-                    Portfolio Highlights
-                </Heading>
-                <div className="text-[#001c64] text-sm md:text-base leading-relaxed md:leading-loose mt-2">
-                    Explore our best edits — high-performing short reels and professional long-form productions.
-                </div> */}
-
-                {/* Shorts Section */}
-                <h3 className="text-xl sm:text-2xl font-semibold text-[#003087] mb-6 mt-8 sm:mt-12 text-left">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-6 md:mt-6">
+                <h3 className="text-xl sm:text-2xl font-semibold text-[#003087] mb-6 mt-0 text-left">
                     Short Videos & Reels
                 </h3>
                 <div className="h-1 w-20 bg-[#003087] mb-6 rounded"></div>
-                <div className="flex flex-wrap justify-center sm:justify-start gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
                     {shorts.map((video, index) => (
                         <VideoCard key={index} {...video} />
                     ))}
@@ -223,13 +220,13 @@ export default function Portfolio() {
                     Long-Form Videos
                 </h3>
                 <div className="h-1 w-20 bg-[#003087] mb-6 rounded"></div>
-                <div className="flex flex-wrap justify-center sm:justify-start gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-8">
                     {longs.map((video, index) => (
                         <VideoCard key={index} {...video} />
                     ))}
                 </div>
             </div>
         </section>
-      
+
     );
 }

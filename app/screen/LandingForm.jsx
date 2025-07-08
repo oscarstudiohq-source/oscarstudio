@@ -64,7 +64,7 @@ export default function LandingForm() {
     const paypalRef = useRef(null);
     const [showPayPal, setShowPayPal] = useState(false);
 
-    const [price, setPrice] = useState({ original: 0, discounted: 0, paying:0 });
+    const [price, setPrice] = useState({ original: 0, discounted: 0, paying: 0 });
     const [isCouponApplied, setIsCouponApplied] = useState(false);
     const [discountRate, setDiscountRate] = useState(20);
 
@@ -165,7 +165,7 @@ export default function LandingForm() {
             paying        // rounded integer
         };
     };
-      
+
 
     // Update price whenever form data or coupon changes
     useEffect(() => {
@@ -440,10 +440,7 @@ export default function LandingForm() {
         alert("Payment Gateway not integrated.");
         return;
 
-        const amount =
-            paymentMode === "default"
-                ? price.discounted
-                : parseFloat(customAmount || "0");
+        const amount = price.paying;
 
         if (amount <= 0) {
             alert("Invalid amount.");

@@ -72,7 +72,7 @@ export default function Home() {
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
             
-            <Heading className="text-[#001c64] text-[36px] sm:text-[50px] md:text-[66px]" weight={600}>
+            <Heading className="text-[#001c64] text-[32px] sm:text-[46px] md:text-[58px]" weight={800}>
               You Shoot,<br />We Edit.
             </Heading>
 
@@ -83,7 +83,7 @@ export default function Home() {
           </div>
 
           {/* Right (Form) - 55% on desktop */}
-          <div className="w-full md:w-[60%] flex justify-center mt-12 md:mt-0">
+          <div className="w-full md:w-[60%] flex justify-center">
 
             {/* <Script src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm">
             </Script> */}
