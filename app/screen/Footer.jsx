@@ -41,6 +41,16 @@ export default function Footer() {
                     <ul className="space-y-2 text-sm">
                         <li>
                             <a
+                                href="/terms"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline text-gray-100"
+                            >
+                                Terms and Conditions
+                            </a>
+                        </li>
+                        <li>
+                            <a
                                 href="/privacy-policy"
                                 target="_blank"
                                 rel="noopener noreferrer"
