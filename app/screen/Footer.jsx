@@ -11,9 +11,29 @@ export default function Footer() {
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Quick Links</h4>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="#home" className="hover:underline text-gray-100">Home</a></li>
-                        <li><a href="#footer" className="hover:underline text-gray-100">Contact</a></li>
-                        <li><a href="#home" className="hover:underline text-gray-100">Order Now</a></li>
+                        <ul className="space-y-2 text-sm">
+                            <li>
+                                <a href="/#home" className="hover:underline text-gray-100">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="/contact"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:underline text-gray-100"
+                                >
+                                    Contact
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/#home" className="hover:underline text-gray-100">
+                                    Order Now
+                                </a>
+                            </li>
+                        </ul>
+
                     </ul>
                 </div>
                 <div>
@@ -69,7 +89,7 @@ export default function Footer() {
                     </ul>
 
                     {/* ✅ Social Icons with Label */}
-                    <div className="mt-6">
+                    {/* <div className="mt-6">
                         <p className="text-sm font-medium text-gray-300 mb-4">Follow us on</p>
                         <div className="flex gap-4">
                             <a
@@ -94,7 +114,7 @@ export default function Footer() {
                                 <img src="/icons/youtube.png" alt="YouTube" className="w-6 h-6" />
                             </a>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
 

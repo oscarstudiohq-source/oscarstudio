@@ -600,7 +600,7 @@ export default function LandingForm() {
 
         if (!tier || !desc) return 0;
 
-        const baseValue = Number(desc.value.replace('$', ''));
+        const baseValue = Number(desc.value.replace('₹', ''));
 
         if (formData.videoType === 'short') {
             if (tier === 'studio') return 15;
@@ -1223,12 +1223,12 @@ export default function LandingForm() {
 
                                         <div className="flex items-center gap-2">
                                             <span className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}>
-                                                🎁 +{formData.videosCount} Free ${getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
+                                            🎁 +{formData.videosCount} Free {formData.country.currency_symbol}{getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
                                             </span>
                                             <div
                                                 className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}
                                             >
-                                                (${totalThumbValue})
+                                            ({formData.country.currency_symbol}{totalThumbValue})
                                             </div>
                                         </div>
                                     </div>

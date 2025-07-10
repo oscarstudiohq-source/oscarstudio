@@ -2,6 +2,7 @@
 'use client';
 import Script from "next/script";
 import Image from "next/image";
+import { Suspense } from "react";
 import Testimonials from './screen/Testimonials';
 // app/page.tsx
 import LandingForm from './screen/LandingForm';
@@ -84,12 +85,13 @@ export default function Home() {
 
           {/* Right (Form) - 55% on desktop */}
           <div className="w-full md:w-[60%] flex justify-center">
-
-            {/* <Script src="https://www.paypal.com/sdk/js?client-id=AYc2iFVc3SlSYh7lthEbE2nLzwGQWfYhYxT6knouke2Dt7F0SjkAbCB5sNqhRPG29FLxH1acexKnmHtm">
-            </Script> */}
-
-            <LandingForm />
+            <Suspense fallback={<div>Loading form...</div>}>
+              <LandingForm />
+            </Suspense>
           </div>
+          {/* <div className="w-full md:w-[60%] flex justify-center">
+            <LandingForm />
+          </div> */}
 
         </div>
       </main>

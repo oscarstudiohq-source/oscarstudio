@@ -7,7 +7,7 @@ export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
-        <header className="bg-white text-[#001c64] border-b border-gray-200 shadow-sm">
+        <header id="home" className="bg-white text-[#001c64] border-b border-gray-200 shadow-sm">
             <div className="flex items-center justify-between px-4 sm:px-6 md:px-20 py-4 relative">
                 {/* Logo */}
                 <div className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
@@ -23,18 +23,21 @@ export default function Header() {
                     >
                         Home
                     </Link>
-                    <Link
-                        href="/#footer"
+                    <a
+                        href="/contact"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
                     >
                         Contact
-                    </Link>
-                    <Link
+                    </a>
+
+                    {/* <Link
                         href="/portfolio"
                         className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
                     >
                         Portfolio
-                    </Link>
+                    </Link> */}
                 </nav>
 
                 {/* CTA + Mobile Icon */}

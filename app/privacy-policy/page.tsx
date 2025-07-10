@@ -68,6 +68,9 @@ export default function PrivacyPolicyPage() {
                     <li>Phone / WhatsApp: <a href="tel:+918824083829" className="text-blue-600 underline">+91 88240 83829</a></li>
                 </ul>
 
+                <h2 className="text-xl font-semibold mt-6 mb-2">Business Name</h2>
+                <p className="mb-4">Bigmeet Infotech Private Limited</p>
+
                 <h2 className="text-xl font-semibold mt-6 mb-2">Business Address</h2>
                 <p>
                     Saroj Sharma W/O Bihari Lal, Plot No-12, Ward No-2,<br />

@@ -50,7 +50,7 @@ export default function RefundPolicyPage() {
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">Refund Process</h2>
                 <p className="mb-4">
-                    Approved refunds will be processed within <strong>5–7 business days</strong> to the original payment method.
+                    Approved refunds will be credited within <strong>5–7 business days</strong> to the original payment method.
                 </p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">Contact Us</h2>
@@ -61,6 +61,9 @@ export default function RefundPolicyPage() {
                     <li>Email: <a href="mailto:support@tuesdaytrim.com" className="text-blue-600 underline">support@tuesdaytrim.com</a></li>
                     <li>Phone / WhatsApp: <a href="tel:+918824083829" className="text-blue-600 underline">+91 88240 83829</a></li>
                 </ul>
+
+                <h2 className="text-xl font-semibold mt-6 mb-2">Business Name</h2>
+                <p className="mb-4">Bigmeet Infotech Private Limited</p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">Business Address</h2>
                 <p>
