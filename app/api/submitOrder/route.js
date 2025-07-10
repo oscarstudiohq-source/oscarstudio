@@ -15,7 +15,9 @@ function toSnakeCaseOrder(data) {
         email: data.email,
         raw_footage: data.rawFootage,
         inspiration_video: data.inspirationVideo,
-        country: data.country,
+        country: data.country.name,
+        currency: data.country.currency,
+        currency_symbol: data.country.currency_symbol,
         social: data.social,
         videos_count: Number(data.videosCount),
         video_type: data.videoType,
@@ -29,8 +31,11 @@ function toSnakeCaseOrder(data) {
         notes: data.notes,
 
         // ✅ Directly use the flattened fields
-        price_original: Number((data.price_original ?? 0).toFixed(2)),
-        price_discounted: Number((data.price_discounted ?? 0).toFixed(2)),
+        order_id: data.order_id,
+        price_original: Math.round(data.price_original ?? 0),
+        price_discounted: Math.round(data.price_discounted ?? 0),
+        amount_paid: Math.round(data.amount_paid ?? 0),
+        payment_mode: data.paymentMode,
         is_coupon_applied: data.is_coupon_applied ?? false,
         discount_rate: data.discount_rate ?? 0
     };

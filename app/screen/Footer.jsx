@@ -19,10 +19,30 @@ export default function Footer() {
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Legal</h4>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="#terms" className="hover:underline text-gray-100">Terms of Service</a></li>
-                        <li><a href="#privacy" className="hover:underline text-gray-100">Privacy Policy</a></li>
+                        <li>
+                            <a
+                                href="/privacy-policy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline text-gray-100"
+                            >
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/refund-policy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline text-gray-100"
+                            >
+                                Refund Policy
+                            </a>
+                        </li>
                     </ul>
+
                 </div>
+
                 <div>
                     <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Contact</h4>
 

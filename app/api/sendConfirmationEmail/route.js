@@ -88,10 +88,12 @@ export async function POST(req) {
 
         <h3 style="margin-top: 32px; margin-bottom: 16px; color: #0f172a;">💳 Payment Details</h3>
         <table style="width: 100%; border-collapse: collapse;">
-          <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Original Price:</td><td>$${data.price_original}</td></tr>
-          <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Discounted Price:</td><td><strong>$${data.price_discounted}</strong></td></tr>
+          <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Original Price:</td><td>${data.currency_symbol}${data.price_original}</td></tr>
+          <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Discounted Price:</td><td><strong>${data.currency_symbol}${data.price_discounted}</strong></td></tr>
+           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Amount Paid:</td><td><strong>${data.currency_symbol}${data.amount_paid}</strong></td></tr>
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Coupon Applied:</td><td>${data.is_coupon_applied ? 'Yes' : 'No'}</td></tr>
           <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Discount Rate:</td><td>${data.discount_rate}%</td></tr>
+            <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Payment Mode:</td><td>${data.paymentMode}%</td></tr>
         </table>
 
         <h3 style="margin-top: 32px; margin-bottom: 16px; color: #0f172a;">📋 Other Details</h3>

@@ -1,18 +1,20 @@
 "use client";
 import Script from "next/script";
+import { useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { loadScript } from "@paypal/paypal-js";
-import { loadCashfreeSdk } from "@/lib/loadCashfreeSdk"; // correct path
+import { loadCashfreeSdk } from "../../lib/loadCashfreeSdk"; // correct path
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { submitOrderAndSendEmail } from "@/lib/submitOrderAndEmail";
-import { submitOrder } from '@/lib/submitOrder'; // adjust path as needed
+// import { submitOrderAndSendEmail } from "@/lib/submitOrderAndEmail";
+import { submitOrder } from "../../lib/submitOrder";
 import OrderConfirmationModal from "@/components/OrderConfirmationModal"; // adjust path if needed
 import { toast } from "sonner";
+import { nanoid, customAlphabet } from "nanoid";
 import {
     Tooltip,
     TooltipTrigger,
@@ -61,6 +63,58 @@ const basePrices = {
 
 
 export default function LandingForm() {
+
+    const searchParams = useSearchParams();
+    const orderId = searchParams.get("order_id");
+    const [status, setStatus] = useState("checking");
+
+    useEffect(() => {
+        if (!orderId) return;
+
+        const check = async () => {
+            try {
+                const res = await fetch(`/api/checkPaymentStatus?order_id=${orderId}`);
+                const data = await res.json();
+
+                if (data.order_status === "PAID") {
+                    // Create the order in your DB and send email
+                    const submitRes = await fetch("/api/submitOrderAfterPayment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ order_id: orderId }),
+                    });
+
+                    const rawText = await submitRes.text();
+                    console.log("🪵 Response Text:", rawText);
+
+                    let result;
+                    try {
+                        result = JSON.parse(rawText);
+                    } catch (parseErr) {
+                        console.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
+                        alert("Something went wrong verifying your order.");
+                        return;
+                    }
+
+                    if (result.status === "success") {
+                        alert("✅ Payment made successfully & order verified");
+                    } else {
+                        alert("❌ Unable to verify your order. Please contact support.");
+                    }
+
+                } else {
+                    alert("Payment failed or not completed.");
+                }
+            } catch (e) {
+                console.error(e);
+                setStatus("error");
+                alert("Payment failed or not completed.");
+            }
+        };
+
+        check();
+    }, [orderId]);
+
     const paypalRef = useRef(null);
     const [showPayPal, setShowPayPal] = useState(false);
 
@@ -73,15 +127,12 @@ export default function LandingForm() {
 
     const [customAmount, setCustomAmount] = useState("");
 
-    const [paymentMode, setPaymentMode] = useState("full"); // 'full','half','after','custom'
-    const [currency, setCurrency] = useState("₹");
-
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         rawFootage: "",
         inspirationVideo: "",
-        country: "india",
+        country: { name: "india", currency: "inr", currency_symbol: "₹" },
         social: "youtube",
         videosCount: "1",
         videoType: "short", // "short" or "long"
@@ -91,7 +142,9 @@ export default function LandingForm() {
         aspectRatio: "",
         language: "en",
         notes: "",
+        paymentMode: "full", // 'full','half','after','custom'
     });
+
     const formDataRef = useRef(formData);
     useEffect(() => {
         formDataRef.current = formData;
@@ -102,7 +155,6 @@ export default function LandingForm() {
 
         if (key === "country") {
             setShowPayPal(false);
-            setCurrency(value === "india" ? "₹" : value === "international" ? "$" : "");
         }
     };
 
@@ -129,10 +181,16 @@ export default function LandingForm() {
             return { original: 0, discounted: 0, paying: 0 };
         }
 
-        const tierPriceMap = basePrices[formData.country]?.[videoType]?.[durationKey];
+        const tierPriceMap = basePrices[formData.country?.name]?.[videoType]?.[durationKey];
+
 
         if (!tierPriceMap) {
-            console.warn("No price found for", formData.country, videoType, durationKey);
+            console.warn(
+                "No price found for",
+                formData.country?.name,
+                videoType,
+                durationKey
+            );
             return { original: 0, discounted: 0, paying: 0 };
         }
 
@@ -147,14 +205,14 @@ export default function LandingForm() {
 
         let paying = 0;
 
-        if (paymentMode === "full") {
+        if (formData.paymentMode === "full") {
             paying = discounted;
-        } else if (paymentMode === "half") {
+        } else if (formData.paymentMode === "half") {
             paying = Math.round(discounted / 2);
-        } else if (paymentMode === "after") {
-            paying = 0;
-        } else if (paymentMode === "custom") {
-            paying = Math.round(customAmount);
+        } else if (formData.paymentMode === "after") {
+            paying = 10;
+        } else if (formData.paymentMode === "custom") {
+            paying = Math.round(customAmount || 0);
         } else {
             paying = discounted;
         }
@@ -177,9 +235,9 @@ export default function LandingForm() {
         formData.videoDuration,
         formData.editingTier,
         formData.videosCount,
+        formData.paymentMode,
         isCouponApplied,
         discountRate,
-        paymentMode,
         customAmount,
     ]);
 
@@ -269,8 +327,87 @@ export default function LandingForm() {
         return true;
     };
 
-    // Submit handler
     const handleSubmit = () => {
+
+        alert("Payment Gateway is not integrated.");
+        return;
+
+
+        try {
+            // Validate form data
+            if (!validateForm(formData)) {
+                return;
+            }
+
+            const { original, discounted, paying } = calculatePrice();
+
+            if (
+                !original || isNaN(original) ||
+                !discounted || isNaN(discounted) ||
+                paying == null || isNaN(paying)
+            ) {
+                alert("There was an issue calculating the price. Please check your selections.");
+                return;
+            }
+
+            setPrice({ original, discounted, paying }); // Update price state
+
+            // Decide payment method based on country
+            if (formData.country?.name === "india") {
+                // handleCashfreePayment(); // Open Cashfree modal
+
+                createOrderAndPay();
+
+            } else {
+                setTimeout(() => setShowPayPal(true), 50); // Show PayPal
+            }
+
+            console.log("Submitted Data:", formData);
+            console.log("Original Price:", original);
+            console.log("Discounted Price:", discounted);
+            console.log("Paying Price:", paying);
+
+        } catch (e) {
+            console.error("Error during submit:", e);
+        }
+    };
+
+    //only for testing emails
+    const createOrderAndPay = async () => {
+        setLoading(true);
+        try {
+
+            const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ123456789"; // No confusing characters
+            const nanoid6 = customAlphabet(alphabet, 6);
+            const orderId = "TT-" + nanoid6(); // Example: TT-7X9KPT
+
+            const result = await submitOrder({
+                orderId,
+                formData,
+                price,
+                isCouponApplied,
+                discountRate,
+            });
+
+            if (result.status === "success") {
+                // setShowModal(true);
+
+                handleCashfreePayment(orderId);
+            } else {
+                alert(result.message); // Friendly message shown to user
+            }
+
+        } catch (err) {
+            console.error("Unexpected error:", err);
+            alert("Something went wrong after payment.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
+    // Submit handler
+    const handleSubmit1 = () => {
         try {
             //validation
             if (!validateForm(formData)) {
@@ -322,6 +459,53 @@ export default function LandingForm() {
             setLoading(false);
         }
     };
+
+
+    const handleCashfreePayment = async (orderId) => {
+        const amount = price.paying;
+        const order_id = orderId;
+        if (amount <= 0) return alert("Invalid amount.");
+
+        setLoading(true);
+        // const order_id = `order_${Date.now()}`;
+
+        try {
+            const res = await fetch("/api/createPaymentSession", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    order_id,
+                    order_amount: price.paying,
+                    customer_id: (formData.email || "guest_user").replace(/[^a-zA-Z0-9_-]/g, "_"),
+                    customer_email: formData.email || "test@example.com",
+                    customer_phone: formData.phone || "9999999999",
+                }),
+            });
+
+            const data = await res.json();
+            setLoading(false);
+
+            if (!data.payment_session_id) return alert("Payment session creation failed.");
+
+            const Cashfree = await loadCashfreeSdk();
+            if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
+
+            const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
+            const cf = new Cashfree({ mode });
+
+            // ❌ Do NOT rely on onSuccess or onFailure
+            cf.checkout({
+                paymentSessionId: data.payment_session_id,
+                redirectTarget: "modal",
+            });
+
+        } catch (err) {
+            console.error("Cashfree error:", err);
+            setLoading(false);
+            alert("Payment initiation failed. Please try again.");
+        }
+    };
+
 
     useEffect(() => {
 
@@ -435,75 +619,6 @@ export default function LandingForm() {
 
     const [showTooltip, setShowTooltip] = useState(false);
 
-    const handleCashfreePayment = async () => {
-
-        alert("Payment Gateway not integrated.");
-        return;
-
-        const amount = price.paying;
-
-        if (amount <= 0) {
-            alert("Invalid amount.");
-            return;
-        }
-
-        setLoading(true);
-
-        const order_id = `order_${Date.now()}`;
-
-        const res = await fetch("/api/createPaymentSession", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                order_id,
-                order_amount: price.discounted,
-                customer_id: formData.email || "guest_user",
-                customer_email: formData.email || "test@example.com",
-                customer_phone: formData.phone || "9876543210",
-            }),
-        });
-
-        const data = await res.json();
-        setLoading(false);
-
-        console.log("Cashfree session response:", data);
-
-        if (!data.payment_session_id) {
-            alert("Payment session creation failed.");
-            return;
-        }
-
-        try {
-            const Cashfree = await loadCashfreeSdk();
-            console.log("Cashfree type:", typeof Cashfree);
-
-            if (typeof Cashfree !== "function") {
-                throw new Error("Cashfree SDK not available");
-            }
-
-            const cf = new Cashfree();
-            cf.checkout({
-                paymentSessionId: data.payment_session_id,
-                redirectTarget: "_blank",
-            });
-            // Fallback if iframe didn't open
-            setTimeout(() => {
-                const iframeOpened = document.querySelector("iframe[src*='cashfree']");
-                if (!iframeOpened && data?.payments?.url) {
-                    console.warn("SDK modal did not open. Redirecting manually...");
-                    window.open(data.payments.url, "_blank");
-                }
-            }, 3000);
-
-        } catch (err) {
-            console.error("Cashfree error:", err);
-            alert("Cashfree payment failed. Opening direct payment link...");
-
-            if (data?.payments?.url) {
-                window.open(data.payments.url, "_blank");
-            }
-        }
-    };
 
 
     return (
@@ -605,17 +720,22 @@ export default function LandingForm() {
                                     {/* country */}
                                     <div className="w-full">
                                         <Select
-                                            value={formData.country}
-                                            onValueChange={(val) => handleChange("country", val)}
+                                            value={JSON.stringify(formData.country)}
+                                            onValueChange={(val) => handleChange("country", JSON.parse(val))}
                                         >
                                             <SelectTrigger className="w-full text-sm">
                                                 <SelectValue placeholder="Select country" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="india">India (INR)</SelectItem>
-                                                <SelectItem value="international">Outside India (USD)</SelectItem>
+                                                <SelectItem value={JSON.stringify({ name: "india", currency: "inr", currency_symbol: "₹" })}>
+                                                    India (INR)
+                                                </SelectItem>
+                                                <SelectItem value={JSON.stringify({ name: "international", currency: "usd", currency_symbol: "$" })}>
+                                                    Outside India (USD)
+                                                </SelectItem>
                                             </SelectContent>
                                         </Select>
+
                                     </div>
 
                                     <div className="w-full">
@@ -919,14 +1039,14 @@ export default function LandingForm() {
                                         <input
                                             type="radio"
                                             value="full"
-                                            checked={paymentMode === "full"}
-                                            onChange={() => setPaymentMode("full")}
+                                            checked={formData.paymentMode === "full"}
+                                            onChange={() => handleChange("paymentMode", "full")}
                                             className="mt-1 accent-green-600"
                                         />
                                         <div>
                                             <div className="font-medium text-sm text-gray-800">Pay Full Amount</div>
                                             <div className="text-xs text-gray-600">
-                                                Fastest delivery. No delays, no worries.
+                                                Fastest delivery. No dues later.
                                             </div>
                                         </div>
                                     </label>
@@ -936,14 +1056,14 @@ export default function LandingForm() {
                                         <input
                                             type="radio"
                                             value="half"
-                                            checked={paymentMode === "half"}
-                                            onChange={() => setPaymentMode("half")}
+                                            checked={formData.paymentMode === "half"}
+                                            onChange={() => handleChange("paymentMode", "half")}
                                             className="mt-1 accent-green-600"
                                         />
                                         <div>
-                                            <div className="font-medium text-sm text-gray-800">Pay Half Now, Book Your Slot</div>
+                                            <div className="font-medium text-sm text-gray-800">Pay Half Now</div>
                                             <div className="text-xs text-gray-600">
-                                                Secure your edit with just 50%.
+                                                Book slot with 50%. Pay rest after delivery.
                                             </div>
                                         </div>
                                     </label>
@@ -953,14 +1073,14 @@ export default function LandingForm() {
                                         <input
                                             type="radio"
                                             value="after"
-                                            checked={paymentMode === "after"}
-                                            onChange={() => setPaymentMode("after")}
+                                            checked={formData.paymentMode === "after"}
+                                            onChange={() => handleChange("paymentMode", "after")}
                                             className="mt-1 accent-green-600"
                                         />
                                         <div>
                                             <div className="font-medium text-sm text-gray-800">Pay After Delivery</div>
                                             <div className="text-xs text-gray-600">
-                                                Get your video, pay only if you're happy.
+                                                Pay {formData.country.currency_symbol}10 now. Settle after delivery.
                                             </div>
                                         </div>
                                     </label>
@@ -970,14 +1090,14 @@ export default function LandingForm() {
                                         <input
                                             type="radio"
                                             value="custom"
-                                            checked={paymentMode === "custom"}
-                                            onChange={() => setPaymentMode("custom")}
+                                            checked={formData.paymentMode === "custom"}
+                                            onChange={() => handleChange("paymentMode", "custom")}
                                             className="mt-1 accent-green-600"
                                         />
                                         <div>
                                             <div className="font-medium text-sm text-gray-800">Custom Payment</div>
                                             <div className="text-xs text-gray-600">
-                                                Only for balances, settlements, or custom pricing. Not for new orders.
+                                                For balances, settlements, or special pricing. Not for new orders.
                                             </div>
                                         </div>
                                     </label>
@@ -992,10 +1112,10 @@ export default function LandingForm() {
                                             {/* USD Price with discount */}
                                             <div className="flex items-baseline gap-1">
                                                 <span className="line-through text-zinc-400 text-base">
-                                                    {currency}{formatPrice(price.original)}
+                                                    {formData.country?.currency_symbol}{formatPrice(price.original)}
                                                 </span>
                                                 <span className="text-emerald-500 text-lg font-semibold">
-                                                    {currency}{formatPriceWithSmallDecimals(price.discounted)}
+                                                    {formData.country?.currency_symbol}{formatPriceWithSmallDecimals(price.discounted)}
                                                 </span>
                                             </div>
                                         </>
@@ -1003,7 +1123,7 @@ export default function LandingForm() {
                                         <>
                                             {/* USD Price without discount */}
                                             <span className="text-emerald-500 text-lg font-semibold">
-                                                {currency}{formatPriceWithSmallDecimals(price.original)}
+                                                {formData.country?.currency_symbol}{formatPriceWithSmallDecimals(price.original)}
                                             </span>
                                         </>
                                     )}
@@ -1039,16 +1159,21 @@ export default function LandingForm() {
                                 </div>
 
                                 {/* Custom amount field (if selected) */}
-                                {paymentMode === "custom" && (
+                                {formData.paymentMode === "custom" && (
                                     <div className="mb-4">
                                         <label className="block mb-1 text-sm font-medium text-gray-700">
-                                            Enter custom amount ({currency === "₹" ? "INR" : currency === "$" ? "USD" : "Amount"})
+                                            Enter custom amount ({formData.country?.currency_symbol || "Amount"})
                                         </label>
+
 
                                         <input
                                             type="number"
                                             min={1}
-                                            placeholder={currency ? `e.g. ${currency}100` : ""}
+                                            placeholder={
+                                                formData.country?.currency_symbol
+                                                    ? `e.g. ${formData.country.currency_symbol}100`
+                                                    : ""
+                                            }
                                             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#003087] focus:border-[#003087] focus:outline-none"
                                             value={customAmount}
                                             onChange={(e) => setCustomAmount(e.target.value)}
@@ -1058,23 +1183,27 @@ export default function LandingForm() {
 
                                 <div>
                                     {formData.country ? (
-                                        formData.country === "india" ? (
+                                        formData.country.name === "india" ? (
                                             // 💰 Cashfree for Indian customers
                                             <button
-                                                onClick={handleCashfreePayment}
+                                                onClick={handleSubmit}
                                                 disabled={loading}
-                                                className={`w-full py-2 px-4 rounded-md font-medium text-white transition ${loading ? "bg-gray-400 cursor-not-allowed" : "cursor-pointer bg-[#003087] hover:bg-[#0874e4]"
+                                                className={`w-full py-2 px-4 rounded-md font-medium text-white transition ${loading
+                                                    ? "bg-gray-400 cursor-not-allowed"
+                                                    : "cursor-pointer bg-[#003087] hover:bg-[#0874e4]"
                                                     }`}
                                             >
                                                 {loading
                                                     ? "Processing..."
-                                                    : `Pay ₹${price.paying}`}
+                                                    : `Pay ${formData.country.currency_symbol}${price.paying}`}
                                             </button>
                                         ) : (
                                             // 💳 PayPal for international customers
                                             <Button
                                                 onClick={handleSubmit}
-                                                className={`w-full py-2 px-4 rounded-md font-medium text-white transition ${loading ? "bg-gray-400 cursor-not-allowed" : "cursor-pointer bg-[#003087] hover:bg-[#0874e4]"
+                                                className={`w-full py-2 px-4 rounded-md font-medium text-white transition ${loading
+                                                    ? "bg-gray-400 cursor-not-allowed"
+                                                    : "cursor-pointer bg-[#003087] hover:bg-[#0874e4]"
                                                     }`}
                                             >
                                                 Continue with PayPal
@@ -1082,6 +1211,7 @@ export default function LandingForm() {
                                         )
                                     ) : null}
                                 </div>
+
                                 <span className="text-xs text-zinc-400">
                                     All prices include platform fees and taxes.
                                 </span>
