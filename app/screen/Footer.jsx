@@ -86,6 +86,9 @@ export default function Footer() {
                                 Chat on WhatsApp
                             </a>
                         </li>
+                        <li className="text-gray-100">
+                            Bigmeet Infotech Pvt. Ltd.
+                        </li>
                     </ul>
 
                     {/* ✅ Social Icons with Label */}

@@ -329,16 +329,15 @@ export default function LandingForm() {
 
     const handleSubmit = () => {
 
-        alert("Payment Gateway is not integrated.");
-        return;
-
-
         try {
             // Validate form data
             if (!validateForm(formData)) {
                 return;
             }
 
+            alert("Payment Gateway is not integrated.");
+            return;
+            
             const { original, discounted, paying } = calculatePrice();
 
             if (
