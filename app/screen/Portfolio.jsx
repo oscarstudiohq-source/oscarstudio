@@ -3,109 +3,16 @@ import Heading from '../../components/Heading';
 import Header from "../../components/Header";
 
 const portfolioVideos = [
-    //short videos
-    {
-        url: "https://www.youtube.com/shorts/5qap5aO4i9A",
-        title: "Lo-fi Girl Live Shorts",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/K4TOrB7at0Y",
-        title: "Kurzgesagt Science Short",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/6UStv2lKznc",
-        title: "Apple Vision Pro in 30 sec",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/VYOjWnS4cMY",
-        title: "MKBHD iPhone Short",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/9wD1ykkk1Mc",
-        title: "30-sec Productivity Hack",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/0nIjR5P9yF0",
-        title: "Instagram Reel Dance",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/3ZxBfsQuuKM",
-        title: "Quick Photoshop Tip",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/VqL2gK8Onzk",
-        title: "Tesla Autopilot Fails",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/I8XvVHdk7JQ",
-        title: "SpaceX Launch Highlight",
-        type: "short",
-    },
-    {
-        url: "https://www.youtube.com/shorts/3QEZwT-jMKs",
-        title: "AI in 60 Seconds",
-        type: "short",
-    },
-
-    //long videos
-    {
-        url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-        title: "Me at the zoo",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=Zi_XLOBDo_Y",
-        title: "Billie Jean - Michael Jackson",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=kXYiU_JCYtU",
-        title: "Numb - Linkin Park",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
-        title: "The Chainsmokers - Closer",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=fLexgOxsZu0",
-        title: "Happy - Pharrell Williams",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=CevxZvSJLk8",
-        title: "Katy Perry - Roar",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=YqeW9_5kURI",
-        title: "Major Lazer - Lean On",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=60ItHLz5WEA",
-        title: "Alan Walker - Faded",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=OPf0YbXqDm0",
-        title: "Uptown Funk - Bruno Mars",
-        type: "long",
-    },
-    {
-        url: "https://www.youtube.com/watch?v=RgKAFK5djSk",
-        title: "Wiz Khalifa - See You Again",
-        type: "long",
-    },
+    // {
+    //     url: "https://www.youtube.com/shorts/5qap5aO4i9A",
+    //     title: "Lo-fi Girl Live Shorts",
+    //     type: "short",
+    // },
+    // {
+    //     url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    //     title: "Me at the zoo",
+    //     type: "long",
+    // },
 ];
 
 function convertToEmbed(url) {

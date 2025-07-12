@@ -1,7 +1,9 @@
 "use client";
+export const dynamic = 'force-dynamic';
+
 import Script from "next/script";
-import { useSearchParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { loadScript } from "@paypal/paypal-js";
 import { loadCashfreeSdk } from "../../lib/loadCashfreeSdk"; // correct path
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,9 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { submitOrderAndSendEmail } from "@/lib/submitOrderAndEmail";
 import { submitOrder } from "../../lib/submitOrder";
-import OrderConfirmationModal from "@/components/OrderConfirmationModal"; // adjust path if needed
+import ConfirmationModal from "@/components/ConfirmationModal"; // adjust path if needed
 import { toast } from "sonner";
 import { nanoid, customAlphabet } from "nanoid";
 import {
@@ -62,16 +63,22 @@ const basePrices = {
 };
 
 
-export default function LandingForm() {
+function LandingForm1() {
 
+    const router = useRouter();
     const searchParams = useSearchParams();
     const orderId = searchParams.get("order_id");
     const [status, setStatus] = useState("checking");
+
+    const [newOrderId, setNewOrderId] = useState(null);
 
     useEffect(() => {
         if (!orderId) return;
 
         const check = async () => {
+
+            setLoading(true);
+            setShowModal(false);
             try {
                 const res = await fetch(`/api/checkPaymentStatus?order_id=${orderId}`);
                 const data = await res.json();
@@ -96,11 +103,14 @@ export default function LandingForm() {
                         return;
                     }
 
-                    if (result.status === "success") {
-                        alert("✅ Payment made successfully & order verified");
+                    if (result.success) {
+                        // alert("✅ Payment made successfully & order verified");
+                        setShowModal(true);
+
                     } else {
-                        alert("❌ Unable to verify your order. Please contact support.");
+                        alert(`${result.message || "Unable to verify your order. Please contact support."}`);
                     }
+
 
                 } else {
                     alert("Payment failed or not completed.");
@@ -109,6 +119,10 @@ export default function LandingForm() {
                 console.error(e);
                 setStatus("error");
                 alert("Payment failed or not completed.");
+            }
+            finally {
+                setLoading(false);
+                router.replace(window.location.pathname, undefined, { shallow: true });
             }
         };
 
@@ -330,14 +344,17 @@ export default function LandingForm() {
     const handleSubmit = () => {
 
         try {
+            // Custom payment not supported yet
+            if (formData.paymentMode === "custom") {
+                alert("Custom payment not supported yet");
+                return; // prevent render
+            }
+
             // Validate form data
             if (!validateForm(formData)) {
                 return;
             }
 
-            alert("Payment Gateway is not integrated.");
-            return;
-            
             const { original, discounted, paying } = calculatePrice();
 
             if (
@@ -353,12 +370,16 @@ export default function LandingForm() {
 
             // Decide payment method based on country
             if (formData.country?.name === "india") {
-                // handleCashfreePayment(); // Open Cashfree modal
 
-                createOrderAndPay();
+                createOrderAndPay("cashfree");
+
+                // handlePhonePePayment();
 
             } else {
-                setTimeout(() => setShowPayPal(true), 50); // Show PayPal
+
+                createOrderAndPay("paypal");
+
+                // setTimeout(() => setShowPayPal(true), 50); // Show PayPal
             }
 
             console.log("Submitted Data:", formData);
@@ -371,14 +392,34 @@ export default function LandingForm() {
         }
     };
 
+
+    const handlePhonePePayment = async () => {
+        const res = await fetch("/api/phonepe-create-payment", {
+            method: "POST",
+        });
+
+        const data = await res.json();
+        if (data?.redirectUrl) {
+            window.location.href = data.redirectUrl;
+        } else {
+            alert("❌ Failed to initiate payment.");
+        }
+    };
+
+
+    const createNewOrderId = () => {
+        const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
+        const nanoid6 = customAlphabet(alphabet, 6);
+        const tempOrderId = "TT-" + nanoid6(); // Example: TT-7X9KPT
+        setNewOrderId(tempOrderId);
+        return tempOrderId;
+    };
+
     //only for testing emails
-    const createOrderAndPay = async () => {
+    const createOrderAndPay = async (paymentGateway) => {
         setLoading(true);
         try {
-
-            const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ123456789"; // No confusing characters
-            const nanoid6 = customAlphabet(alphabet, 6);
-            const orderId = "TT-" + nanoid6(); // Example: TT-7X9KPT
+            const orderId = createNewOrderId();
 
             const result = await submitOrder({
                 orderId,
@@ -386,12 +427,19 @@ export default function LandingForm() {
                 price,
                 isCouponApplied,
                 discountRate,
+                paymentGateway
             });
 
             if (result.status === "success") {
-                // setShowModal(true);
 
-                handleCashfreePayment(orderId);
+                if (paymentGateway == "cashfree") {
+                    handleCashfreePayment(orderId);
+                }
+                else if (paymentGateway == "paypal") {
+                    setTimeout(() => setShowPayPal(true), 50); // Show PayPal
+                }
+                else { }
+
             } else {
                 alert(result.message); // Friendly message shown to user
             }
@@ -400,6 +448,54 @@ export default function LandingForm() {
             console.error("Unexpected error:", err);
             alert("Something went wrong after payment.");
         } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCashfreePayment = async (orderId) => {
+        const amount = price.paying;
+        const order_id = orderId;
+        if (amount <= 0) return alert("Invalid amount.");
+
+        setLoading(true);
+        // const order_id = `order_${Date.now()}`;
+
+        try {
+            const res = await fetch("/api/createPaymentSession", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    order_id,
+                    order_amount: price.paying,
+                    customer_id: (formData.email || "guest_user").replace(/[^a-zA-Z0-9_-]/g, "_"),
+                    customer_email: formData.email || "test@example.com",
+                    customer_phone: formData.phone || "9999999999",
+                    return_from: "landing_page", // ✅ Important
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!data.payment_session_id) return alert("Payment session creation failed.");
+
+            const Cashfree = await loadCashfreeSdk();
+            if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
+
+            const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
+            const cf = new Cashfree({ mode });
+
+            // ❌ Do NOT rely on onSuccess or onFailure
+            cf.checkout({
+                paymentSessionId: data.payment_session_id,
+                redirectTarget: "modal",
+            });
+
+        } catch (err) {
+            console.error("Cashfree error:", err);
+            setLoading(false);
+            alert("Payment initiation failed. Please try again.");
+        }
+        finally {
             setLoading(false);
         }
     };
@@ -438,7 +534,7 @@ export default function LandingForm() {
     const testHandleEmailClick = async () => {
         setLoading(true);
         try {
-            const result = await submitOrderAndSendEmail({
+            const result = await submitOrderAndSendEmail1({
                 formData,
                 price,
                 isCouponApplied,
@@ -460,55 +556,14 @@ export default function LandingForm() {
     };
 
 
-    const handleCashfreePayment = async (orderId) => {
-        const amount = price.paying;
-        const order_id = orderId;
-        if (amount <= 0) return alert("Invalid amount.");
-
-        setLoading(true);
-        // const order_id = `order_${Date.now()}`;
-
-        try {
-            const res = await fetch("/api/createPaymentSession", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    order_id,
-                    order_amount: price.paying,
-                    customer_id: (formData.email || "guest_user").replace(/[^a-zA-Z0-9_-]/g, "_"),
-                    customer_email: formData.email || "test@example.com",
-                    customer_phone: formData.phone || "9999999999",
-                }),
-            });
-
-            const data = await res.json();
-            setLoading(false);
-
-            if (!data.payment_session_id) return alert("Payment session creation failed.");
-
-            const Cashfree = await loadCashfreeSdk();
-            if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
-
-            const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-            const cf = new Cashfree({ mode });
-
-            // ❌ Do NOT rely on onSuccess or onFailure
-            cf.checkout({
-                paymentSessionId: data.payment_session_id,
-                redirectTarget: "modal",
-            });
-
-        } catch (err) {
-            console.error("Cashfree error:", err);
-            setLoading(false);
-            alert("Payment initiation failed. Please try again.");
-        }
-    };
-
-
     useEffect(() => {
 
         if (!showPayPal || !paypalRef.current) return;
+
+        // toast("PayPal is not available at the moment. Please try again later.", {
+        //     description: "Try a different method or contact support.",
+        //   });
+        // return;
 
         const clientId =
             process.env.NODE_ENV === "production"
@@ -539,7 +594,7 @@ export default function LandingForm() {
                             purchase_units: [
                                 {
                                     amount: {
-                                        value: price.discounted.toFixed(0),
+                                        value: price.paying,
                                     },
                                 },
                             ],
@@ -550,17 +605,31 @@ export default function LandingForm() {
                         try {
                             await actions.order.capture();
 
-                            const result = await submitOrderAndSendEmail({
-                                formData: formDataRef.current, // ✅ Use latest form data here
-                                price,
-                                isCouponApplied,
-                                discountRate,
+                            console.log(newOrderId);
+                            // Create the order in your DB and send email
+                            const submitRes = await fetch("/api/submitOrderAfterPayment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ order_id: newOrderId }),
                             });
 
-                            if (result.status === "success") {
+                            const rawText = await submitRes.text();
+                            console.log("🪵 Response Text:", rawText);
+
+                            let result;
+                            try {
+                                result = JSON.parse(rawText);
+                            } catch (parseErr) {
+                                console.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
+                                alert("Something went wrong verifying your order.");
+                                return;
+                            }
+
+                            if (result.success) {
+                                // alert("✅ Payment made successfully & order verified");
                                 setShowModal(true);
                             } else {
-                                alert(result.message); // Friendly message shown to user
+                                alert(`${result.message || "Unable to verify your order. Please contact support."}`);
                             }
 
                         } catch (err) {
@@ -568,6 +637,7 @@ export default function LandingForm() {
                             alert("Something went wrong after payment.");
                         } finally {
                             setLoading(false);
+                            router.replace(window.location.pathname, undefined, { shallow: true });
                         }
                     },
                     onError: (err) => {
@@ -962,6 +1032,8 @@ export default function LandingForm() {
                                             value={formData.email}
                                             onChange={(e) => handleChange("email", e.target.value)}
                                             placeholder="you@example.com"
+                                            autoComplete="email"
+                                            required
                                         />
 
                                     </div>
@@ -1205,15 +1277,15 @@ export default function LandingForm() {
                                                     : "cursor-pointer bg-[#003087] hover:bg-[#0874e4]"
                                                     }`}
                                             >
-                                                Continue with PayPal
+                                                Continue with PayPal ({formData.country.currency_symbol}{price.paying})
                                             </Button>
                                         )
                                     ) : null}
                                 </div>
 
-                                <span className="text-xs text-zinc-400">
+                                {/* <span className="text-xs text-zinc-400">
                                     All prices include platform fees and taxes.
-                                </span>
+                                </span> */}
                             </div>
 
                             {formData.videoType !== 'short' &&
@@ -1222,12 +1294,12 @@ export default function LandingForm() {
 
                                         <div className="flex items-center gap-2">
                                             <span className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}>
-                                            🎁 +{formData.videosCount} Free {formData.country.currency_symbol}{getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
+                                                🎁 +{formData.videosCount} Free {formData.country.currency_symbol}{getEffectiveThumbnailValue()} {thumbnailDescriptions[formData.editingTier].title}
                                             </span>
                                             <div
                                                 className={`text-sm font-semibold ${thumbnailDescriptions[formData.editingTier].color}`}
                                             >
-                                            ({formData.country.currency_symbol}{totalThumbValue})
+                                                ({formData.country.currency_symbol}{totalThumbValue})
                                             </div>
                                         </div>
                                     </div>
@@ -1272,7 +1344,13 @@ export default function LandingForm() {
                         )}
 
                         {/* ✅ Confirmation modal */}
-                        {showModal && <OrderConfirmationModal onClose={() => setShowModal(false)} />}
+                        {showModal &&
+                            <ConfirmationModal
+                                onClose={() => setShowModal(false)}
+                                title="Thank you for ordering!"
+                                description="Your order has been placed. A confirmation email has been sent to your inbox."
+                            />
+                        }
 
                     </div>
 
@@ -1313,3 +1391,11 @@ export default function LandingForm() {
     );
 }
 
+
+export default function LandingForm() {
+    return (
+        <Suspense fallback={<div className="p-8 text-center">⏳ Loading...</div>}>
+            <LandingForm1 />
+        </Suspense>
+    );
+}

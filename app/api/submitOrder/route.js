@@ -21,7 +21,7 @@ function toSnakeCaseOrder(data) {
         social: data.social,
         videos_count: Number(data.videosCount),
         video_type: data.videoType,
-        
+
         video_duration: durationKeyMap[data.videoDuration] ?? data.videoDuration,
 
         delivery_speed: data.deliverySpeed,
@@ -30,23 +30,25 @@ function toSnakeCaseOrder(data) {
         language: data.language,
         notes: data.notes,
 
-        // ✅ Directly use the flattened fields
         order_id: data.order_id,
         price_original: Math.round(data.price_original ?? 0),
         price_discounted: Math.round(data.price_discounted ?? 0),
         amount_paid: Math.round(data.amount_paid ?? 0),
         payment_mode: data.paymentMode,
+        payment_gateway: data.payment_gateway,
         is_coupon_applied: data.is_coupon_applied ?? false,
         discount_rate: data.discount_rate ?? 0
     };
 }
 
-
 export async function POST(req) {
     const orderData = await req.json();
-    // console.log("Submitting order data:", orderData);
-
     const formattedOrder = toSnakeCaseOrder(orderData);
+
+    // ✅ Add amount_pending logic
+    const finalPrice = formattedOrder.price_discounted || formattedOrder.price_original || 0;
+    const amount_pending = finalPrice - (formattedOrder.amount_paid || 0);
+    formattedOrder.amount_pending = amount_pending;
 
     console.log("formattedOrder:", formattedOrder);
 

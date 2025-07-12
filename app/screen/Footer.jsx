@@ -102,7 +102,7 @@ export default function Footer() {
                     </ul>
 
                     {/* ✅ Social Icons with Label */}
-                    {/* <div className="mt-6">
+                    <div className="mt-6">
                         <p className="text-sm font-medium text-gray-300 mb-4">Follow us on</p>
                         <div className="flex gap-4">
                             <a
@@ -127,16 +127,9 @@ export default function Footer() {
                                 <img src="/icons/youtube.png" alt="YouTube" className="w-6 h-6" />
                             </a>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
 
-
-                {/* <div>
-                    <h4 className="text-sm font-semibold uppercase mb-3 tracking-wider text-gray-300">Follow Us</h4>
-                    <div className="flex space-x-4">
-                       
-                    </div>
-                </div> */}
             </div>
             <div className="border-t border-gray-700 mt-10 pt-6 text-sm text-gray-400 text-center">
                 © {new Date().getFullYear()} TuesdayTrim. All rights reserved.

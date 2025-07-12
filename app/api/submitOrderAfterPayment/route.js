@@ -1,48 +1,107 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+
 const supabase = supabaseAdmin;
 
 export async function POST(req) {
     const { order_id } = await req.json();
 
     if (!order_id) {
-        return NextResponse.json({ status: "error", message: "Missing order_id" }, { status: 400 });
+        return NextResponse.json(
+            { success: false, message: "Missing order_id" },
+            { status: 400 }
+        );
     }
 
     try {
-        // ✅ Step 1: Update payment_verified_at to current timestamp
+        // ✅ Step 1: Fetch order's current payment_verified_at value
+        const { data: existingOrder, error: fetchError1 } = await supabase
+            .from("orders")
+            .select("payment_verified_at")
+            .eq("order_id", order_id)
+            .single();
+
+        if (fetchError1 || !existingOrder) {
+            console.error("❌ Failed to fetch order:", fetchError1);
+            return NextResponse.json(
+                { success: false, message: "Order not found" },
+                { status: 404 }
+            );
+        }
+
+        // 🛑 Step 2: If already verified, exit early
+        if (existingOrder.payment_verified_at) {
+            console.log("✅ Order already verified. Skipping update & email.");
+            return NextResponse.json(
+                { success: false, message: "Order already verified." },
+                { status: 200 }
+            );
+        }
+
+        // ✅ Step 3: Update payment_verified_at with IST timestamp
+        const now = new Date();
+        const istNow = new Date(now.getTime() + (5.5 * 60 * 60 * 1000)); // IST offset
+        const istFormatted = istNow.toISOString().slice(0, 19).replace("T", " ");
+
         const { error: updateError } = await supabase
             .from("orders")
-            .update({ payment_verified_at: new Date().toISOString() })
+            .update({ payment_verified_at: istFormatted })
             .eq("order_id", order_id);
 
         if (updateError) {
-            console.error("Failed to update payment_verified_at:", updateError);
-            return NextResponse.json({ status: "error", message: "Failed to verify payment" }, { status: 500 });
+            console.error("❌ Failed to update payment_verified_at:", updateError);
+            return NextResponse.json(
+                { success: false, message: "Failed to verify payment" },
+                { status: 500 }
+            );
         }
 
-        // ✅ Step 2: Fetch full order row after update
-        const { data: orderData, error: fetchError } = await supabase
+        // ✅ Step 4: Fetch updated order data
+        const { data: orderData, error: fetchError2 } = await supabase
             .from("orders")
             .select("*")
             .eq("order_id", order_id)
             .single();
 
-        if (fetchError || !orderData) {
-            return NextResponse.json({ status: "error", message: "Order not found" }, { status: 404 });
+        if (fetchError2 || !orderData) {
+            return NextResponse.json(
+                { success: false, message: "Order not found after update" },
+                { status: 404 }
+            );
         }
 
-        // ✅ Step 3: Send back data so you can email it
-        return NextResponse.json({
-            status: "success",
-            message: "Order verified and fetched",
-            order: orderData,
+        // ✅ Step 5: Send confirmation email
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+        const emailRes = await fetch(`${baseUrl}/api/sendConfirmationEmail`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(orderData),
         });
 
+        const emailResult = await emailRes.json();
+
+        if (!emailResult.success) {
+            console.log("❌ Email not sent");
+            return NextResponse.json(
+                {
+                    success: false,
+                    message:
+                        "Order verified but email failed. Please contact support.",
+                },
+                { status: 500 }
+            );
+        }
+
+        return NextResponse.json(
+            { success: true, message: "Order verified and email sent" },
+            { status: 200 }
+        );
     } catch (err) {
-        console.error("Unexpected error verifying order:", err);
-        return NextResponse.json({ status: "error", message: "Unexpected error" }, { status: 500 });
+        console.error("❌ Unexpected error:", err);
+        return NextResponse.json(
+            { success: false, message: "Unexpected error" },
+            { status: 500 }
+        );
     }
 }

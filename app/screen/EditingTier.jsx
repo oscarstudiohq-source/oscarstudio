@@ -73,8 +73,8 @@ const tiers = [
 export const thumbnailDescriptions = {
     "studio": {
         title: "Standard Thumbnail",
-        value: "₹499",
-        valueShort: "₹499",
+        value: "₹899",
+        valueShort: "₹899",
         color: "text-blue-600",
         points: [
             "Clean and clear visuals that get the message across.",
@@ -85,8 +85,8 @@ export const thumbnailDescriptions = {
     },
     "studioPro": {
         title: "Custom-Branded Thumbnail",
-        value: "₹799",
-        valueShort: "₹799",
+        value: "₹1499",
+        valueShort: "₹1499",
         color: "text-yellow-500",
         points: [
             "Visually engaging thumbnails tailored to your brand tone.",
@@ -97,8 +97,8 @@ export const thumbnailDescriptions = {
     },
     "studioMax": {
         title: "Optimized Thumbnail",
-        value: "₹999",
-        valueShort: "₹999",
+        value: "₹2499",
+        valueShort: "₹2499",
         color: "text-emerald-500",
         points: [
             "High-converting visuals using proven psychology and layout principles.",

@@ -13,13 +13,22 @@ export async function POST(req) {
         customer_id,
         customer_email,
         customer_phone,
+        return_from // 👈 NEW
     } = body;
 
     // ✅ Get protocol + host from headers
     const host = req.headers.get("host");
     const protocol = host?.includes("localhost") || host?.startsWith("192.") ? "http" : "https";
-    const return_url = `${protocol}://${host}/?payment_status=checking&order_id=${order_id}`;
+    // const return_url = `${protocol}://${host}/?payment_status=checking&order_id=${order_id}`;
     
+    // 👇 Use the right return_url
+    const baseOrderId = order_id.replace(/-settlement.*/, "");
+
+    const return_url =
+        return_from === "pay_page"
+            ? `${protocol}://${host}/pay?payment_status=checking&order_id=${baseOrderId}&settlement_id=${order_id}`
+            : `${protocol}://${host}/?payment_status=checking&order_id=${order_id}&settlement_id=${order_id}`;
+
     try {
         const response = await axios.post(
             BASE_URL,
