@@ -32,12 +32,12 @@ export default function Header() {
                         Contact
                     </a>
 
-                    <Link
+                    {/* <Link
                         href="/portfolio"
                         className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
                     >
                         Portfolio
-                    </Link>
+                    </Link> */}
                 </nav>
 
                 {/* CTA + Mobile Icon */}
