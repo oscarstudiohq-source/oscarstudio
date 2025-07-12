@@ -55,6 +55,8 @@ export async function POST(req) {
             }
         );
 
+        console.log("session created");
+
         return new Response(JSON.stringify(response.data), {
             status: 200,
             headers: { "Content-Type": "application/json" },

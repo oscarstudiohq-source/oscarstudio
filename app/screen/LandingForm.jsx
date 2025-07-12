@@ -152,7 +152,7 @@ function LandingForm1() {
         videoType: "short", // "short" or "long"
         videoDuration: "1", // like "1", "2", "5"
         deliverySpeed: "standard",
-        editingTier: "", // "studio", "studioPro", "studioMax"
+        editingTier: "studio", // "studio", "studioPro", "studioMax"
         aspectRatio: "",
         language: "en",
         notes: "",
@@ -459,7 +459,7 @@ function LandingForm1() {
 
         setLoading(true);
         // const order_id = `order_${Date.now()}`;
-
+        console.log('handleCashfreePayment0');
         try {
             const res = await fetch("/api/createPaymentSession", {
                 method: "POST",
@@ -477,10 +477,11 @@ function LandingForm1() {
             const data = await res.json();
 
             if (!data.payment_session_id) return alert("Payment session creation failed.");
-
+            console.log('handleCashfreePayment1');
             const Cashfree = await loadCashfreeSdk();
             if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
-
+            
+            console.log('handleCashfreePayment2');
             const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
             const cf = new Cashfree({ mode });
 
@@ -489,6 +490,8 @@ function LandingForm1() {
                 paymentSessionId: data.payment_session_id,
                 redirectTarget: "modal",
             });
+
+            console.log('handleCashfreePayment3');
 
         } catch (err) {
             console.error("Cashfree error:", err);
