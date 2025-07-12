@@ -66,7 +66,7 @@ export default function Footer() {
                                 rel="noopener noreferrer"
                                 className="hover:underline text-gray-100"
                             >
-                                Refund Policy
+                                Refund & Cancellation Policy
                             </a>
                         </li>
                     </ul>
