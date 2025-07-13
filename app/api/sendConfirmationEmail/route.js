@@ -50,9 +50,9 @@ export async function POST(req) {
   //pending amount start
   const hasPending = Number(data.amount_pending) > 0;
 
-  const isLocalhost = process.env.NODE_ENV !== 'production';
-  const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
-  const paymentUrl = `${BASE_URL}/pay?order_id=${data.order_id}`;
+  // const isLocalhost = process.env.NODE_ENV !== 'production';
+  // const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
+  const paymentUrl = data.payment_url;
 
   const pendingBanner = hasPending
     ? `

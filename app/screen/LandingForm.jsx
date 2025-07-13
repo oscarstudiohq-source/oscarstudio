@@ -224,7 +224,7 @@ function LandingForm1() {
         } else if (formData.paymentMode === "half") {
             paying = Math.round(discounted / 2);
         } else if (formData.paymentMode === "after") {
-            paying = 10;
+            paying = Math.round(discounted * 0.25);
         } else if (formData.paymentMode === "custom") {
             paying = Math.round(customAmount || 0);
         } else {
@@ -241,8 +241,13 @@ function LandingForm1() {
 
     // Update price whenever form data or coupon changes
     useEffect(() => {
+        // 🔁 Reset coupon if payment mode is not full or half
+        if (!["full", "half"].includes(formData.paymentMode) && isCouponApplied) {
+            setIsCouponApplied(false);
+        }
+
         const calculated = calculatePrice();
-        setPrice(calculated); // ✅ Set full object, not just number
+        setPrice(calculated);
     }, [
         formData.country,
         formData.videoType,
@@ -254,6 +259,7 @@ function LandingForm1() {
         discountRate,
         customAmount,
     ]);
+
 
     const validateForm = (formData) => {
         if (!formData.videosCount) {
@@ -480,7 +486,7 @@ function LandingForm1() {
             log.info('handleCashfreePayment1');
             const Cashfree = await loadCashfreeSdk();
             if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
-            
+
             log.info('handleCashfreePayment2');
             const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
             const cf = new Cashfree({ mode });
@@ -1044,15 +1050,15 @@ function LandingForm1() {
                                     <div className="w-full">
                                         {/* <Tooltip>
                                             <TooltipTrigger asChild> */}
-                                                <Input
-                                                    className="text-sm"
-                                                    type="url"
-                                                    value={formData.inspirationVideo}
-                                                    onChange={(e) => handleChange("inspirationVideo", e.target.value)}
-                                                    placeholder="Inspiration video link (YouTube/Instagram, Optional)"
-                                                // title="Inspiration video link (YouTube/Instagram, Optional)"
-                                                />
-                                            {/* </TooltipTrigger>
+                                        <Input
+                                            className="text-sm"
+                                            type="url"
+                                            value={formData.inspirationVideo}
+                                            onChange={(e) => handleChange("inspirationVideo", e.target.value)}
+                                            placeholder="Inspiration video link (YouTube/Instagram, Optional)"
+                                        // title="Inspiration video link (YouTube/Instagram, Optional)"
+                                        />
+                                        {/* </TooltipTrigger>
                                             <TooltipContent
                                                 side="top"
                                                 className="text-xs max-w-xs bg-[#001c64] text-[#fff] rounded px-3 py-2 shadow"
@@ -1137,7 +1143,7 @@ function LandingForm1() {
                                         <div>
                                             <div className="font-medium text-sm text-gray-800">Pay Half Now</div>
                                             <div className="text-xs text-gray-600">
-                                                Book slot with 50%. Pay rest after delivery.
+                                                Pay 50% now. Settle the rest after delivery.
                                             </div>
                                         </div>
                                     </label>
@@ -1154,7 +1160,7 @@ function LandingForm1() {
                                         <div>
                                             <div className="font-medium text-sm text-gray-800">Pay After Delivery</div>
                                             <div className="text-xs text-gray-600">
-                                                Pay {formData.country.currency_symbol}10 now. Settle after delivery.
+                                                Pay 25% now. Settle the rest after delivery.
                                             </div>
                                         </div>
                                     </label>
@@ -1204,10 +1210,11 @@ function LandingForm1() {
 
                                 </div>
                                 <div className="mb-2">
-                                    {!isCouponApplied ? (
+                                    {/* {!isCouponApplied ? (
                                         <p
                                             onClick={() => setIsCouponApplied(true)}
-                                            className="inline-block text-xs font-semibold text-emerald-700 bg-gray-100 px-2 py-1 rounded-md cursor-pointer hover:bg-gray-100 transition"
+                                            // className="inline-block text-xs font-semibold text-emerald-700 bg-gray-100 px-2 py-1 rounded-md cursor-pointer hover:bg-gray-100 transition"
+                                            className="inline-block text-xs font-semibold text-[#0f8e5d] bg-[#f1f5f9] px-2 py-1 rounded border border-[#c7e5d6] shadow-sm cursor-pointer hover:bg-[#e6f4ee] transition"
                                         >
                                             Apply Coupon ({discountRate}% OFF)
                                         </p>
@@ -1215,7 +1222,23 @@ function LandingForm1() {
                                         <p className="inline-block text-xs font-semibold text-green-800 bg-green-100 border border-green-300 px-2 py-1 rounded-md">
                                             ✅ Coupon Applied ({discountRate}% OFF)
                                         </p>
+                                    )} */}
+
+                                    {["full", "half"].includes(formData.paymentMode) && (
+                                        !isCouponApplied ? (
+                                            <p
+                                                onClick={() => setIsCouponApplied(true)}
+                                                className="inline-block text-xs font-semibold text-[#0f8e5d] bg-[#f1f5f9] px-2 py-1 rounded border border-[#c7e5d6] shadow-sm cursor-pointer hover:bg-[#e6f4ee] transition"
+                                            >
+                                                Apply Coupon ({discountRate}% OFF)
+                                            </p>
+                                        ) : (
+                                            <p className="inline-block text-xs font-semibold text-green-800 bg-green-100 border border-green-300 px-2 py-1 rounded-md">
+                                                ✅ Coupon Applied ({discountRate}% OFF)
+                                            </p>
+                                        )
                                     )}
+
 
                                     <div className="flex flex-col items-start gap-2">
                                         {/* Discount Messaging */}
@@ -1390,7 +1413,7 @@ function LandingForm1() {
 
                 </CardContent>
             </Card>
-        </div>
+        </div >
     );
 }
 

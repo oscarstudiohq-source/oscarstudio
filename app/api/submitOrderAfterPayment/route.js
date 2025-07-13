@@ -39,14 +39,21 @@ export async function POST(req) {
             );
         }
 
-        // ✅ Step 3: Update payment_verified_at with IST timestamp
+        // ✅ Step 3: Update payment_verified_at with IST timestamp & Payment URL -for remaining payment or to check order
         const now = new Date();
         const istNow = new Date(now.getTime() + (5.5 * 60 * 60 * 1000)); // IST offset
         const istFormatted = istNow.toISOString().slice(0, 19).replace("T", " ");
 
+        const isLocalhost = process.env.NODE_ENV !== 'production';
+        const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
+        const paymentUrl = `${BASE_URL}/pay?order_id=${order_id}`;
+
         const { error: updateError } = await supabase
             .from("orders")
-            .update({ payment_verified_at: istFormatted })
+            .update({
+                payment_verified_at: istFormatted,
+                payment_url: paymentUrl, 
+            })
             .eq("order_id", order_id);
 
         if (updateError) {
