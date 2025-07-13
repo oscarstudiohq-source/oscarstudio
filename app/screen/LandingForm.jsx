@@ -1042,8 +1042,8 @@ function LandingForm1() {
                                     </div>
 
                                     <div className="w-full">
-                                        <Tooltip>
-                                            <TooltipTrigger asChild>
+                                        {/* <Tooltip>
+                                            <TooltipTrigger asChild> */}
                                                 <Input
                                                     className="text-sm"
                                                     type="url"
@@ -1052,7 +1052,7 @@ function LandingForm1() {
                                                     placeholder="Inspiration video link (YouTube/Instagram, Optional)"
                                                 // title="Inspiration video link (YouTube/Instagram, Optional)"
                                                 />
-                                            </TooltipTrigger>
+                                            {/* </TooltipTrigger>
                                             <TooltipContent
                                                 side="top"
                                                 className="text-xs max-w-xs bg-[#001c64] text-[#fff] rounded px-3 py-2 shadow"
@@ -1060,7 +1060,7 @@ function LandingForm1() {
                                                 Paste a reference video link (YouTube or Instagram, optional)<br />
                                                 This helps us understand the style or format you’re aiming for.
                                             </TooltipContent>
-                                        </Tooltip>
+                                        </Tooltip> */}
                                     </div>
                                     <div className="w-full">
                                         <Select onValueChange={(val) => handleChange("language", val)} defaultValue="en">
