@@ -31,7 +31,7 @@ export async function GET(req) {
             headers: { "Content-Type": "application/json" },
         });
     } catch (err) {
-        console.error("❌ Error fetching payment status:", err.response?.data || err.message);
+        log.error("❌ Error fetching payment status:", err.response?.data || err.message);
         return new Response(
             JSON.stringify({ error: "Failed to fetch payment status" }),
             { status: 500 }

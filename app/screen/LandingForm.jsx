@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = 'force-dynamic';
-
+import { log } from "../../lib/logger";
 import Script from "next/script";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef, Suspense } from "react";
@@ -92,13 +92,13 @@ function LandingForm1() {
                     });
 
                     const rawText = await submitRes.text();
-                    console.log("🪵 Response Text:", rawText);
+                    log.info("🪵 Response Text:", rawText);
 
                     let result;
                     try {
                         result = JSON.parse(rawText);
                     } catch (parseErr) {
-                        console.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
+                        log.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
                         alert("Something went wrong verifying your order.");
                         return;
                     }
@@ -116,7 +116,7 @@ function LandingForm1() {
                     alert("Payment failed or not completed.");
                 }
             } catch (e) {
-                console.error(e);
+                log.error(e);
                 setStatus("error");
                 alert("Payment failed or not completed.");
             }
@@ -191,7 +191,7 @@ function LandingForm1() {
         const durationKey = durationKeyMap[videoDuration];
 
         if (!videoType || !durationKey || !editingTier) {
-            console.warn("Missing data in form:", formData);
+            log.warn("Missing data in form:", formData);
             return { original: 0, discounted: 0, paying: 0 };
         }
 
@@ -199,7 +199,7 @@ function LandingForm1() {
 
 
         if (!tierPriceMap) {
-            console.warn(
+            log.warn(
                 "No price found for",
                 formData.country?.name,
                 videoType,
@@ -382,13 +382,13 @@ function LandingForm1() {
                 // setTimeout(() => setShowPayPal(true), 50); // Show PayPal
             }
 
-            console.log("Submitted Data:", formData);
-            console.log("Original Price:", original);
-            console.log("Discounted Price:", discounted);
-            console.log("Paying Price:", paying);
+            log.info("Submitted Data:", formData);
+            log.info("Original Price:", original);
+            log.info("Discounted Price:", discounted);
+            log.info("Paying Price:", paying);
 
         } catch (e) {
-            console.error("Error during submit:", e);
+            log.error("Error during submit:", e);
         }
     };
 
@@ -445,7 +445,7 @@ function LandingForm1() {
             }
 
         } catch (err) {
-            console.error("Unexpected error:", err);
+            log.error("Unexpected error:", err);
             alert("Something went wrong after payment.");
         } finally {
             setLoading(false);
@@ -459,7 +459,7 @@ function LandingForm1() {
 
         setLoading(true);
         // const order_id = `order_${Date.now()}`;
-        console.log('handleCashfreePayment0');
+        log.info('handleCashfreePayment0');
         try {
             const res = await fetch("/api/createPaymentSession", {
                 method: "POST",
@@ -477,11 +477,11 @@ function LandingForm1() {
             const data = await res.json();
 
             if (!data.payment_session_id) return alert("Payment session creation failed.");
-            console.log('handleCashfreePayment1');
+            log.info('handleCashfreePayment1');
             const Cashfree = await loadCashfreeSdk();
             if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
             
-            console.log('handleCashfreePayment2');
+            log.info('handleCashfreePayment2');
             const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
             const cf = new Cashfree({ mode });
 
@@ -491,10 +491,10 @@ function LandingForm1() {
                 redirectTarget: "modal",
             });
 
-            console.log('handleCashfreePayment3');
+            log.info('handleCashfreePayment3');
 
         } catch (err) {
-            console.error("Cashfree error:", err);
+            log.error("Cashfree error:", err);
             setLoading(false);
             alert("Payment initiation failed. Please try again.");
         }
@@ -524,12 +524,12 @@ function LandingForm1() {
             setPrice({ original, discounted, paying }); // Store both for UI reference
             setTimeout(() => setShowPayPal(true), 50);
 
-            console.log("Submitted Data:", formData);
-            console.log("Original Price:", original);
-            console.log("Discounted Price:", discounted);
-            console.log("Paying Price:", paying);
+            log.info("Submitted Data:", formData);
+            log.info("Original Price:", original);
+            log.info("Discounted Price:", discounted);
+            log.info("Paying Price:", paying);
         } catch (e) {
-            console.error("Error during submit:", e);
+            log.error("Error during submit:", e);
         }
     };
 
@@ -551,7 +551,7 @@ function LandingForm1() {
             }
 
         } catch (err) {
-            console.error("Unexpected error:", err);
+            log.error("Unexpected error:", err);
             alert("Something went wrong after payment.");
         } finally {
             setLoading(false);
@@ -584,11 +584,11 @@ function LandingForm1() {
         })
             .then((paypal) => {
                 if (!paypal) {
-                    console.error("PayPal SDK not loaded.");
+                    log.error("PayPal SDK not loaded.");
                     return;
                 }
                 else {
-                    console.log("PayPal SDK loaded successfully");
+                    log.info("PayPal SDK loaded successfully");
                 }
 
                 paypal.Buttons({
@@ -608,7 +608,7 @@ function LandingForm1() {
                         try {
                             await actions.order.capture();
 
-                            console.log(newOrderId);
+                            log.info(newOrderId);
                             // Create the order in your DB and send email
                             const submitRes = await fetch("/api/submitOrderAfterPayment", {
                                 method: "POST",
@@ -617,13 +617,13 @@ function LandingForm1() {
                             });
 
                             const rawText = await submitRes.text();
-                            console.log("🪵 Response Text:", rawText);
+                            log.info("🪵 Response Text:", rawText);
 
                             let result;
                             try {
                                 result = JSON.parse(rawText);
                             } catch (parseErr) {
-                                console.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
+                                log.error("❌ Failed to parse JSON from /api/submitOrderAfterPayment", parseErr);
                                 alert("Something went wrong verifying your order.");
                                 return;
                             }
@@ -636,7 +636,7 @@ function LandingForm1() {
                             }
 
                         } catch (err) {
-                            console.error("Unexpected error:", err);
+                            log.error("Unexpected error:", err);
                             alert("Something went wrong after payment.");
                         } finally {
                             setLoading(false);
@@ -644,12 +644,12 @@ function LandingForm1() {
                         }
                     },
                     onError: (err) => {
-                        console.error("PayPal Error:", err);
+                        log.error("PayPal Error:", err);
                     },
                 }).render(paypalRef.current);
             })
             .catch((err) => {
-                console.error("Failed to load PayPal SDK:", err);
+                log.error("Failed to load PayPal SDK:", err);
             });
     }, [showPayPal, price]); // <-- include showPayPal here
 

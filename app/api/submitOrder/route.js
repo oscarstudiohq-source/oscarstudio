@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabaseClient';
+import { log } from "../../../lib/logger";
 
 const durationKeyMap = {
     "0": "30 sec",
@@ -42,6 +43,9 @@ function toSnakeCaseOrder(data) {
 }
 
 export async function POST(req) {
+
+    const environment = process.env.CASHFREE_ENV === 'production' ? 'production' : 'test';
+
     const orderData = await req.json();
     const formattedOrder = toSnakeCaseOrder(orderData);
 
@@ -49,13 +53,14 @@ export async function POST(req) {
     const finalPrice = formattedOrder.price_discounted || formattedOrder.price_original || 0;
     const amount_pending = finalPrice - (formattedOrder.amount_paid || 0);
     formattedOrder.amount_pending = amount_pending;
+    formattedOrder.environment = environment;
 
-    console.log("formattedOrder:", formattedOrder);
+    log.info("formattedOrder:", formattedOrder);
 
     const { error } = await supabase.from('orders').insert([formattedOrder]);
 
     if (error) {
-        console.error("Supabase insert error:", error);
+        log.error("Supabase insert error:", error);
         return new Response(JSON.stringify({ success: false, error }), {
             status: 500,
         });

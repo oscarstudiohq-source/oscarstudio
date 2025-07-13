@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { log } from "../../../lib/logger";
 
 const supabase = supabaseAdmin;
 
@@ -24,7 +25,7 @@ export async function POST(req) {
             .single();
 
         if (fetchError || !existingOrder) {
-            console.error("❌ Order not found:", fetchError);
+            log.error("❌ Order not found:", fetchError);
             return NextResponse.json(
                 { success: false, message: "Order not found" },
                 { status: 404 }
@@ -33,7 +34,7 @@ export async function POST(req) {
 
         // Step 2: Skip if already settled
         if (existingOrder.settlement_verified_at) {
-            console.log("✅ Settlement already verified. Skipping update.");
+            log.info("✅ Settlement already verified. Skipping update.");
             return NextResponse.json(
                 { success: false, message: "Payment already made" },
                 { status: 200 }
@@ -60,7 +61,7 @@ export async function POST(req) {
 
 
         if (updateError) {
-            console.error("❌ Failed to update settlement:", updateError);
+            log.error("❌ Failed to update settlement:", updateError);
             return NextResponse.json(
                 { success: false, message: "Failed to update settlement" },
                 { status: 500 }
@@ -72,7 +73,7 @@ export async function POST(req) {
             { status: 200 }
         );
     } catch (err) {
-        console.error("❌ Unexpected error:", err);
+        log.error("❌ Unexpected error:", err);
         return NextResponse.json(
             { success: false, message: "Unexpected error" },
             { status: 500 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
+import { log } from "../../../lib/logger";
 
 const supabase = supabaseAdmin;
 
@@ -22,7 +23,7 @@ export async function POST(req) {
             .single();
 
         if (fetchError1 || !existingOrder) {
-            console.error("❌ Failed to fetch order:", fetchError1);
+            log.error("❌ Failed to fetch order:", fetchError1);
             return NextResponse.json(
                 { success: false, message: "Order not found" },
                 { status: 404 }
@@ -31,7 +32,7 @@ export async function POST(req) {
 
         // 🛑 Step 2: If already verified, exit early
         if (existingOrder.payment_verified_at) {
-            console.log("✅ Order already verified. Skipping update & email.");
+            log.info("✅ Order already verified. Skipping update & email.");
             return NextResponse.json(
                 { success: false, message: "Order already verified." },
                 { status: 200 }
@@ -49,7 +50,7 @@ export async function POST(req) {
             .eq("order_id", order_id);
 
         if (updateError) {
-            console.error("❌ Failed to update payment_verified_at:", updateError);
+            log.error("❌ Failed to update payment_verified_at:", updateError);
             return NextResponse.json(
                 { success: false, message: "Failed to verify payment" },
                 { status: 500 }
@@ -82,7 +83,7 @@ export async function POST(req) {
         const emailResult = await emailRes.json();
 
         if (!emailResult.success) {
-            console.log("❌ Email not sent");
+            log.info("❌ Email not sent");
             return NextResponse.json(
                 {
                     success: false,
@@ -98,7 +99,7 @@ export async function POST(req) {
             { status: 200 }
         );
     } catch (err) {
-        console.error("❌ Unexpected error:", err);
+        log.error("❌ Unexpected error:", err);
         return NextResponse.json(
             { success: false, message: "Unexpected error" },
             { status: 500 }

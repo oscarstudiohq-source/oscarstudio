@@ -1,6 +1,7 @@
 // app/api/sendConfirmationEmail/route.js
 import { Resend } from 'resend';
 import { thumbnailDescriptions } from "../../screen/EditingTier";
+import { log } from "../../../lib/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY); // 👈 Add this to .env.local
 
@@ -40,7 +41,7 @@ export async function POST(req) {
 
   // ✅ Basic validation
   if (!data.email) {
-    console.log("❌ Email not provided.");
+    log.info("❌ Email not provided.");
     return new Response(JSON.stringify({ success: false, error: 'Missing email address' }), {
       status: 400,
     });
@@ -150,7 +151,7 @@ export async function POST(req) {
 
     });
 
-    console.log("✅ Resend API response:", response);
+    log.info("✅ Resend API response:", response);
 
     if (response?.error) {
       return new Response(JSON.stringify({ success: false, message: response.error.message }), {
@@ -163,7 +164,7 @@ export async function POST(req) {
     });
 
   } catch (error) {
-    console.error("❌ Failed to send email:", error);
+    log.error("❌ Failed to send email:", error);
     return new Response(JSON.stringify({ success: false, error }), {
       status: 500,
     });

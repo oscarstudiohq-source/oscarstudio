@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import { loadCashfreeSdk } from "../../lib/loadCashfreeSdk";
 import ConfirmationModal from "@/components/ConfirmationModal"; // adjust path if needed
 import { nanoid } from 'nanoid';
+import { log } from "../../lib/logger";
 
 function PayPage1() {
     const searchParams = useSearchParams();
@@ -32,7 +33,7 @@ function PayPage1() {
                     setLoading(false);
                 })
                 .catch((err) => {
-                    console.error("Error loading order:", err);
+                    log.error("Error loading order:", err);
                     setLoading(false);
                 });
         }
@@ -76,11 +77,11 @@ function PayPage1() {
                     } else {
                         alert('Payment not successful ');
 
-                        console.warn("Payment not successful:", result.order_status);
+                        log.warn("Payment not successful:", result.order_status);
                         // Optionally set a status like `setError()` here
                     }
                 } catch (err) {
-                    console.error("Error checking payment status:", err);
+                    log.error("Error checking payment status:", err);
                 } finally {
                     setProcessing(false);
                     router.replace(`/pay?order_id=${orderId}&refetch=${Date.now()}`);
@@ -139,7 +140,7 @@ function PayPage1() {
 
     // 3. Optional: warn if DB value is outdated
     if (calculatedPending !== pendingFromDB) {
-        console.warn("Mismatch: amount_pending in DB is outdated or incorrect");
+        log.warn("Mismatch: amount_pending in DB is outdated or incorrect");
     }
 
     // 4. Final validation checks
@@ -198,7 +199,7 @@ function PayPage1() {
             });
 
         } catch (err) {
-            console.error("Cashfree error:", err);
+            log.error("Cashfree error:", err);
             alert("Settlement payment failed. Please try again.");
         }
         finally {

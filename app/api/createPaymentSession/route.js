@@ -1,4 +1,5 @@
 import axios from "axios";
+import { log } from "../../../lib/logger";
 
 const BASE_URL =
     process.env.CASHFREE_ENV === "sandbox"
@@ -55,14 +56,14 @@ export async function POST(req) {
             }
         );
 
-        console.log("session created");
+        log.info("session created");
 
         return new Response(JSON.stringify(response.data), {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });
     } catch (err) {
-        console.error("Cashfree API Error:", err.response?.data || err.message);
+        log.error("Cashfree API Error:", err.response?.data || err.message);
         return new Response(
             JSON.stringify({ error: "Failed to create payment session" }),
             { status: 500 }

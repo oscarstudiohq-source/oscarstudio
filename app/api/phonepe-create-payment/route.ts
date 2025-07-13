@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { StandardCheckoutPayRequest } from "pg-sdk-node";
 import { randomUUID } from "crypto";
 import { phonepeClient } from "@/lib/phonepeClient";
+import { log } from "../../../lib/logger";
 
 export async function POST() {
     const merchantOrderId = randomUUID();
@@ -22,7 +23,7 @@ export async function POST() {
 
         return NextResponse.json({ redirectUrl: redirect });
     } catch (err) {
-        console.error("❌ Payment initiation failed", err);
+        log.error("❌ Payment initiation failed", err);
         return NextResponse.json({ error: "Payment failed" }, { status: 500 });
     }
 }
