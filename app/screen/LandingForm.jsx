@@ -57,7 +57,7 @@ const basePrices = {
         },
         long: {
             // "5 min": { studio: 1699, studioPro: 2499, studioMax: 3199 },
-            "5 min": { studio: 10, studioPro: 2499, studioMax: 3199 },
+            "5 min": { studio: 4, studioPro: 2499, studioMax: 3199 },
             "10 min": { studio: 2499, studioPro: 3399, studioMax: 4699 },
             "20 min": { studio: 3799, studioPro: 4899, studioMax: 6299 },
         }
