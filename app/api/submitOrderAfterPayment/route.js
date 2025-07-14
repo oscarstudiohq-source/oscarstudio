@@ -79,13 +79,22 @@ export async function POST(req) {
         }
 
         // ✅ Step 5: Send confirmation email
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://192.168.29.73:3000";
+        const envBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        let baseUrl;
+
+        if (envBaseUrl && envBaseUrl.startsWith("http")) {
+            baseUrl = envBaseUrl;
+        } else {
+            log.warn("⚠️ Using fallback baseUrl. NEXT_PUBLIC_BASE_URL is missing or invalid. Falling back to https://tuesdaytrim.com");
+            baseUrl = "https://tuesdaytrim.com";
+        }
 
         const emailRes = await fetch(`${baseUrl}/api/sendConfirmationEmail`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(orderData),
         });
+
 
         // 🛠 Safely parse email response
         let emailResult;
