@@ -510,10 +510,10 @@ function LandingForm1() {
 
                 cf.checkout({
                     paymentSessionId: data.payment_session_id,
-                    redirectTarget: "self", // or 'self' or 'blank'
+                    redirectTarget: "blank", // or 'self' or 'blank'
                 });
 
-                log.info("eredirectTarget: self");
+                log.info("eredirectTarget: blank");
             }
             catch (e) {
                 log.info("error in new Cashfree({ mode }) or cf.checkout:", e);
