@@ -10,6 +10,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@cashfreepayments/cashfree-js": "^1.0.5",
     "@fontsource/inter": "^5.2.6",
     "@paypal/paypal-js": "^8.2.0",
     "@radix-ui/react-label": "^2.1.7",

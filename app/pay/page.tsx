@@ -4,7 +4,8 @@ export const dynamic = 'force-dynamic';
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from 'react';
 import Header from "../../components/Header";
-import { loadCashfreeSdk } from "../../lib/loadCashfreeSdk";
+import { load } from "@cashfreepayments/cashfree-js";
+import { getCashfreeMode } from "../../lib/getCashfreeMode";
 import ConfirmationModal from "@/components/ConfirmationModal"; // adjust path if needed
 import { nanoid } from 'nanoid';
 import { log } from "../../lib/logger";
@@ -157,7 +158,6 @@ function PayPage1() {
 
     const isPending = !isFullyPaid;
 
-
     const handleCashfreeSettlement = async (order: any, actualPendingAmount: number) => {
         if (!order || actualPendingAmount <= 0) {
             alert("No pending amount to pay.");
@@ -169,6 +169,7 @@ function PayPage1() {
         const uniqueSettlementOrderId = `${order.order_id}-settlement-${Date.now()}`;
 
         try {
+            // Create payment session
             const res = await fetch("/api/createPaymentSession", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -178,7 +179,7 @@ function PayPage1() {
                     customer_id: (order.name || "guest_user").replace(/[^a-zA-Z0-9_-]/g, "_"),
                     customer_email: order.email || "test@example.com",
                     customer_phone: order.phone || "9999999999",
-                    return_from: "pay_page", // ✅ Important
+                    return_from: "pay_page", // important to handle redirect URL
                 }),
             });
 
@@ -189,24 +190,23 @@ function PayPage1() {
                 return;
             }
 
-            const Cashfree = await loadCashfreeSdk();
-            const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-            const cf = new Cashfree({ mode });
+            // Load new Cashfree SDK
+            const mode = getCashfreeMode();
+            const cashfree = await load({ mode });
 
-            cf.checkout({
+            await cashfree.checkout({
                 paymentSessionId: data.payment_session_id,
-                redirectTarget: "modal",
+                redirectTarget: "_self", // or "modal"
             });
+
 
         } catch (err) {
             log.error("Cashfree error:", err);
             alert("Settlement payment failed. Please try again.");
-        }
-        finally {
+        } finally {
             setProcessing(false);
         }
     };
-
 
     return (
         <div>

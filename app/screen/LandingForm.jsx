@@ -5,7 +5,8 @@ import Script from "next/script";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { loadScript } from "@paypal/paypal-js";
-import { loadCashfreeSdk } from "../../lib/loadCashfreeSdk"; // correct path
+import { load } from "@cashfreepayments/cashfree-js"; // ✅ Use new SDK
+import { getCashfreeMode } from "../../lib/getCashfreeMode";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -55,7 +56,8 @@ const basePrices = {
             "90 sec": { studio: 849, studioPro: 1249, studioMax: 1599 },
         },
         long: {
-            "5 min": { studio: 1699, studioPro: 2499, studioMax: 3199 },
+            // "5 min": { studio: 1699, studioPro: 2499, studioMax: 3199 },
+            "5 min": { studio: 10, studioPro: 2499, studioMax: 3199 },
             "10 min": { studio: 2499, studioPro: 3399, studioMax: 4699 },
             "20 min": { studio: 3799, studioPro: 4899, studioMax: 6299 },
         }
@@ -457,80 +459,51 @@ function LandingForm1() {
         }
     };
 
+
     const handleCashfreePayment = async (orderId) => {
         const amount = price.paying;
-        const order_id = orderId;
         if (amount <= 0) return alert("Invalid amount.");
 
         setLoading(true);
-        // const order_id = `order_${Date.now()}`;
-        log.info('handleCashfreePayment0');
+
         try {
+            // Step 1: Create payment session
             const res = await fetch("/api/createPaymentSession", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    order_id,
-                    order_amount: price.paying,
+                    order_id: orderId,
+                    order_amount: amount,
                     customer_id: (formData.email || "guest_user").replace(/[^a-zA-Z0-9_-]/g, "_"),
                     customer_email: formData.email || "test@example.com",
                     customer_phone: formData.phone || "9999999999",
-                    return_from: "landing_page", // ✅ Important
+                    return_from: "landing_page",
                 }),
             });
 
-            log.info('handleCashfreePayment-00');
-
             const data = await res.json();
-            log.info('handleCashfreePayment0');
-
             if (!data.payment_session_id) {
                 alert("Payment session creation failed.");
                 return;
             }
 
-            log.info("🔁 Starting Cashfree payment flow...");
+            // Step 2: Load Cashfree SDK
+            const mode = getCashfreeMode();
+            const cashfree = await load({ mode });
 
-            const Cashfree = await loadCashfreeSdk();
+            await cashfree.checkout({
+                paymentSessionId: data.payment_session_id,
+                redirectTarget: "_self", // or "modal"
+            });
 
-            if (!Cashfree || typeof Cashfree !== "function") {
-                throw new Error("❌ Cashfree SDK not available or failed to load");
-            }
-
-            log.info("✅ Cashfree SDK loaded successfully");
-
-            const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-            log.info("🌐 Payment Mode:", mode);
-            log.info("🔑 Payment Session ID:", data.payment_session_id);
-
-            try {
-                const cf = new Cashfree({ mode });
-
-                log.info("🛠️ Cashfree instance created:", cf);
-
-                cf.checkout({
-                    paymentSessionId: data.payment_session_id,
-                    redirectTarget: "blank", // or 'self' or 'blank'
-                });
-
-                log.info("eredirectTarget: blank");
-            }
-            catch (e) {
-                log.info("error in new Cashfree({ mode }) or cf.checkout:", e);
-            }
-
-            log.info('handleCashfreePayment3');
 
         } catch (err) {
-            log.error("Cashfree error:", err);
-            setLoading(false);
+            log.error("❌ Cashfree payment error:", err);
             alert("Payment initiation failed. Please try again.");
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
-
 
     // Submit handler
     const handleSubmit1 = () => {
