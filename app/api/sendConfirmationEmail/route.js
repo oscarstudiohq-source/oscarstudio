@@ -81,7 +81,7 @@ export async function POST(req) {
       // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
       from: FROM_EMAIL,
       to: [data.email],
-      bcc: BCC_EMAILS,  
+      bcc: BCC_EMAILS,
       subject: '✅ Your Order has been Received!',
       html: `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
@@ -165,8 +165,12 @@ export async function POST(req) {
 
   } catch (error) {
     log.error("❌ Failed to send email:", error);
-    return new Response(JSON.stringify({ success: false, error }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: error?.message || "Email send failed",
+      }),
+      { status: 500 }
+    );
   }
 }

@@ -39,9 +39,9 @@ export async function POST(req) {
             );
         }
 
-        // ✅ Step 3: Update payment_verified_at with IST timestamp & Payment URL -for remaining payment or to check order
+        // ✅ Step 3: Update payment_verified_at with IST timestamp & Payment URL
         const now = new Date();
-        const istNow = new Date(now.getTime() + (5.5 * 60 * 60 * 1000)); // IST offset
+        const istNow = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
         const istFormatted = istNow.toISOString().slice(0, 19).replace("T", " ");
 
         const isLocalhost = process.env.NODE_ENV !== 'production';
@@ -52,7 +52,7 @@ export async function POST(req) {
             .from("orders")
             .update({
                 payment_verified_at: istFormatted,
-                payment_url: paymentUrl, 
+                payment_url: paymentUrl,
             })
             .eq("order_id", order_id);
 
@@ -87,15 +87,28 @@ export async function POST(req) {
             body: JSON.stringify(orderData),
         });
 
-        const emailResult = await emailRes.json();
+        // 🛠 Safely parse email response
+        let emailResult;
+        const rawEmailText = await emailRes.text();
+        try {
+            emailResult = JSON.parse(rawEmailText);
+        } catch (err) {
+            log.error("❌ Failed to parse email response:", rawEmailText);
+            return NextResponse.json(
+                {
+                    success: false,
+                    message: "Email service returned an invalid response.",
+                },
+                { status: 500 }
+            );
+        }
 
         if (!emailResult.success) {
             log.info("❌ Email not sent");
             return NextResponse.json(
                 {
                     success: false,
-                    message:
-                        "Order verified but email failed. Please contact support.",
+                    message: "Order verified but email failed. Please contact support.",
                 },
                 { status: 500 }
             );
