@@ -1,6 +1,8 @@
 // lib/log.ts
 
-const isProd = process.env.NODE_ENV === "production";
+// const isProd = process.env.NODE_ENV === "production";
+
+const isProd = false;
 
 export const log = {
     info: (...args: any[]) => {

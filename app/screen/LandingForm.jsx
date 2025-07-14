@@ -479,22 +479,44 @@ function LandingForm1() {
                 }),
             });
 
+            log.info('handleCashfreePayment-00');
+
             const data = await res.json();
+            log.info('handleCashfreePayment0');
 
-            if (!data.payment_session_id) return alert("Payment session creation failed.");
-            log.info('handleCashfreePayment1');
+            if (!data.payment_session_id) {
+                alert("Payment session creation failed.");
+                return;
+            }
+
+            log.info("🔁 Starting Cashfree payment flow...");
+
             const Cashfree = await loadCashfreeSdk();
-            if (typeof Cashfree !== "function") throw new Error("Cashfree SDK not available");
 
-            log.info('handleCashfreePayment2');
+            if (!Cashfree || typeof Cashfree !== "function") {
+                throw new Error("❌ Cashfree SDK not available or failed to load");
+            }
+
+            log.info("✅ Cashfree SDK loaded successfully");
+
             const mode = process.env.NEXT_PUBLIC_CASHFREE_MODE || "sandbox";
-            const cf = new Cashfree({ mode });
+            log.info("🌐 Payment Mode:", mode);
+            log.info("🔑 Payment Session ID:", data.payment_session_id);
 
-            // ❌ Do NOT rely on onSuccess or onFailure
-            cf.checkout({
-                paymentSessionId: data.payment_session_id,
-                redirectTarget: "modal",
-            });
+            try {
+                const cf = new Cashfree({ mode });
+
+                log.info("🛠️ Cashfree instance created:", cf);
+
+                cf.checkout({
+                    paymentSessionId: data.payment_session_id,
+                    redirectTarget: "modal", // or 'self' or 'blank'
+                });
+
+            }
+            catch (e) {
+                log.info("error in new Cashfree({ mode }) or cf.checkout:", e);
+            }
 
             log.info('handleCashfreePayment3');
 
