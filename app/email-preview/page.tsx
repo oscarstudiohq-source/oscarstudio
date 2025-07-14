@@ -38,9 +38,9 @@ export default function EmailPreview() {
     const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
     const paymentUrl = `${BASE_URL}/pay?order_id=${data.order_id}`;
 
-    const pendingBanner = hasPending
-        ? `
-       <div style="background-color: #FFF9D1; padding: 16px 24px; border-left: 4px solid #f59e0b; margin-bottom: 24px;">
+  const pendingBanner = hasPending
+    ? `
+      <div style="background-color: #FFF9D1; padding: 16px 24px; border-left: 4px solid #f59e0b; margin-bottom: 24px;">
         <h3 style="margin: 0 0 8px; color: #92400e; font-size: 16px; font-weight: 600;">
           Hi ${data.name || 'there'},
         </h3>
@@ -51,8 +51,24 @@ export default function EmailPreview() {
          Pay Remaining Amount
         </a>
       </div>
+      `
+    : '';
+
+  const successBanner = !hasPending
+    ? `
+      <div style="background-color: #DCFCE7; padding: 16px 24px; border-left: 4px solid #22C55E; margin-bottom: 24px;">
+        <h3 style="margin: 0 0 8px; color: #15803D; font-size: 16px; font-weight: 600;">
+          Hi ${data.name || 'there'},
+        </h3>
+        <p style="margin: 0 0 12px; color: #15803D; font-size: 16px;">
+          Your payment of <strong>${data.currency_symbol}${data.amount_paid}</strong> has been received. Your order will be processed shortly.
+        </p>
+        <a href="${paymentUrl}" style="display: inline-block; background-color: #22C55E; color: white; padding: 10px 18px; text-decoration: none; border-radius: 4px; font-size: 16px; font-weight: 600;">
+          View Order
+        </a>
+      </div>
   `
-        : '';
+    : '';
     //pending amount end
 
     return (
@@ -69,7 +85,7 @@ export default function EmailPreview() {
               </div>
         
               <div style="padding: 24px;">
-               ${pendingBanner}
+              ${pendingBanner || successBanner}
                 <h3 style="margin-bottom: 16px; color: #0f172a;">📋 Order Summary</h3>
                 <table style="width: 100%; border-collapse: collapse;">
                 <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Order ID:</td><td>${data.order_id}</td></tr>

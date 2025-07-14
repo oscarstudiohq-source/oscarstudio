@@ -127,14 +127,23 @@ function LandingForm1() {
 
                 const baseUrl = process.env.NODE_ENV === "production"
                     ? "https://tuesdaytrim.com"
-                    : "http://localhost:3000";
+                    : "http://192.168.29.73:3000";
 
-                // Open remaining payment page in a new tab
-                window.open(`${baseUrl}/pay?order_id=${orderId}`, "_blank");
+                // Generate the remaining payment URL
+                const payUrl = `${baseUrl}/pay?order_id=${orderId}`;
 
-                // Clean up current page URL (remove query params)
+                // Try opening in a new tab
+                const newTab = window.open(payUrl, "_blank");
+
+                if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                    // If popup was blocked, redirect in current tab instead
+                    window.location.href = payUrl;
+                }
+
+                // Also clean the current page URL in the background (optional)
                 router.replace(window.location.pathname, undefined, { shallow: true });
             }
+
 
         };
 

@@ -79,7 +79,7 @@ export async function POST(req) {
         }
 
         // ✅ Step 5: Send confirmation email
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://192.168.29.73:3000";
 
         const emailRes = await fetch(`${baseUrl}/api/sendConfirmationEmail`, {
             method: "POST",

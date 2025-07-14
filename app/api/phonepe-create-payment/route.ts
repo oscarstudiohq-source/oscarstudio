@@ -8,7 +8,7 @@ export async function POST() {
     const merchantOrderId = randomUUID();
     const amount = 10000; // ₹100
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://192.168.29.73:3000";
     const redirectUrl = `${baseUrl}/payment-callback`; // ✅ dynamic redirect
 
     const request = StandardCheckoutPayRequest.builder()
