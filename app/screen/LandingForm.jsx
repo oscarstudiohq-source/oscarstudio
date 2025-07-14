@@ -238,7 +238,6 @@ function LandingForm1() {
         };
     };
 
-
     // Update price whenever form data or coupon changes
     useEffect(() => {
         // 🔁 Reset coupon if payment mode is not full or half
