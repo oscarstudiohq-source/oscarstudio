@@ -124,8 +124,18 @@ function LandingForm1() {
             }
             finally {
                 setLoading(false);
+
+                const baseUrl = process.env.NODE_ENV === "production"
+                    ? "https://tuesdaytrim.com"
+                    : "http://localhost:3000";
+
+                // Open remaining payment page in a new tab
+                window.open(`${baseUrl}/pay?order_id=${orderId}`, "_blank");
+
+                // Clean up current page URL (remove query params)
                 router.replace(window.location.pathname, undefined, { shallow: true });
             }
+
         };
 
         check();
