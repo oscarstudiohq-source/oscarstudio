@@ -113,7 +113,7 @@ export default function Footer() {
                                 <img src="/icons/facebook.png" alt="Facebook" className="w-6 h-6" />
                             </a>
                             <a
-                                href="https://instagram.com/yourprofile"
+                                href="https://www.instagram.com/tuesday_trim/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
