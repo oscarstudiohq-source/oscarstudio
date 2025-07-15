@@ -120,7 +120,7 @@ export default function Footer() {
                                 <img src="/icons/instagram.png" alt="Instagram" className="w-6 h-6" />
                             </a>
                             <a
-                                href="https://www.youtube.com/@tuesdaytrim"
+                                href="https://www.youtube.com/channel/UC0x1DR3gKszUWOK8MmWj9uQ"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
