@@ -11,7 +11,7 @@ export default function Header() {
             <div className="flex items-center justify-between px-4 sm:px-6 md:px-20 py-4 relative">
                 {/* Logo */}
                 <div className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
-                    <img src="/favicon.ico" alt="TuesdayTrim Logo" className="w-8 h-8" />
+                    {/* <img src="/favicon.ico" alt="TuesdayTrim Logo" className="w-8 h-8" /> */}
                     TuesdayTrim
                 </div>
 
@@ -49,7 +49,6 @@ export default function Header() {
                     >
                         Get Started
                     </a>
-
                     {/* Hamburger Menu (shown only on mobile) */}
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}

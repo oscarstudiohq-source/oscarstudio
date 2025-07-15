@@ -73,6 +73,8 @@ export default function Home() {
           {/* Left (Text) - 45% on desktop */}
           <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
             
+            <img src="/newlogo.png" alt="TuesdayTrim Logo" className="w-20 h-20 rounded-full" />
+
             <Heading className="text-[#001c64] text-[32px] sm:text-[46px] md:text-[58px]" weight={800}>
               You Shoot,<br />We Edit.
             </Heading>
