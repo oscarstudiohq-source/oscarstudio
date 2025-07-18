@@ -3,11 +3,11 @@ import Heading from '../../components/Heading';
 import Header from "../../components/Header";
 
 const portfolioVideos = [
-    // {
-    //     url: "https://www.youtube.com/shorts/5qap5aO4i9A",
-    //     title: "Lo-fi Girl Live Shorts",
-    //     type: "short",
-    // },
+    {
+        url: "https://youtube.com/shorts/r1WsP7Cm23k?feature=share",
+        title: "Informative video sample",
+        type: "short",
+    },
     // {
     //     url: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
     //     title: "Me at the zoo",
