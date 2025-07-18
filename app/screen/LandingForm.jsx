@@ -51,15 +51,14 @@ const basePrices = {
     },
     india: {
         short: {
-            "30 sec": { studio: 499, studioPro: 799, studioMax: 999 },
-            "60 sec": { studio: 649, studioPro: 999, studioMax: 1299 },
-            "90 sec": { studio: 849, studioPro: 1249, studioMax: 1599 },
+            "30 sec": { studio: 1320, studioPro: 1980, studioMax: 2520 },
+            "60 sec": { studio: 1680, studioPro: 2460, studioMax: 3300 },
+            "90 sec": { studio: 2100, studioPro: 3120, studioMax: 4080 },
         },
         long: {
-            // "5 min": { studio: 1699, studioPro: 2499, studioMax: 3199 },
-            "5 min": { studio: 4, studioPro: 2499, studioMax: 3199 },
-            "10 min": { studio: 2499, studioPro: 3399, studioMax: 4699 },
-            "20 min": { studio: 3799, studioPro: 4899, studioMax: 6299 },
+            "5 min": { studio: 3960, studioPro: 5640, studioMax: 7320 },
+            "10 min": { studio: 6000, studioPro: 7920, studioMax: 10920 },
+            "20 min": { studio: 9000, studioPro: 11940, studioMax: 15480 },
         }
     }
 };
