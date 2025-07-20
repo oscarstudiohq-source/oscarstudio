@@ -4,7 +4,52 @@ import Header from "../../components/Header";
 
 const portfolioVideos = [
     {
-        url: "https://youtube.com/shorts/r1WsP7Cm23k?feature=share",
+        url: "https://www.youtube.com/shorts/OLG95eePMg8",
+        title: "video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/h0NGJGvp4lc",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/918nPdw0LUc",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/KYqsws2ALrs",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/DjQPLXLnDC0",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/pFPWbho9r54",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/X9iVfYVcq44",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/ND0CdqpemAM",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/9cskzMO967M",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/r1WsP7Cm23k",
         title: "Informative video sample",
         type: "short",
     },
@@ -67,13 +112,13 @@ function VideoCard({ url, title, type }) {
                     </a>
                 )}
             </div>
-            <div className="mt-2 px-1">
-                <h3 className="text-sm font-semibold text-[#001c64] truncate group-hover:text-[#003087]">
+            <div className="mt-2 px-1 mb-1">
+                {/* <h3 className="text-sm font-semibold text-[#001c64] truncate group-hover:text-[#003087]">
                     {title}
-                </h3>
-                {/* <span className="text-xs text-[#003087] uppercase">
-                    {isShort ? "Short Video" : "Long-form Video"}
-                </span> */}
+                </h3> */}
+                <span className="text-xs text-[#003087] uppercase">
+                    {isShort ? "YT Shorts/ IG Reels" : "Long-form Video"}
+                </span>
             </div>
         </div>
     );
@@ -113,7 +158,7 @@ export default function Portfolio() {
 
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-6 md:mt-6">
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#003087] mb-6 mt-0 text-left">
-                    Short Videos & Reels
+                    Short Videos & Reels - Client Work
                 </h3>
                 <div className="h-1 w-20 bg-[#003087] mb-6 rounded"></div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -124,7 +169,7 @@ export default function Portfolio() {
 
                 {/* Long-Form Section */}
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#003087] mb-6 mt-12 text-left">
-                    Long-Form Videos
+                    Long-Form Videos - Client Work
                 </h3>
                 <div className="h-1 w-20 bg-[#003087] mb-6 rounded"></div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-8">
