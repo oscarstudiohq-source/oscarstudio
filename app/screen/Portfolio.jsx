@@ -29,6 +29,11 @@ const portfolioVideos = [
         type: "short",
     },
     {
+        url: "https://www.youtube.com/shorts/ZcP4NYTtuD4",
+        title: "video sample",
+        type: "short",
+    },
+    {
         url: "https://www.youtube.com/shorts/pFPWbho9r54",
         title: "Informative video sample",
         type: "short",
@@ -49,7 +54,22 @@ const portfolioVideos = [
         type: "short",
     },
     {
+        url: "https://www.youtube.com/shorts/g8JLt7H6k0A",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
         url: "https://www.youtube.com/shorts/r1WsP7Cm23k",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/D0x2mp8rRbY",
+        title: "Informative video sample",
+        type: "short",
+    },
+    {
+        url: "https://www.youtube.com/shorts/xffN_Nq3f-k",
         title: "Informative video sample",
         type: "short",
     },
