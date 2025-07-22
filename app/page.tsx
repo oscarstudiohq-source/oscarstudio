@@ -21,16 +21,14 @@ export default function Home() {
   return (
     <>
 
-      <a
+      {/* <a
         href="https://wa.me/918426919793?text=Hi%2C%20I%E2%80%99m%20looking%20to%20get%20my%20videos%20edited%20with%20TuesdayTrim.%20Can%20you%20help%3F"
         className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group" 
         target="_blank"
         rel="noopener noreferrer"
       >
 
-        {/* Avatar with badge wrapper */}
         <div className="relative">
-          {/* Your Photo */}
           <div className="w-9 h-9 rounded-full overflow-hidden border-1 border-white shadow">
             <img
               src="/icons/akash.png"
@@ -39,7 +37,6 @@ export default function Home() {
             />
           </div>
 
-          {/* WhatsApp Badge Icon - placed OUTSIDE avatar */}
           <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center bg-white justify-center shadow-md">
             <img
               src="/icons/whatsapp.png"
@@ -49,7 +46,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Text & Subtext */}
         <div className="flex flex-col leading-tight">
           <span className="text-sm font-semibold group-hover:translate-x-1 transition-transform">
             Chat with Us
@@ -58,7 +54,7 @@ export default function Home() {
             Drop a message — we reply fast!
           </span>
         </div>
-      </a>
+      </a> */}
 
       <Header />
 
