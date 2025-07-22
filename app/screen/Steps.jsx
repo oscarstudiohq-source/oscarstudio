@@ -37,9 +37,9 @@ export default function HowItWorks() {
 
 
     return (
-        <section className="bg-[#f3f3f6] text-gray-900 py-16 px-6">
+        <section className="bg-[#f3f3f6] text-gray-900 py-16 px-6 rounded-2xl">
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <Heading className="text-[#001c64]">How It Works</Heading>
+                <Heading className="text-[#001c64]">How to Order</Heading>
                 <p className="text-black mt-2">4-Step Process to Get Your Videos Edited & Ready to Post</p>
             </div>
 

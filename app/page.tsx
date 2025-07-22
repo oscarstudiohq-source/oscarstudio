@@ -11,6 +11,7 @@ import ScrollingStats from './screen/ScrollingStats.jsx';
 import EditingTier from './screen/EditingTier';
 import Header from "../components/Header";
 import Footer from "./screen/Footer";
+import VideoGridSection from "./screen/VideoGridSection";
 
 import Link from 'next/link';
 
@@ -97,6 +98,11 @@ export default function Home() {
 
         </div>
       </main>
+
+      {/* 🌟 Steps Section */}
+      <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
+        <VideoGridSection />
+      </section>
 
       {/* 🌟 Steps Section */}
       <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
