@@ -419,20 +419,6 @@ function LandingForm1() {
     };
 
 
-    const handlePhonePePayment = async () => {
-        const res = await fetch("/api/phonepe-create-payment", {
-            method: "POST",
-        });
-
-        const data = await res.json();
-        if (data?.redirectUrl) {
-            window.location.href = data.redirectUrl;
-        } else {
-            alert("❌ Failed to initiate payment.");
-        }
-    };
-
-
     const createNewOrderId = () => {
         const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ123456789";
         const nanoid6 = customAlphabet(alphabet, 6);
