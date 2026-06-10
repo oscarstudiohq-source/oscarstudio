@@ -82,9 +82,9 @@ const categories = [
 
 const VideoCategoryGridSection = () => {
     return (
-        <div className="bg-gray-50 py-16 px-4 sm:px-8 md:px-20 rounded-2xl">
+        <div className="bg-[#f2efeb] py-16 px-4 sm:px-8 md:px-20 rounded-2xl">
             <div className="max-w-6xl mx-auto text-center mb-12">
-                <Heading className="text-[#001c64]">One Process. Every Video Type.</Heading>
+                <Heading className="text-[#7D5B39]">One Process. Every Video Type.</Heading>
                 <p className="text-black mt-2">
                     Reels, YouTube, Podcasts, Business Promos — we edit everything.
                 </p>

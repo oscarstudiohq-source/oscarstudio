@@ -13,7 +13,7 @@ export default function RefundPolicyPage() {
                 className="bg-white px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-5 md:pb-6"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="bg-[#001c64] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
+                    <div className="bg-[#a48c74] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
                         <Heading className="text-white text-2xl sm:text-3xl font-bold">
                             Refund & Cancellation Policy
                         </Heading>
@@ -28,7 +28,7 @@ export default function RefundPolicyPage() {
                 <h1 className="text-2xl font-bold mb-4">Refund & Cancellation Policy</h1>
 
                 <p className="mb-4">
-                    This refund and cancellation policy outlines how you can cancel an order or seek a refund for services purchased through Tuesday Trim (operated by Bigmeet Infotech Private Limited).
+                    This refund and cancellation policy outlines how you can cancel an order or seek a refund for services purchased through OscarStudio (operated by Bigmeet Infotech Private Limited).
                 </p>
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">Cancellations</h2>
@@ -58,7 +58,7 @@ export default function RefundPolicyPage() {
                     For any cancellation or refund-related queries, please contact our support team:
                 </p>
                 <ul className="list-disc ml-6 mb-4">
-                    <li>Email: <a href="mailto:support@tuesdaytrim.com" className="text-blue-600 underline">support@tuesdaytrim.com</a></li>
+                    <li>Email: <a href="mailto:support@oscarstudio.in" className="text-blue-600 underline">support@oscarstudio.in</a></li>
                     <li>Phone / WhatsApp: <a href="tel:+918824083829" className="text-blue-600 underline">+91 88240 83829</a></li>
                 </ul>
 

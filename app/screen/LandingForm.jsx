@@ -17,6 +17,7 @@ import { submitOrder } from "../../lib/submitOrder";
 import ConfirmationModal from "@/components/ConfirmationModal"; // adjust path if needed
 import { toast } from "sonner";
 import { nanoid, customAlphabet } from "nanoid";
+import { QrCode } from "lucide-react";
 import {
     Tooltip,
     TooltipTrigger,
@@ -52,7 +53,7 @@ const basePrices = {
     india: {
         short: {
             "30 sec": { studio: 1320, studioPro: 1980, studioMax: 2520 },
-            "60 sec": { studio: 1680, studioPro: 2460, studioMax: 3300 },
+            "60 sec": { studio: 1710, studioPro: 2460, studioMax: 3300 }, //test
             "90 sec": { studio: 2100, studioPro: 3120, studioMax: 4080 },
         },
         long: {
@@ -125,7 +126,7 @@ function LandingForm1() {
                 setLoading(false);
 
                 const baseUrl = process.env.NODE_ENV === "production"
-                    ? "https://tuesdaytrim.com"
+                    ? "https://oscarstudio.in"
                     : "http://192.168.29.73:3000";
 
                 // Generate the remaining payment URL
@@ -711,6 +712,8 @@ function LandingForm1() {
     const [showTooltip, setShowTooltip] = useState(false);
 
 
+    const [showUpiModal, setShowUpiModal] = useState(false);
+
 
     return (
         <div className="">
@@ -723,7 +726,7 @@ function LandingForm1() {
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                             {/* Left: Heading */}
                             <div>
-                                <h2 className="text-xl font-bold text-[#001c64]">
+                                <h2 className="text-xl font-bold text-[#7D5B39]">
                                     Submit Your Video for Editing
                                 </h2>
                             </div>
@@ -772,7 +775,7 @@ function LandingForm1() {
                                         </TooltipTrigger>
                                         <TooltipContent
                                             side="top"
-                                            className="text-xs max-w-sm bg-[#001c64] text-white rounded px-3 py-2 shadow"
+                                            className="text-xs max-w-sm bg-[#7D5B39] text-white rounded px-3 py-2 shadow"
                                         >
                                             <p className="font-semibold mb-1">📤 Upload your raw footage to a folder using one of the platforms below:</p>
 
@@ -1044,7 +1047,8 @@ function LandingForm1() {
                                             type="text"
                                             value={formData.name}
                                             onChange={(e) => handleChange("name", e.target.value)}
-                                            placeholder="Your Name"
+                                            placeholder="Your Name*"
+                                            required
                                         />
                                     </div>
                                     <div className="w-full">
@@ -1053,7 +1057,7 @@ function LandingForm1() {
                                             type="email"
                                             value={formData.email}
                                             onChange={(e) => handleChange("email", e.target.value)}
-                                            placeholder="you@example.com"
+                                            placeholder="you@example.com*"
                                             autoComplete="email"
                                             required
                                         />
@@ -1074,7 +1078,7 @@ function LandingForm1() {
                                         {/* </TooltipTrigger>
                                             <TooltipContent
                                                 side="top"
-                                                className="text-xs max-w-xs bg-[#001c64] text-[#fff] rounded px-3 py-2 shadow"
+                                                className="text-xs max-w-xs bg-[#7D5B39] text-[#fff] rounded px-3 py-2 shadow"
                                             >
                                                 Paste a reference video link (YouTube or Instagram, optional)<br />
                                                 This helps us understand the style or format you’re aiming for.
@@ -1394,6 +1398,119 @@ function LandingForm1() {
                     </div>
 
 
+                    {/* OR Divider */}
+                    <div className="relative my-6">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-zinc-300" />
+                        </div>
+
+                        <div className="relative flex justify-center">
+                            <span className="bg-white px-4 text-sm font-semibold text-zinc-500 uppercase">
+                                OR
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mb-5 text-center">
+
+                        <button
+                            type="button"
+                            onClick={() => setShowUpiModal(true)}
+                            className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-xl active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-zinc-400"
+                        >
+                            <QrCode className="h-5 w-5" />
+                            <span>Pay via UPI</span>
+                        </button>
+
+                        <p className="mt-2 text-xs text-zinc-500">
+                            Having trouble with online checkout? Use UPI instead.
+                        </p>
+
+                    </div>
+
+                    {/* UPI M */}
+                    {showUpiModal && (
+                        <div
+                            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+                            onClick={() => setShowUpiModal(false)}
+                        >
+                            <div
+                                className="relative w-full max-w-3xl rounded-3xl bg-white shadow-2xl"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Close */}
+                                <button
+                                    onClick={() => setShowUpiModal(false)}
+                                    className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full text-xl text-zinc-500 transition hover:bg-zinc-100 hover:text-black"
+                                >
+                                    ×
+                                </button>
+
+                                <div className="grid items-center gap-8 p-8 md:grid-cols-[1fr_300px]">
+
+                                    {/* Left */}
+                                    <div className="rounded-2xl bg-zinc-50 p-6">
+
+                                        <h2 className="text-2xl font-bold text-zinc-900">
+                                            Pay via UPI
+                                        </h2>
+
+                                        <p className="mt-3 text-sm leading-6 text-zinc-600">
+                                            If online checkout isn't working, scan the QR code or pay using the UPI ID.
+                                        </p>
+
+                                        <div className="mt-8">
+
+                                            <p className="text-xs font-medium uppercase tracking-widest text-zinc-400">
+                                                UPI ID
+                                            </p>
+
+                                            <div className="mt-2 rounded-xl border border-zinc-200 bg-white px-4 py-3">
+                                                <p className="font-mono text-base font-semibold text-zinc-900 break-all">
+                                                    oscarstudio@upi
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="mt-8 flex flex-wrap gap-2">
+
+                                            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-700 shadow-sm">
+                                                Google Pay
+                                            </span>
+
+                                            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-700 shadow-sm">
+                                                PhonePe
+                                            </span>
+
+                                            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-700 shadow-sm">
+                                                Paytm
+                                            </span>
+
+                                            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-zinc-700 shadow-sm">
+                                                BHIM
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* Right */}
+                                    <div className="flex justify-center">
+
+                                        <img
+                                            src="/upi-qr.png"
+                                            alt="UPI QR Code"
+                                            className="max-h-[400px] w-auto object-contain"
+                                        />
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    )}
+
 
 
 
@@ -1417,15 +1534,17 @@ function LandingForm1() {
 
                     {/* Trust Email and Order confirmation */}
                     {/* <button
-                    onClick={testHandleEmailClick}
-                    className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
-                    disabled={loading}
-                >
-                    Test Order Submit - New
-                </button> */}
+                        onClick={testHandleEmailClick}
+                        className="mt-4 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors duration-200 disabled:opacity-50"
+                        disabled={loading}
+                    >
+                        Test Order Submit - New
+                    </button> */}
 
                 </CardContent>
             </Card>
+
+
         </div >
     );
 }

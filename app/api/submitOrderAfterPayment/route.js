@@ -45,7 +45,7 @@ export async function POST(req) {
         const istFormatted = istNow.toISOString().slice(0, 19).replace("T", " ");
 
         const isLocalhost = process.env.NODE_ENV !== 'production';
-        const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
+        const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://oscarstudio.in';
         const paymentUrl = `${BASE_URL}/pay?order_id=${order_id}`;
 
         const { error: updateError } = await supabase
@@ -85,8 +85,8 @@ export async function POST(req) {
         if (envBaseUrl && envBaseUrl.startsWith("http")) {
             baseUrl = envBaseUrl;
         } else {
-            log.warn("⚠️ Using fallback baseUrl. NEXT_PUBLIC_BASE_URL is missing or invalid. Falling back to https://tuesdaytrim.com");
-            baseUrl = "https://tuesdaytrim.com";
+            log.warn("⚠️ Using fallback baseUrl. NEXT_PUBLIC_BASE_URL is missing or invalid. Falling back to https://oscarstudio.in");
+            baseUrl = "https://oscarstudio.in";
         }
 
         const emailRes = await fetch(`${baseUrl}/api/sendConfirmationEmail`, {

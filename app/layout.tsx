@@ -15,21 +15,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TuesdayTrim – Best Video Editing for YouTube Creators in the US, UK & Europe",
+  title: "OscarStudio – Best Video Editing for YouTube Creators in the US, UK & Europe",
   description:
-    "Tired of editing YouTube videos, Shorts, Reels, or TikToks? TuesdayTrim offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — book now!",
+    "Tired of editing YouTube videos, Shorts, Reels, or TikToks? OscarStudio offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — book now!",
+
   icons: {
     icon: [
       { url: "/favicon.ico" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
     apple: "/apple-touch-icon.png",
   },
-  applicationName: "TuesdayTrim",
+
+  applicationName: "OscarStudio",
   manifest: "/site.webmanifest",
+
   appleWebApp: {
-    title: "TuesdayTrim",
+    title: "OscarStudio",
   },
 };
 
@@ -37,10 +39,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <title>TuesdayTrim – Best Video Editing for YouTube Creators in the US, UK & Europe</title>
+        <title>OscarStudio – Best Video Editing for YouTube Creators in the US, UK & Europe</title>
         <meta
           name="description"
-          content="Tired of editing YouTube videos, Shorts, Reels, or TikToks? TuesdayTrim offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — book now!"
+          content="Tired of editing YouTube videos, Shorts, Reels, or TikToks? OscarStudio offers fast, pro video editing trusted by creators in the US, UK & Europe. Skip the editing stress — book now!"
         />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,9 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "TuesdayTrim",
-              "url": "https://tuesdaytrim.com",
-              "logo": "https://tuesdaytrim.com/favicon-32x32.png",
+              "name": "OscarStudio",
+              "url": "https://oscarstudio.in",
+              "logo": "https://oscarstudio.in/logo1.png",
             }),
           }}
         />
@@ -66,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
 
         {/* ✅ Tawk.to Live Chat Script */}
-        <script
+        {/* <script
           dangerouslySetInnerHTML={{
             __html: `
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -80,7 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         })();
       `,
           }}
-        />
+        /> */}
 
       </body>
     </html>

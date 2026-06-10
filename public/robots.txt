@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.tuesdaytrim.com
+Host: https://www.oscarstudio.in
 
 # Sitemaps
-Sitemap: https://www.tuesdaytrim.com/sitemap.xml
+Sitemap: https://www.oscarstudio.in/sitemap.xml

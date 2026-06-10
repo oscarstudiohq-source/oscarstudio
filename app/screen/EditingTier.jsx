@@ -199,11 +199,11 @@ const TierComparisonSection = () => {
     return (
         <section
             className="text-gray-900 py-16 px-4 sm:px-10 md:px-20"
-            style={{ backgroundColor: "#f3f3f6" }}
+            style={{ backgroundColor: "#f2efeb" }}
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">Compare Our Editing Tiers</h2> */}
-                <Heading className="text-[#001c64]">
+                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#7D5B39]">Compare Our Editing Tiers</h2> */}
+                <Heading className="text-[#7D5B39]">
                     Compare Our Editing Tiers
                 </Heading>
                 

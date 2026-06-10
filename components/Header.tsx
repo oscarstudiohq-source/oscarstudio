@@ -1,58 +1,57 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react"; // Make sure lucide-react is installed
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const pathname = usePathname();
+
+    const isActive = (path: string) => pathname === path;
+
+    const linkClass = (path: string) =>
+        `text-base font-bold px-4 py-2 rounded-full transition-colors ${isActive(path)
+            ? "bg-[#977c61] text-white"
+            : "hover:bg-[#977c61] hover:text-white"
+        }`;
 
     return (
-        <header id="home" className="bg-white text-[#001c64] border-b border-gray-200 shadow-sm">
+        <header className="bg-white text-[#7D5B39] border-b border-gray-200 shadow-sm">
             <div className="flex items-center justify-between px-4 sm:px-6 md:px-20 py-4 relative">
+
                 {/* Logo */}
-                <div className="text-xl sm:text-2xl font-extrabold tracking-tight flex items-center gap-2">
-                    {/* <img src="/favicon.ico" alt="TuesdayTrim Logo" className="w-8 h-8" /> */}
-                    TuesdayTrim
+                <div className="text-xl sm:text-2xl font-extrabold tracking-tight">
+                    OscarStudio.in
                 </div>
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex space-x-6 font-medium text-sm">
-                    <Link
-                        href="/#home"
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
-                    >
+                    <Link href="/" className={linkClass("/")}>
                         Home
                     </Link>
-                    <a
-                        href="/contact"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
-                    >
-                        Contact
-                    </a>
 
-                    <Link
-                        href="/portfolio"
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
-                    >
+                    <Link href="/contact" className={linkClass("/contact")}>
+                        Contact
+                    </Link>
+
+                    <Link href="/portfolio" className={linkClass("/portfolio")}>
                         Portfolio
                     </Link>
                 </nav>
 
-                {/* CTA + Mobile Icon */}
+                {/* CTA + Mobile */}
                 <div className="flex items-center gap-3">
-                    {/* CTA Button: hidden on mobile */}
                     <a
                         href="/#orderSection"
-                        className="hidden sm:inline-block bg-[#003087] hover:bg-[#0874e4] transition-colors px-5 py-2 rounded-full text-white font-semibold text-base shadow"
+                        className="hidden sm:inline-block bg-[#977c61] hover:bg-[#7D5B39] transition-colors px-5 py-2 rounded-full text-white font-semibold text-base shadow"
                     >
                         Get Started
                     </a>
-                    {/* Hamburger Menu (shown only on mobile) */}
+
                     <button
                         onClick={() => setMenuOpen(!menuOpen)}
-                        className="md:hidden text-[#001c64] focus:outline-none"
+                        className="md:hidden text-[#7D5B39]"
                     >
                         {menuOpen ? <X size={28} /> : <Menu size={28} />}
                     </button>
@@ -63,35 +62,30 @@ export default function Header() {
             {menuOpen && (
                 <div className="md:hidden flex flex-col gap-2 px-4 pb-4">
                     <Link
-                        href="/#home"
+                        href="/"
                         onClick={() => setMenuOpen(false)}
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
+                        className={linkClass("/")}
                     >
                         Home
                     </Link>
+
                     <Link
-                        href="/#footer"
+                        href="/contact"
                         onClick={() => setMenuOpen(false)}
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
+                        className={linkClass("/contact")}
                     >
                         Contact
                     </Link>
+
                     <Link
                         href="/portfolio"
                         onClick={() => setMenuOpen(false)}
-                        className="text-base font-bold px-4 py-2 rounded-full hover:bg-[#e3f9fe] hover:text-[#003087] transition-colors"
+                        className={linkClass("/portfolio")}
                     >
                         Portfolio
                     </Link>
-                    <a
-                        href="/#orderSection"
-                        className="mt-2 bg-[#003087] hover:bg-[#0874e4] transition-colors px-5 py-2 rounded-full text-white font-semibold text-base text-center shadow"
-                    >
-                        Get Started
-                    </a>
                 </div>
             )}
         </header>
-      
     );
 }

@@ -133,7 +133,7 @@ function VideoCard({ url, title, type }) {
                 )}
             </div>
             <div className="mt-2 px-1 mb-1">
-                {/* <h3 className="text-sm font-semibold text-[#001c64] truncate group-hover:text-[#003087]">
+                {/* <h3 className="text-sm font-semibold text-[#7D5B39] truncate group-hover:text-[#003087]">
                     {title}
                 </h3> */}
                 <span className="text-xs text-[#003087] uppercase">
@@ -164,7 +164,7 @@ export default function Portfolio() {
                 className="bg-white px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-5 md:pb-6"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="bg-[#001c64] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
+                    <div className="bg-[#7D5B39] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
                         <Heading className="text-white text-2xl sm:text-3xl font-bold">
                             Portfolio Highlights
                         </Heading>

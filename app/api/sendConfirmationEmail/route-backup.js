@@ -1,7 +1,9 @@
 // app/api/sendConfirmationEmail/route.js
-import nodemailer from "nodemailer";
+import { Resend } from 'resend';
 import { thumbnailDescriptions } from "../../screen/EditingTier";
 import { log } from "../../../lib/logger";
+
+const resend = new Resend(process.env.RESEND_API_KEY); // 👈 Add this to .env.local
 
 // const durationKeyMap = {
 //   "0": "30 sec",
@@ -11,16 +13,6 @@ import { log } from "../../../lib/logger";
 //   "10": "10 min",
 //   "20": "20 min",
 // };
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_PORT == 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
 
 export async function POST(req) {
 
@@ -62,22 +54,6 @@ export async function POST(req) {
   // const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://oscarstudio.in';
   const paymentUrl = data.payment_url;
 
-  const viewOrderButton = `
-  <div style="margin-top: 16px;">
-    <a href="${paymentUrl}"
-      style="display:inline-block;
-      background-color:#2563eb;
-      color:white;
-      padding:10px 18px;
-      border-radius:6px;
-      font-size:15px;
-      font-weight:600;
-      text-decoration:none;">
-      View Order
-    </a>
-  </div>
-`;
-
   const pendingBanner = hasPending
     ? `
       <div style="background-color: #FFF9D1; padding: 16px 24px; border-left: 4px solid #f59e0b; margin-bottom: 24px;">
@@ -104,7 +80,7 @@ export async function POST(req) {
           Your payment of <strong>${data.currency_symbol}${data.amount_paid}</strong> has been received. Your order will be processed shortly.
         </p>
         <a href="${paymentUrl}" style="display: inline-block; background-color: #22C55E; color: white; padding: 10px 18px; text-decoration: none; border-radius: 4px; font-size: 16px; font-weight: 600;">
-          Payment Completed
+          View Order
         </a>
       </div>
   `
@@ -117,17 +93,16 @@ export async function POST(req) {
   // const FROM_EMAIL = 'OscarStudio <support@oscarstudio.in>';
   // const BCC_EMAILS = ['akashbajaj777@gmail.com'];
 
-  const FROM_EMAIL = 'OscarStudio <support@oscarstudio.in>';
+  const SUPPORT_EMAIL = 'bigmeetinfotech@gmail.com';
+  const FROM_EMAIL = 'OscarStudio <bigmeetinfotech@gmail.com>';
   const BCC_EMAILS = ['akashbajaj777@gmail.com'];
-  const SUPPORT_EMAIL = 'akashbajaj777@gmail.com';
 
   try {
-    const response = await transporter.sendMail({
+    const response = await resend.emails.send({
       // from: 'Your Studio <onboarding@resend.dev>', // You can customize this
       from: FROM_EMAIL,
       to: [data.email],
       bcc: BCC_EMAILS,
-      replyTo: SUPPORT_EMAIL,
       subject: '✅ Your Order has been Received!',
       html: `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
@@ -142,7 +117,6 @@ export async function POST(req) {
 
       <div style="padding: 24px;">
       ${pendingBanner || successBanner}
-      ${viewOrderButton}
         <h3 style="margin-bottom: 16px; color: #0f172a;">📋 Order Summary</h3>
         <table style="width: 100%; border-collapse: collapse;">
         <tr><td style="width: 220px; padding: 8px 0; font-weight: 600;">Order ID:</td><td>${data.order_id}</td></tr>
@@ -198,8 +172,7 @@ export async function POST(req) {
 
     });
 
-    // log.info("✅ Resend API response:", response);
-    log.info("✅ Email sent:", response.messageId);
+    log.info("✅ Resend API response:", response);
 
     if (response?.error) {
       return new Response(JSON.stringify({ success: false, message: response.error.message }), {

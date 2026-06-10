@@ -11,12 +11,12 @@ export default function TermsPage() {
                 className="bg-white px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 md:pt-10 lg:pt-12 pb-4 sm:pb-5 md:pb-6"
             >
                 <div className="max-w-7xl mx-auto">
-                    <div className="bg-[#001c64] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
+                    <div className="bg-[#a48c74] text-white rounded-2xl px-6 sm:px-10 py-10 text-center shadow-md">
                         <Heading className="text-white text-2xl sm:text-3xl font-bold">
                             Terms & Conditions
                         </Heading>
                         <div className="text-white text-sm sm:text-base leading-relaxed sm:leading-loose mt-2 max-w-3xl mx-auto">
-                            Please read these terms carefully before using Tuesday Trim.
+                            Please read these terms carefully before using OscarStudio.
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ export default function TermsPage() {
                 </p>
 
                 <p className="mb-4">
-                    These Terms and Conditions govern your use of TuesdayTrim.com (“Platform”),
+                    These Terms and Conditions govern your use of OscarStudio.in (“Platform”),
                     operated by <strong>Bigmeet Infotech Private Limited</strong>.
                     By accessing or using the Platform, you agree to be bound by these terms.
                 </p>
@@ -53,7 +53,7 @@ export default function TermsPage() {
 
                 <h2 className="text-xl font-semibold mt-6 mb-2">4. Intellectual Property</h2>
                 <p className="mb-4">
-                    All content, designs, and branding on the Platform are the intellectual property of Tuesday Trim
+                    All content, designs, and branding on the Platform are the intellectual property of OscarStudio
                     or its licensors. You may not reproduce or reuse any part of the content without permission.
                 </p>
 
@@ -73,7 +73,7 @@ export default function TermsPage() {
                     For any questions regarding these Terms, please contact us:
                 </p>
                 <ul className="list-disc ml-6 mb-4 text-sm">
-                    <li>Email: <a href="mailto:support@tuesdaytrim.com" className="text-blue-600 underline">support@tuesdaytrim.com</a></li>
+                    <li>Email: <a href="mailto:support@oscarstudio.in" className="text-blue-600 underline">support@oscarstudio.in</a></li>
                     <li>Phone / WhatsApp: <a href="https://wa.me/918824083829" className="text-blue-600 underline">+91 88240 83829</a></li>
                     <li>Business Name: Bigmeet Infotech Private Limited</li>
                     <li>Address: Saroj Sharma W/O Bihari Lal, Plot No-12, Ward No-2, Near Laxmi Talkies, Chirawa, Jhunjhunu, Rajasthan – 333026</li>

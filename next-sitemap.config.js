@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-    siteUrl: 'https://www.tuesdaytrim.com',
+    siteUrl: 'https://www.oscarstudio.in',
     generateRobotsTxt: true,
     additionalPaths: async (config) => [
         await config.transform(config, '/contact'),

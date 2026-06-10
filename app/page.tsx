@@ -21,9 +21,9 @@ export default function Home() {
   return (
     <>
 
-      {/* <a
-        href="https://wa.me/918426919793?text=Hi%2C%20I%E2%80%99m%20looking%20to%20get%20my%20videos%20edited%20with%20TuesdayTrim.%20Can%20you%20help%3F"
-        className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group" 
+      <a
+        href="https://wa.me/918824083829?text=Hi%2C%20I%E2%80%99m%20looking%20to%20get%20my%20videos%20edited%20with%20OscarStudio.%20Can%20you%20help%3F"
+        className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 z-50 flex items-center gap-3 px-4 py-2 pr-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-full shadow-xl transition-all duration-300 group"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -48,13 +48,13 @@ export default function Home() {
 
         <div className="flex flex-col leading-tight">
           <span className="text-sm font-semibold group-hover:translate-x-1 transition-transform">
-            Chat with Us
+            Need Video Editing?
           </span>
           <span className="text-[11px] opacity-80 -mt-0.5">
-            Drop a message — we reply fast!
+            Tell us your requirements.
           </span>
         </div>
-      </a> */}
+      </a>
 
       <Header />
 
@@ -68,12 +68,14 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-10 md:px-20">
 
           {/* Left (Text) - 45% on desktop */}
-          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-80px]">
-            
-            <img src="/newlogo.png" alt="TuesdayTrim Logo" className="w-20 h-20 rounded-full" />
+          <div className="w-full md:w-[40%] flex flex-col items-center md:items-start text-center md:text-left space-y-6 mt-0 md:mt-[-150px]">
 
-            <Heading className="text-[#001c64] text-[32px] sm:text-[46px] md:text-[58px]" weight={800}>
-              You Shoot,<br />We Edit.
+            {/* <img src="/newlogo.png" alt="OscarStudio Logo" className="w-20 h-20 rounded-full" /> */}
+
+
+            <Heading className="text-[#7D5B39] text-[32px] sm:text-[46px] md:text-[58px]" weight={800}>
+              <img src="/logo1.png" alt="OscarStudio Logo" className="rounded-full" />
+              {/* You Shoot,<br />We Edit. */}
             </Heading>
 
             <p className="text-sm sm:text-base text-black">
@@ -95,18 +97,19 @@ export default function Home() {
         </div>
       </main>
 
+
       {/* 🌟 Steps Section */}
       <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
         <VideoGridSection />
       </section>
 
       {/* 🌟 Steps Section */}
-      <section id="steps" className="bg-white text-white px-2 sm:px-10 md:px-20 py-6 sm:py-10">
+      <section id="steps" className="bg-white text-gray-900 px-2 sm:px-10 md:px-20 py-6 sm:py-10">
         <Steps />
       </section>
 
       {/* 🌟 information Section */}
-      <section id="text-section1" className="bg-[#0070e0] text-white py-16 px-6 text-center">
+      <section id="text-section1" className="bg-[#a48c74] text-white py-16 px-6 text-center">
         <div className="max-w-4xl mx-auto">
 
           <Heading className="text-[#ffffff]">
@@ -121,12 +124,12 @@ export default function Home() {
 
 
       {/* 🌟 Editing tier Section */}
-      <section id="editingTier" className="bg-[#f3f3f6] text-gray-900 px-4 sm:px-10 md:px-20 py-6 sm:py-10">
+      <section id="editingTier" className="bg-[#f2efeb] text-gray-900 px-4 sm:px-10 md:px-20 py-6 sm:py-10">
         <EditingTier />
       </section>
 
       {/* 🌟 information Section */}
-      <section id="text-section1" className="bg-[#0070e0] text-white py-16 px-6 text-center">
+      <section id="text-section1" className="bg-[#bead9c] text-white py-16 px-6 text-center">
         <div className="max-w-4xl mx-auto">
 
           <Heading className="text-[#ffffff]">
@@ -166,14 +169,14 @@ export default function Home() {
         id="scrollingStats"
         className="bg-[#fff] px-2 sm:px-6 md:px-8 py-6 pb-10 sm:py-10 mb-12"
       >
-        <div className="bg-[#001435] text-white rounded-2xl px-4 sm:px-10 py-6 sm:py-8 shadow-md max-w-7xl mx-auto">
+        <div className="bg-[#f2efeb] text-white rounded-2xl px-4 sm:px-10 py-6 sm:py-8 shadow-md max-w-7xl mx-auto">
           <ScrollingStats />
         </div>
       </section>
 
 
       {/* 🌟 Footer Section */}
-      <section id="footer" className="bg-[#001435] text-white px-4 sm:px-10 md:px-20 py-6 sm:py-10">
+      <section id="footer" className="bg-[#001435] text-white px-4 sm:px-10 md:px-20 pt-6 sm:pt-10">
         <Footer />
       </section>
     </>

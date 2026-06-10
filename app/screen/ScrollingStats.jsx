@@ -54,16 +54,16 @@ const AnimatedStats = () => {
        
         <section
             ref={containerRef}
-            className="bg-[#001435] text-gray-900 py-16 px-6 md:px-20"
+            className="bg-[#f2efeb] text-gray-900 py-16 px-6 md:px-20"
         >
             <div className="max-w-6xl mx-auto text-center mb-12">
-                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                {/* <h2 className="text-3xl md:text-4xl font-bold text-[#7D5B39]">
                     Trusted by Creators Worldwide
                 </h2> */}
-                <Heading className="text-[#ffffff]">
+                <Heading className="text-[#7D5B39]">
                     Built on Results
                 </Heading>
-                <p className="text-black mt-2 text-white">We've edited hundreds of videos for creators across the world — our work speaks for itself.</p>
+                <p className="text-black mt-2">We've edited hundreds of videos for creators across the world — our work speaks for itself.</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-4 md:gap-8 max-w-5xl mx-auto">

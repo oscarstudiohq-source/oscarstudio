@@ -12,7 +12,7 @@ const testimonials = [
     },
     {
         name: "Maya B.",
-        text: "TuesdayTrim helped me upload 4x more videos per month — and my subscriber count is finally growing.",
+        text: "OscarStudio helped me upload 4x more videos per month — and my subscriber count is finally growing.",
         rating: 5,
         image: "/clients/maya.png"
     },
@@ -24,7 +24,7 @@ const testimonials = [
     },
     {
         name: "Isla W.",
-        text: "Editing used to slow me down. With TuesdayTrim, I upload weekly without the burnout.",
+        text: "Editing used to slow me down. With OscarStudio, I upload weekly without the burnout.",
         rating: 5,
         image: "/clients/isla.png"
     },
@@ -256,10 +256,10 @@ export default function Testimonials() {
             <section className="bg-white py-10 px-4 sm:px-6 md:px-12">
 
                 <div className="max-w-6xl mx-auto text-center mb-12">
-                    {/* <h2 className="text-3xl md:text-4xl font-bold text-[#001c64]">
+                    {/* <h2 className="text-3xl md:text-4xl font-bold text-[#7D5B39]">
                         Creators Trust Us
                     </h2> */}
-                    <Heading className="text-[#001c64]">
+                    <Heading className="text-[#7D5B39]">
                         Creators Trust Us
                     </Heading>
                     <p className="text-black mt-2">Hear what creators say about their experience with us.</p>

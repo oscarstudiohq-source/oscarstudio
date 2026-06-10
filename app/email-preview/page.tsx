@@ -23,7 +23,7 @@ export default function EmailPreview() {
         inspiration_video: "https://example.com/idea"
     };
 
-    const SUPPORT_EMAIL = 'support@tuesdaytrim.com';
+    const SUPPORT_EMAIL = 'support@oscarstudio.in';
 
     const orderDate = new Date(data.payment_verified_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
     const expirationDate = new Date(new Date(data.payment_verified_at).setDate(new Date(data.payment_verified_at).getDate() + 30)).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
@@ -35,7 +35,7 @@ export default function EmailPreview() {
     const hasPending = Number(data.amount_pending) > 0;
 
     const isLocalhost = process.env.NODE_ENV !== 'production';
-    const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://tuesdaytrim.com';
+    const BASE_URL = isLocalhost ? 'http://192.168.29.73:3000' : 'https://oscarstudio.in';
     const paymentUrl = `${BASE_URL}/pay?order_id=${data.order_id}`;
 
   const pendingBanner = hasPending
@@ -129,7 +129,7 @@ export default function EmailPreview() {
                 <p style="margin-top: 16px;">
                   📅 This order is valid for 30 days and will expire on <strong>${formattedExpirationDate}</strong>.
                 </p>
-                <p style="margin-top: 16px;">– TuesdayTrim</p>
+                <p style="margin-top: 16px;">– OscarStudio</p>
               </div>
         
               <div style="background-color: #f1f5f9; text-align: center; padding: 16px; font-size: 13px; color: #64748b;">
