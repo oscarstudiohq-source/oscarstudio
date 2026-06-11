@@ -50,10 +50,11 @@ const basePrices = {
             "20 min": { studio: 269, studioPro: 359, studioMax: 469 },
         }
     },
+    //1710
     india: {
         short: {
             "30 sec": { studio: 1320, studioPro: 1980, studioMax: 2520 },
-            "60 sec": { studio: 1710, studioPro: 2460, studioMax: 3300 }, //test
+            "60 sec": { studio: 4, studioPro: 2460, studioMax: 3300 }, //test
             "90 sec": { studio: 2100, studioPro: 3120, studioMax: 4080 },
         },
         long: {
@@ -1452,7 +1453,7 @@ function LandingForm1() {
 
                                             <div className="mt-2 rounded-xl border border-zinc-200 bg-white px-4 py-3">
                                                 <p className="font-mono text-base font-semibold text-zinc-900 break-all">
-                                                    oscarstudio@upi
+                                                    akashbajaj777-1@okicici
                                                 </p>
                                             </div>
 
