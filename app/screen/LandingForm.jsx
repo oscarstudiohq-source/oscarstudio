@@ -811,9 +811,9 @@ function LandingForm1() {
                                                 <SelectItem value={JSON.stringify({ name: "india", currency: "inr", currency_symbol: "₹" })}>
                                                     India (INR)
                                                 </SelectItem>
-                                                <SelectItem value={JSON.stringify({ name: "international", currency: "usd", currency_symbol: "$" })}>
+                                                {/* <SelectItem value={JSON.stringify({ name: "international", currency: "usd", currency_symbol: "$" })}>
                                                     Outside India (USD)
-                                                </SelectItem>
+                                                </SelectItem> */}
                                             </SelectContent>
                                         </Select>
 
